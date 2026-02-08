@@ -1,21 +1,15 @@
 package component.modifier.changer;
 
 import component.card.Card;
+import logic.level.GameLevel;
+
+import java.awt.*;
 
 public class MaterialSetter extends Changer<Card.Material> {
 
-    @Override
-    public Card.Material getChange() {
-        return this.changeValue;
-    }
-
-    @Override
-    public void setChange(Card.Material changeValue) {
-        this.changeValue = changeValue;
-    }
-
-    public void modifyCard(Card card) {
-        card.setMaterial(changeValue);
+    public void modify() {
+        Card toModify = GameLevel.getInstance().getTile(getGridPos()).getCard();
+        if (toModify != null) toModify.setMaterial(changeValue);
     }
 
     public MaterialSetter() {

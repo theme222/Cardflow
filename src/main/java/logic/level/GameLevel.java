@@ -1,10 +1,10 @@
 package logic.level;
 
 import component.GridIndexable;
+import component.GameTile;
 import component.card.Card;
 import component.modifier.Modifier;
 import component.mover.Mover;
-import org.assertj.core.annotations.NonNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -28,8 +28,12 @@ public class GameLevel {
 
     // A Card must exist in the set and in the level tile at the same time.
     // We are doing redundancy to improve speed (RAM is cheap anyways)
-    private LevelTile[][] grid;
-    private HashSet<Card> cardSet;
+    private GameTile[][] grid;
+    public final HashSet<Card> cardSet;
+    public final HashSet<Modifier> modifierSet;
+    public final HashSet<Mover> moverSet;
+    public final HashSet<Point> changedPoints; // Positions on grid that needs a UI update
+    private boolean currentTick; // True = movement False = modify TODO: CHANGE THIS LOL
 
     public GameLevel(
             String levelName,
@@ -37,7 +41,8 @@ public class GameLevel {
             int height,
             List<Card> inputCards,
             List<Card> outputCards,
-            LevelTile[][] grid
+            GameTile[][] grid,
+            HashSet<Modifier> modifierSet
     ) {
         this.levelName = levelName;
         this.width = width;
@@ -47,10 +52,14 @@ public class GameLevel {
 
         this.grid = grid;
 
-        cardSet = new HashSet<>();
+        this.modifierSet = modifierSet;
+        this.cardSet = new HashSet<>();
+        this.moverSet = new HashSet<>();
+        this.changedPoints = new HashSet<>();
+        this.currentTick = true;
     }
 
-    public LevelTile getTile(Point p) { // I know I'm gonna accidentally switch y and x one of these days
+    public GameTile getTile(Point p) { // I know I'm gonna accidentally switch y and x one of these days
         if (p.x < 0 || p.x >= MAX_WIDTH || p.y < 0 || p.y >= MAX_HEIGHT)
             throw new IllegalArgumentException("Invalid position");
         return grid[p.y][p.x];
@@ -58,12 +67,12 @@ public class GameLevel {
 
 
     // Returns success / failure
-    public boolean setPositionOnGrid(GridIndexable gridIndexable, @NonNull Point newPoint) {
+    public boolean setPositionOnGrid(GridIndexable gridIndexable, Point newPoint) {
         // DOES NOT REMOVE OLD POSITION AND DOES NOT ADD TO SET
         return setPositionOnGrid(gridIndexable, newPoint, false);
     }
 
-    public boolean setPositionOnGrid(GridIndexable gridIndexable, @NonNull Point newPoint, boolean force) {
+    public boolean setPositionOnGrid(GridIndexable gridIndexable, Point newPoint, boolean force) {
         if (!force && getTile(gridIndexable.getGridPos()).getSameClassOnTile(gridIndexable) != null) return false;
         getTile(newPoint).setSameClassOnTile(gridIndexable);
         gridIndexable.setGridPos(newPoint);
@@ -94,7 +103,9 @@ public class GameLevel {
     public void doMovementTick() {
         // If you are reading this I am so sorry on what you are about to witness
         // Also theoretically O(n) but honestly I have no idea if it actually is
+        System.out.println("DOING MOVEMENT TICK"); // TODO: DEBUG
 
+        changedPoints.clear();
         class MoveIntent {
             // TODO: DEBUG THIS FULLY AND MAKE IT BE COMPLIANT WITH GETTERS AND SETTERS
 
@@ -187,7 +198,10 @@ public class GameLevel {
                 Modifier resultPosMod = GameLevel.getInstance().getTile(resultPos).getModifier();
                 Mover resultPosMove = GameLevel.getInstance().getTile(resultPos).getMover();
 
-                if (resultPosMod.isBlocking() || resultPosMove.isBlocking()) {
+                if (
+                    (resultPosMod != null && resultPosMod.isBlocking()) ||
+                    (resultPosMove != null && resultPosMove.isBlocking())
+                ) {
                     // Technically currently resultPosMove.isBlocking() will never return true but ya never know what might happen
                     priorityIntent.status = IntentStatus.BLOCKED;
                     return;
@@ -265,20 +279,39 @@ public class GameLevel {
                     getTile(intent.getCurrentPos()).removeSameClassOnTile(intent.card);
 
                 setPositionOnGrid(intent.card, intent.getResultPos(), true);
-                // TODO: Start animation of the card here.
+                changedPoints.add(intent.getCurrentPos());
+                changedPoints.add(intent.getResultPos());
             }
             else if (intent.status == MoveIntent.IntentStatus.UNRESOLVED) {
                 throw new RuntimeException("UHHHHHHHHHHHHHHHH HOW??????");
             }
         }
+        System.out.println("DONE MOVEMENT TICK"); // TODO: DEBUG
+    }
+
+    public void doModifyTick() {
+        changedPoints.clear();
+        System.out.println("DOING MODIFY TICK"); // TODO: DEBUG
+        // Round two baby lets do this
+        for (Modifier modifier: modifierSet) {
+            changedPoints.add(modifier.getGridPos()); // ASSUMPTION: ALL MODIFIERS AFFECT ONLY THERE OWN SQUARE
+            modifier.modify();
+        }
+        System.out.println("DONE MODIFY TICK"); // TODO: DEBUG
+    }
+
+    public void doTick() {
+        if (currentTick) doMovementTick();
+        else doModifyTick();
+        currentTick = !currentTick;
     }
 
     // GETTERS & SETTERS //
 
     public static GameLevel getInstance() { return instance; }
     public static void setInstance(GameLevel instance) { GameLevel.instance = instance; }
-    public LevelTile[][] getGrid() { return grid; }
-    public void setGrid(LevelTile[][] grid) { this.grid = grid; }
+    public GameTile[][] getGrid() { return grid; }
+    public void setGrid(GameTile[][] grid) { this.grid = grid; }
 
     // GETTERS & SETTERS //
 

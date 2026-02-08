@@ -11,13 +11,14 @@ abstract public class Modifier implements GridIndexable {
     protected Point gridPos;
 
     public Modifier() {
+        this(new Point());
+    }
+
+    public Modifier(Point gridPos) {
         this.isDisabled = false;
+        this.gridPos = new Point();
+        setGridPos(gridPos);
     }
-
-    public Modifier(boolean isDisabled) {
-        this.isDisabled = isDisabled;
-    }
-
 
     // GETTERS & SETTERS //
     public boolean isDisabled() { return isDisabled; }
@@ -31,8 +32,13 @@ abstract public class Modifier implements GridIndexable {
         this.gridPos.y = Math.clamp(point.y, 0, GameLevel.MAX_HEIGHT);
     }
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
+
     // GETTERS & SETTERS //
 
     // isBlocking needs to be set on inherit.
-    // public abstract void modifyCard(Card card);
+     public abstract void modify();
 }

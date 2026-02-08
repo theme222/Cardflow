@@ -32,7 +32,8 @@ abstract public class Mover implements GridIndexable {
     protected Point gridPos;
 
     public Mover() {
-        gridPos = new Point();
+        this.gridPos = new Point();
+        setGridPos(gridPos);
     }
 
     @Override

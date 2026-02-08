@@ -2,7 +2,6 @@ package component.card;
 
 import component.GridIndexable;
 import logic.level.GameLevel;
-import org.assertj.core.annotations.NonNull;
 
 import java.awt.*;
 
@@ -39,14 +38,15 @@ public class Card implements GridIndexable {
     }
 
     public Card(Suit suit, int value, Material material) {
-        this(suit, value, material, new Point());
+        this(suit, value, material, new Point(0, 0));
     }
 
     public Card(Suit suit, int value, Material material, Point gridPos) {
+        this.gridPos = new Point();
         setSuit(suit);
         setValue(value);
         setMaterial(material);
-        setGridPos(gridPos == null ? new Point() : gridPos);
+        setGridPos(gridPos);
     }
 
     public Suit getSuit() {
@@ -75,7 +75,8 @@ public class Card implements GridIndexable {
     @Override
     public Point getGridPos() { return gridPos; }
     @Override
-    public void setGridPos(@NonNull Point point) {
+    public void setGridPos(Point point) {
+        point = point == null ? new Point() : point;
         this.gridPos.x = Math.clamp(point.x, 0, GameLevel.MAX_WIDTH);
         this.gridPos.y = Math.clamp(point.y, 0, GameLevel.MAX_HEIGHT);
     }

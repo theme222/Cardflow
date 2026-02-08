@@ -1,23 +1,15 @@
 package component.modifier.changer;
 
 import component.card.Card;
+import logic.level.GameLevel;
+
+import java.awt.*;
 
 public class SuitSetter extends Changer<Card.Suit> {
 
-    Card.Suit changeValue;
-
-    @Override
-    public void setChange(Card.Suit changeValue) {
-        this.changeValue = changeValue;
-    }
-
-    @Override
-    public Card.Suit getChange() {
-        return changeValue;
-    }
-
-    public void modifyCard(Card card) {
-        card.setSuit(changeValue);
+    public void modify() {
+        Card toModify = GameLevel.getInstance().getTile(getGridPos()).getCard();
+        if (toModify != null) toModify.setSuit(changeValue);
     }
 
     public SuitSetter(Card.Suit changeValue) {

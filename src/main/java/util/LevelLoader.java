@@ -2,7 +2,7 @@ package util;
 
 import component.card.Card;
 import logic.level.GameLevel;
-import logic.level.LevelTile;
+import component.GameTile;
 import component.modifier.Modifier;
 import component.modifier.changer.Adder;
 import component.modifier.changer.SuitSetter;
@@ -10,12 +10,14 @@ import component.modifier.pathway.Entrance;
 import component.modifier.pathway.Exit;
 
 import javax.json.*;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -116,7 +118,8 @@ public class LevelLoader {
                 throw new IllegalStateException("CSV row count does not match grid height");
 
 
-            LevelTile[][] grid = new LevelTile[levelHeight][levelWidth];
+            GameTile[][] grid = new GameTile[levelHeight][levelWidth];
+            HashSet<Modifier> modifiers = new HashSet<>();
 
             for (int y = 0; y < levelHeight; y++) {
                 String[] cells = lines.get(y).split(",");
@@ -129,7 +132,12 @@ public class LevelLoader {
 
                 for (int x = 0; x < levelWidth; x++) {
                     String token = cells[x].trim();
-                    grid[y][x] = new LevelTile(parseModifierInfo(token), x, y);
+                    Modifier mod = parseModifierInfo(token);
+                    grid[y][x] = new GameTile(mod, x, y);
+                    if (mod != null) {
+                        mod.setGridPos(new Point(x, y));
+                        modifiers.add(mod);
+                    }
                 }
             }
 
@@ -142,7 +150,8 @@ public class LevelLoader {
                     levelHeight,
                     inputCards,
                     outputCards,
-                    grid
+                    grid,
+                    modifiers
             );
 
         }

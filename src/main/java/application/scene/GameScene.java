@@ -1,31 +1,51 @@
 package application.scene;
 
+import application.SceneManager;
+import component.mover.Conveyor;
+import component.mover.Mover;
+import javafx.application.Platform;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import logic.level.GameLevel;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import ui.GameTilePane;
+
+import java.awt.*;
 
 
 public class GameScene {
+
+    static GameTilePane[][] gameGridTilePanes;
+
     public static Scene create(GameLevel level) {
 
         GameLevel.setInstance(level); // Most components will rely on this
 
-        Rectangle rect1 = new Rectangle(500, 500);
-        rect1.setFill(Color.PURPLE);
+        // TODO: MODIFY THIS TO BE A REGULAR PANE AND ADD A TILING MANAGER TO ALLOW GOOD LOOKING ANIMS
+        GridPane gameGrid = new GridPane();
+        gameGrid.getStyleClass().setAll("level-select-grid");
 
-        Rectangle rect2 = new Rectangle(500, 500);
-        rect2.setFill(Color.YELLOW);
+        gameGridTilePanes = new GameTilePane[level.height][level.width];
 
-        Region spacer = new Region();
+        for (int i = 0; i < level.height; i++) {
+            for (int j = 0; j < level.width; j++) {
+                GameTilePane tilePane = new GameTilePane(level.getTile(new Point(j, i)));
+                gameGridTilePanes[i][j] = tilePane;
+
+                gameGrid.add(tilePane, j, i);
+            }
+        }
+
+        VBox infoPane = new VBox();
+        infoPane.setPadding(new Insets(10));
 
         HBox mainLayout = new HBox();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-        mainLayout.getChildren().addAll(rect1, spacer, rect2);
+        mainLayout.getChildren().addAll(gameGrid, infoPane);
 
         mainLayout.setPadding(new Insets(30));
         mainLayout.setSpacing(30);
@@ -37,6 +57,16 @@ public class GameScene {
         root.getChildren().add(new Text("GameScene")); // TODO: DEBUG
 
         Scene scene = new Scene(root, 1920, 1080);
+
+        scene.getAccelerators().put(
+                new KeyCodeCombination(KeyCode.SPACE),
+                () -> {
+                    level.doTick();
+                    for (Point point : level.changedPoints) {
+                        gameGridTilePanes[point.y][point.x].updateUI();
+                    }
+                }
+        );
 
         return scene;
     }

@@ -27,6 +27,7 @@ public class LevelSelectorScene {
              Button levelSelectButton = new Button();
              levelSelectButton.setText(String.valueOf(veryEffectivelyFinal));
              levelSelectButton.setPrefSize(170, 170);
+             levelSelectButton.setFocusTraversable(false);
              levelSelectButton.getStyleClass().setAll("level-select-button");
              levelSelectButton.setOnAction(actionEvent -> {
                  try {

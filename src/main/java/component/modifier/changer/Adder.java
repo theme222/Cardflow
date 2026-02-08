@@ -1,15 +1,11 @@
 package component.modifier.changer;
 
 import component.card.Card;
+import logic.level.GameLevel;
+
+import java.awt.*;
 
 public class Adder extends Changer<Integer> { // Generic type argument can't be primitive. This works basically the same way tho.
-
-    private Integer changeValue;
-
-    @Override
-    public Integer getChange() {
-        return changeValue;
-    }
 
     @Override
     public void setChange(Integer changeValue) { // Can't be negative (Please use Subtractor instead)
@@ -21,7 +17,9 @@ public class Adder extends Changer<Integer> { // Generic type argument can't be 
         this.changeValue = changeValue;
     }
 
-    public void modifyCard(Card card) {
-        card.setValue(card.getValue() + this.getChange());
+    @Override
+    public void modify() {
+        Card toModify = GameLevel.getInstance().getTile(getGridPos()).getCard();
+        if (toModify != null) toModify.setValue(toModify.getValue() + changeValue);
     }
 }

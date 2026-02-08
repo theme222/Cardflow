@@ -2,8 +2,8 @@
     -fx-background-color: lightgreen;
     -fx-border-color: black;
     -fx-border-width: 2;
-    -fx-border-radius: 6;
-    -fx-background-radius: 6;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
 }
 
 .level-select-grid {
@@ -12,9 +12,28 @@
     -fx-alignment: center;
     -fx-border-color: gray;
     -fx-border-width: 2;
-    -fx-border-radius: 6;
-    -fx-background-radius: 6;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
     -fx-background-color: red;
+}
+
+.game-tile {
+    -fx-background-color: gray;
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.game-grid {
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+    -fx-alignment: center;
+    -fx-border-color: yellow;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-background-color: white;
 }
 
 
