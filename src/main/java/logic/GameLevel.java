@@ -1,10 +1,11 @@
-package logic.level;
+package logic;
 
-import component.GridIndexable;
+import util.GridIndexable;
 import component.GameTile;
 import component.card.Card;
 import component.modifier.Modifier;
 import component.mover.Mover;
+import util.GridPos;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -19,12 +20,16 @@ public class GameLevel {
     public static final int MAX_WIDTH = 9;
     public static final int MAX_HEIGHT = 9;
 
-    public final int width;
-    public final int height;
-    public final String levelName;
+    // Constant throughout level //
+    public final int WIDTH;
+    public final int HEIGHT;
+    public final String LEVELNAME;
 
-    public final List<Card> inputCards;
-    public final List<Card> outputCards;
+    public final List<Card> INPUT_CARDS;
+    public final List<Card> OUTPUT_CARDS;
+
+    public final HashMap<String, Integer> AVAILABLE_MOVERS;
+    // Constant throughout level //
 
     // A Card must exist in the set and in the level tile at the same time.
     // We are doing redundancy to improve speed (RAM is cheap anyways)
@@ -32,8 +37,8 @@ public class GameLevel {
     public final HashSet<Card> cardSet;
     public final HashSet<Modifier> modifierSet;
     public final HashSet<Mover> moverSet;
-    public final HashSet<Point> changedPoints; // Positions on grid that needs a UI update
-    private boolean currentTick; // True = movement False = modify TODO: CHANGE THIS LOL
+    public final HashSet<GridPos> changedPoints; // Positions on grid that needs a UI update
+    private boolean currentTick; // True = movement False = modify TODO: CHANGE THIS LOL (Also maybe move this to GameState)
 
     public GameLevel(
             String levelName,
@@ -41,14 +46,16 @@ public class GameLevel {
             int height,
             List<Card> inputCards,
             List<Card> outputCards,
+            HashMap<String, Integer> availableMovers,
             GameTile[][] grid,
             HashSet<Modifier> modifierSet
     ) {
-        this.levelName = levelName;
-        this.width = width;
-        this.height = height;
-        this.inputCards = inputCards;
-        this.outputCards = outputCards;
+        this.LEVELNAME = levelName;
+        this.WIDTH = width;
+        this.HEIGHT = height;
+        this.INPUT_CARDS = inputCards;
+        this.OUTPUT_CARDS = outputCards;
+        this.AVAILABLE_MOVERS = availableMovers;
 
         this.grid = grid;
 
@@ -59,31 +66,31 @@ public class GameLevel {
         this.currentTick = true;
     }
 
-    public GameTile getTile(Point p) { // I know I'm gonna accidentally switch y and x one of these days
-        if (p.x < 0 || p.x >= MAX_WIDTH || p.y < 0 || p.y >= MAX_HEIGHT)
+    public GameTile getTile(GridPos p) { // I know I'm gonna accidentally switch y and x one of these days
+        if (p.inRange(0, WIDTH-1, 0, HEIGHT-1))
             throw new IllegalArgumentException("Invalid position");
-        return grid[p.y][p.x];
+        return grid[p.getY()][p.getX()];
     }
 
 
     // Returns success / failure
-    public boolean setPositionOnGrid(GridIndexable gridIndexable, Point newPoint) {
+    public boolean setPositionOnGrid(GridIndexable gridIndexable, GridPos newPoint) {
         // DOES NOT REMOVE OLD POSITION AND DOES NOT ADD TO SET
         return setPositionOnGrid(gridIndexable, newPoint, false);
     }
 
-    public boolean setPositionOnGrid(GridIndexable gridIndexable, Point newPoint, boolean force) {
+    public boolean setPositionOnGrid(GridIndexable gridIndexable, GridPos newPoint, boolean force) {
         if (!force && getTile(gridIndexable.getGridPos()).getSameClassOnTile(gridIndexable) != null) return false;
         getTile(newPoint).setSameClassOnTile(gridIndexable);
         gridIndexable.setGridPos(newPoint);
         return true;
     }
 
-    public boolean addCard(Card card, Point newPoint) {
+    public boolean addCard(Card card, GridPos newPoint) {
         // Do nothing if position is occupied or cardSet contains the card already
         if (cardSet.contains(card)) return false;
-        if (getTile(card.getGridPos()).getCard() != null) return false;
         if (newPoint == null) return false;
+        if (getTile(newPoint).getCard() != null) return false;
 
         if (!setPositionOnGrid(card, newPoint)) return false;
         cardSet.add(card);
@@ -109,8 +116,8 @@ public class GameLevel {
         class MoveIntent {
             // TODO: DEBUG THIS FULLY AND MAKE IT BE COMPLIANT WITH GETTERS AND SETTERS
 
-            static final HashMap<Point, MoveIntent> byCurrent = new HashMap<>();
-            static final HashMap<Point, ArrayList<MoveIntent>> byResult = new HashMap<>();
+            static final HashMap<GridPos, MoveIntent> byCurrent = new HashMap<>();
+            static final HashMap<GridPos, ArrayList<MoveIntent>> byResult = new HashMap<>();
 
             enum IntentStatus {
                 UNRESOLVED,
@@ -128,25 +135,34 @@ public class GameLevel {
                 status = direction == Mover.Direction.STAY ? IntentStatus.BLOCKED :  IntentStatus.UNRESOLVED;
             }
 
-            public Point getResultPos() { // Returns new point
-                Point t = Mover.getTranslationFromDirection(direction);
-                Point resultPos = new Point(card.getGridPos());
-                resultPos.translate(t.x, t.y);
+            public GridPos getResultPos() { // Returns new point
+                GridPos t = Mover.getTranslationFromDirection(direction);
+                GridPos resultPos = new GridPos(card.getGridPos());
+                resultPos.add(t);
                 return resultPos;
             }
 
-            public Point getCurrentPos() { // Returns new point
-                return new Point(card.getGridPos());
+            @Override
+            public String toString() {
+                return "MoveIntent{" +
+                        "card=" + card +
+                        ", direction=" + direction +
+                        ", status=" + status +
+                        '}';
             }
 
-            private static ArrayList<Point> getSurroundingPoints(Point resultPos) {
-                // If somebody has a better way of doing this please fix thx
-                ArrayList<Point> surroundPos = new ArrayList<>();
+            public GridPos getCurrentPos() { // Returns new point
+                return new GridPos(card.getGridPos());
+            }
 
-                Point topPoint = new Point(resultPos.x, resultPos.y - 1);
-                Point leftPoint = new Point(resultPos.x - 1, resultPos.y);
-                Point rightPoint = new Point(resultPos.x + 1, resultPos.y);
-                Point bottomPoint = new Point(resultPos.x, resultPos.y + 1);
+            private static ArrayList<GridPos> getSurroundingPoints(GridPos resultPos) {
+                // If somebody has a better way of doing this please fix thx
+                ArrayList<GridPos> surroundPos = new ArrayList<>();
+
+                GridPos topPoint = resultPos.add(0, -1);
+                GridPos leftPoint = resultPos.add(-1, 0);
+                GridPos rightPoint = resultPos.add(1, 0);
+                GridPos bottomPoint = resultPos.add(0, 1);
 
                 surroundPos.add(topPoint);
                 surroundPos.add(leftPoint);
@@ -155,20 +171,21 @@ public class GameLevel {
                 return surroundPos;
             }
 
-            public static void resolveIntent(List<MoveIntent> intentList, HashSet<Point> seen) { // linear recursive function (we hate recursion)
+            public static void resolveIntent(List<MoveIntent> intentList, HashSet<GridPos> seen) { // linear recursive function (we hate recursion)
+                System.out.println("RESOLVING: " + intentList + " WITH SEEN: " + seen);
                 // intentList is a variable that should contain intents that have the same result position.
                 if (intentList.isEmpty() || intentList.size() > 4) throw new IndexOutOfBoundsException("No move intents found");
 
                 // intentList should have [1,4] members (top left right bottom)
 
                 // Check where the intent is trying to go
-                Point resultPos = intentList.getFirst().getResultPos();
+                GridPos resultPos = intentList.getFirst().getResultPos();
 
                 // Get the priority intent (Top -> Left -> Right -> Bottom)
                 MoveIntent priorityIntent = null;
-                ArrayList<Point> surroundPos = getSurroundingPoints(resultPos);
+                ArrayList<GridPos> surroundPos = getSurroundingPoints(resultPos);
 
-                for (Point p: surroundPos) {
+                for (GridPos p: surroundPos) {
                     if (priorityIntent != null) break;
                     for (MoveIntent intent: intentList) {
                         if (intent.getCurrentPos().equals(p)) {
@@ -189,7 +206,7 @@ public class GameLevel {
                 // From here on we only care about the priority intent
 
                 // Check within range
-                if (resultPos.x < 0 || resultPos.x >= MAX_WIDTH || resultPos.y < 0 || resultPos.y >= MAX_HEIGHT) {
+                if (resultPos.inRange(0, GameLevel.getInstance().WIDTH, 0, GameLevel.getInstance().HEIGHT)) {
                     priorityIntent.status = IntentStatus.BLOCKED;
                     return;
                 }
@@ -243,7 +260,10 @@ public class GameLevel {
                         return;
                     }
                     else throw new RuntimeException("What the actual hell happened here?");
-
+                }
+                else {
+                    priorityIntent.status = IntentStatus.MOVED;
+                    return;
                 }
             }
         }
@@ -268,6 +288,9 @@ public class GameLevel {
             MoveIntent.byResult.get(intent.getResultPos()).add(intent);
         }
 
+        System.out.println(MoveIntent.byCurrent);
+        System.out.println(MoveIntent.byResult);
+
         // Loop through intents and resolve them
         for (MoveIntent intent: MoveIntent.byCurrent.values())
             if (intent.status == MoveIntent.IntentStatus.UNRESOLVED)
@@ -278,9 +301,9 @@ public class GameLevel {
                 if (getTile(intent.getCurrentPos()).getCard() == intent.card) // Remove old position if not yet overriden
                     getTile(intent.getCurrentPos()).removeSameClassOnTile(intent.card);
 
-                setPositionOnGrid(intent.card, intent.getResultPos(), true);
                 changedPoints.add(intent.getCurrentPos());
                 changedPoints.add(intent.getResultPos());
+                setPositionOnGrid(intent.card, intent.getResultPos(), true);
             }
             else if (intent.status == MoveIntent.IntentStatus.UNRESOLVED) {
                 throw new RuntimeException("UHHHHHHHHHHHHHHHH HOW??????");
@@ -317,14 +340,14 @@ public class GameLevel {
 
     @Override
     public String toString() {
-        return  "Level: " + levelName
+        return  "Level: " + LEVELNAME
                 + "\nwidth: "
-                + width
+                + WIDTH
                 + "\nheight: "
-                + height
+                + HEIGHT
                 + "\ninputCards: "
-                + inputCards
+                + INPUT_CARDS
                 + "\noutputCards: "
-                + outputCards;
+                + OUTPUT_CARDS;
     }
 }

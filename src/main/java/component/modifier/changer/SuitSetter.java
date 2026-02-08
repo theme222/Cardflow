@@ -1,9 +1,7 @@
 package component.modifier.changer;
 
 import component.card.Card;
-import logic.level.GameLevel;
-
-import java.awt.*;
+import logic.GameLevel;
 
 public class SuitSetter extends Changer<Card.Suit> {
 

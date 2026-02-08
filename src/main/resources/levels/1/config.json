@@ -1,6 +1,6 @@
 {
   "name": "Add 1 up",
-  "width": 9,
+  "width": 3,
   "height": 9,
 
   "inputCards": [
@@ -11,6 +11,10 @@
   "outputCards": [
     { "suit": "HEART", "value": 8},
     { "suit": "SPADE", "value": 11}
+  ],
+
+  "availableMovers": [
+    { "name": "CONVEYOR", "count":  0}
   ]
 }
 

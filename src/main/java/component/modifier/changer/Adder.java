@@ -1,9 +1,7 @@
 package component.modifier.changer;
 
 import component.card.Card;
-import logic.level.GameLevel;
-
-import java.awt.*;
+import logic.GameLevel;
 
 public class Adder extends Changer<Integer> { // Generic type argument can't be primitive. This works basically the same way tho.
 

@@ -1,9 +1,8 @@
 package component.mover;
 
-import component.GridIndexable;
-import logic.level.GameLevel;
-
-import java.awt.*;
+import util.GridIndexable;
+import logic.GameLevel;
+import util.GridPos;
 
 abstract public class Mover implements GridIndexable {
 
@@ -15,13 +14,13 @@ abstract public class Mover implements GridIndexable {
         STAY
     }
 
-    public static Point getTranslationFromDirection(Direction direction) {
+    public static GridPos getTranslationFromDirection(Direction direction) {
         return switch (direction) {
-            case UP-> new Point(0, -1);
-            case DOWN-> new Point(0, 1);
-            case LEFT-> new Point(-1, 0);
-            case RIGHT-> new Point(1, 0);
-            default -> new Point(0,0);
+            case UP-> new GridPos(0, -1);
+            case DOWN-> new GridPos(0, 1);
+            case LEFT-> new GridPos(-1, 0);
+            case RIGHT-> new GridPos(1, 0);
+            default -> new GridPos(0,0);
         };
     }
 
@@ -29,19 +28,31 @@ abstract public class Mover implements GridIndexable {
     public abstract Direction getDirection();
 //    public abstract void setDirection(Direction direction);
 
-    protected Point gridPos;
+    protected GridPos gridPos;
+    protected Direction inputRotation; // Ensure never STAY
 
-    public Mover() {
-        this.gridPos = new Point();
+    public Mover(Direction inputRotation) {
+        this.gridPos = new GridPos();
         setGridPos(gridPos);
+        setInputRotation(inputRotation);
+    }
+
+
+    public Direction getInputRotation() {
+        return inputRotation;
+    }
+
+    public void setInputRotation(Direction inputRotation) {
+        if (inputRotation == Direction.STAY) inputRotation = Direction.UP;
+        this.inputRotation = inputRotation;
     }
 
     @Override
-    public Point getGridPos() { return gridPos; }
+    public GridPos getGridPos() { return gridPos; }
     @Override
-    public void setGridPos(Point point) {
-        this.gridPos.x = Math.clamp(point.x, 0, GameLevel.MAX_WIDTH);
-        this.gridPos.y = Math.clamp(point.y, 0, GameLevel.MAX_HEIGHT);
+    public void setGridPos(GridPos point) {
+        this.gridPos.setX(Math.clamp(point.getX(), 0, GameLevel.MAX_WIDTH));
+        this.gridPos.setY(Math.clamp(point.getY(), 0, GameLevel.MAX_HEIGHT));
     }
 
     public boolean isBlocking() {return false;}

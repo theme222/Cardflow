@@ -2,7 +2,7 @@ package component.modifier.pathway;
 
 import component.card.Card;
 import component.modifier.Modifier;
-import logic.level.GameLevel;
+import logic.GameLevel;
 
 public class Exit extends Modifier {
     int currentIndex;

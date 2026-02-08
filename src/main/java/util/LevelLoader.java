@@ -1,7 +1,7 @@
 package util;
 
 import component.card.Card;
-import logic.level.GameLevel;
+import logic.GameLevel;
 import component.GameTile;
 import component.modifier.Modifier;
 import component.modifier.changer.Adder;
@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -65,6 +66,22 @@ public class LevelLoader {
         };
     }
 
+    private static void parseMoverInfo(JsonObject moverJson, HashMap<String, Integer> outMap) {
+        String moverClassName = moverJson.getString("name").toUpperCase();
+        int moverCount = moverJson.getInt("count");
+
+        String[] validClassNames = {"CONVEYOR"};
+        if (moverCount < 0) throw new IllegalArgumentException("Invalid mover count " + moverCount); // 0 for infinity
+
+        boolean isValid = false;
+        for (String validClassName : validClassNames)
+            isValid = isValid || validClassName.equals(moverClassName);
+
+        if (!isValid) throw new IllegalArgumentException("Invalid mover name " + moverClassName);
+
+        outMap.put(moverClassName, moverCount);
+    }
+
     public static GameLevel loadLevel(int levelNumber) throws IOException {
         // feel free to change this because honestly it's a headache to look at
 
@@ -82,7 +99,7 @@ public class LevelLoader {
             InputStream layoutStream =
                     LevelLoader.class
                             .getClassLoader()
-                            .getResourceAsStream(basePath + "/level.csv");
+                            .getResourceAsStream(basePath + "/level.tsv");
 
             BufferedReader csvReader =
                     new BufferedReader(new InputStreamReader(layoutStream, StandardCharsets.UTF_8));
@@ -108,6 +125,11 @@ public class LevelLoader {
             for (JsonValue value: jsonObject.getJsonArray("outputCards"))
                 outputCards.add(parseCardInfo(value.asJsonObject(), false));
 
+            HashMap<String, Integer> availableMovers = new HashMap<>(); // Using the classname to store this
+
+            for (JsonValue value: jsonObject.getJsonArray("availableMovers"))
+                parseMoverInfo(value.asJsonObject(), availableMovers);
+
             // ---------- JSON parsing ---------- //
 
             // ---------- CSV  parsing ---------- //
@@ -122,7 +144,7 @@ public class LevelLoader {
             HashSet<Modifier> modifiers = new HashSet<>();
 
             for (int y = 0; y < levelHeight; y++) {
-                String[] cells = lines.get(y).split(",");
+                String[] cells = lines.get(y).split("\t");
 
                 if (cells.length != levelWidth) {
                     throw new IllegalStateException(
@@ -135,7 +157,7 @@ public class LevelLoader {
                     Modifier mod = parseModifierInfo(token);
                     grid[y][x] = new GameTile(mod, x, y);
                     if (mod != null) {
-                        mod.setGridPos(new Point(x, y));
+                        mod.setGridPos(new GridPos(x, y));
                         modifiers.add(mod);
                     }
                 }
@@ -150,6 +172,7 @@ public class LevelLoader {
                     levelHeight,
                     inputCards,
                     outputCards,
+                    availableMovers,
                     grid,
                     modifiers
             );

@@ -3,6 +3,7 @@ package component;
 import component.card.Card;
 import component.modifier.Modifier;
 import component.mover.Mover;
+import util.GridIndexable;
 
 public class GameTile {
 

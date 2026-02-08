@@ -1,6 +1,6 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-import logic.level.GameLevel;
+import logic.GameLevel;
 import util.LevelLoader;
 import org.junit.jupiter.api.Test;
 

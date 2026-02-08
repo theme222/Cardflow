@@ -1,12 +1,8 @@
 package application.scene;
 
-import application.SceneManager;
-import component.mover.Conveyor;
-import component.mover.Mover;
-import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
-import logic.level.GameLevel;
+import logic.GameLevel;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -14,9 +10,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import ui.GameTilePane;
-
-import java.awt.*;
-
+import util.GridPos;
 
 public class GameScene {
 
@@ -26,15 +20,15 @@ public class GameScene {
 
         GameLevel.setInstance(level); // Most components will rely on this
 
-        // TODO: MODIFY THIS TO BE A REGULAR PANE AND ADD A TILING MANAGER TO ALLOW GOOD LOOKING ANIMS
+        // TODO: MODIFY THIS TO BE A REGULAR PANE AND ADD A TILING MANAGER TO ALLOW GOOD LOOKING ANIMS AND STUFF :D
         GridPane gameGrid = new GridPane();
         gameGrid.getStyleClass().setAll("level-select-grid");
 
-        gameGridTilePanes = new GameTilePane[level.height][level.width];
+        gameGridTilePanes = new GameTilePane[level.HEIGHT][level.WIDTH];
 
-        for (int i = 0; i < level.height; i++) {
-            for (int j = 0; j < level.width; j++) {
-                GameTilePane tilePane = new GameTilePane(level.getTile(new Point(j, i)));
+        for (int i = 0; i < level.HEIGHT; i++) {
+            for (int j = 0; j < level.WIDTH; j++) {
+                GameTilePane tilePane = new GameTilePane(level.getTile(new GridPos(j, i)));
                 gameGridTilePanes[i][j] = tilePane;
 
                 gameGrid.add(tilePane, j, i);
@@ -62,8 +56,8 @@ public class GameScene {
                 new KeyCodeCombination(KeyCode.SPACE),
                 () -> {
                     level.doTick();
-                    for (Point point : level.changedPoints) {
-                        gameGridTilePanes[point.y][point.x].updateUI();
+                    for (GridPos point : level.changedPoints) {
+                        gameGridTilePanes[point.getY()][point.getX()].updateUI();
                     }
                 }
         );

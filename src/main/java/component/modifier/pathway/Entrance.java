@@ -2,7 +2,7 @@ package component.modifier.pathway;
 
 import component.card.Card;
 import component.modifier.Modifier;
-import logic.level.GameLevel;
+import logic.GameLevel;
 
 public class Entrance extends Modifier { // Entrance and exit lives on the same layer as a modifier
 
@@ -15,7 +15,8 @@ public class Entrance extends Modifier { // Entrance and exit lives on the same 
 
     @Override
     public void modify() {
-        Card toAdd = GameLevel.getInstance().inputCards.get(currentIndex);
+        if (currentIndex >= GameLevel.getInstance().INPUT_CARDS.size()) return;
+        Card toAdd = GameLevel.getInstance().INPUT_CARDS.get(currentIndex);
         if (GameLevel.getInstance().addCard(toAdd, getGridPos())) currentIndex++;
     }
 

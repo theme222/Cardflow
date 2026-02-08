@@ -1,22 +1,22 @@
 package component.modifier;
 
-import component.GridIndexable;
-import component.card.Card;
-import logic.level.GameLevel;
+import util.GridIndexable;
+import logic.GameLevel;
+import util.GridPos;
 
 import java.awt.*;
 
 abstract public class Modifier implements GridIndexable {
     private boolean isDisabled;
-    protected Point gridPos;
+    protected GridPos gridPos;
 
     public Modifier() {
-        this(new Point());
+        this(new GridPos());
     }
 
-    public Modifier(Point gridPos) {
+    public Modifier(GridPos gridPos) {
         this.isDisabled = false;
-        this.gridPos = new Point();
+        this.gridPos = new GridPos();
         setGridPos(gridPos);
     }
 
@@ -25,11 +25,11 @@ abstract public class Modifier implements GridIndexable {
     public void setDisabled(boolean disabled) { isDisabled = disabled; }
 
     @Override
-    public Point getGridPos() { return gridPos; }
+    public GridPos getGridPos() { return gridPos; }
     @Override
-    public void setGridPos(Point point) {
-        this.gridPos.x = Math.clamp(point.x, 0, GameLevel.MAX_WIDTH);
-        this.gridPos.y = Math.clamp(point.y, 0, GameLevel.MAX_HEIGHT);
+    public void setGridPos(GridPos point) {
+        this.gridPos.setX(Math.clamp(point.getX(), 0, GameLevel.MAX_WIDTH));
+        this.gridPos.setY(Math.clamp(point.getY(), 0, GameLevel.MAX_HEIGHT));
     }
 
     @Override

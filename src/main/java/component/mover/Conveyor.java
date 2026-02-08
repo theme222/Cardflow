@@ -4,24 +4,16 @@ import java.awt.*;
 
 public class Conveyor extends Mover {
 
-    private Direction direction;
-
-    public Conveyor(Direction direction) {
-        setDirection(direction);
+    public Conveyor(Direction inputRotation) {
+        super(inputRotation); // For normal conveyor this is trivial
     }
 
     @Override
     public String toString() {
-        return "Conveyor{"+direction+'}';
+        return "Conveyor{"+inputRotation+'}';
     }
 
     @Override
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
+    public Direction getDirection() { return inputRotation; }
 
 }

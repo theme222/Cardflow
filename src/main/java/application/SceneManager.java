@@ -4,7 +4,7 @@ import application.scene.GameScene;
 import application.scene.LevelSelectorScene;
 import application.scene.MainMenuScene;
 import javafx.application.Platform;
-import logic.level.GameLevel;
+import logic.GameLevel;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 

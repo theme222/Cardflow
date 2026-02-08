@@ -1,7 +1,8 @@
 package component.card;
 
-import component.GridIndexable;
-import logic.level.GameLevel;
+import util.GridIndexable;
+import logic.GameLevel;
+import util.GridPos;
 
 import java.awt.*;
 
@@ -27,7 +28,7 @@ public class Card implements GridIndexable {
     protected int value; // Valid value range from [0,12] (Ace -> 0, 2 -> 1, ... K -> 12)
     protected Material material;
 
-    protected Point gridPos;
+    protected GridPos gridPos;
 
     // WARNING DO NOT CALL THIS FUNCTION TO CREATE A CARD
     // PLEASE LOOK INTO GameLevel.addCard() instead
@@ -38,11 +39,11 @@ public class Card implements GridIndexable {
     }
 
     public Card(Suit suit, int value, Material material) {
-        this(suit, value, material, new Point(0, 0));
+        this(suit, value, material, new GridPos(0, 0));
     }
 
-    public Card(Suit suit, int value, Material material, Point gridPos) {
-        this.gridPos = new Point();
+    public Card(Suit suit, int value, Material material, GridPos gridPos) {
+        this.gridPos = new GridPos();
         setSuit(suit);
         setValue(value);
         setMaterial(material);
@@ -73,12 +74,11 @@ public class Card implements GridIndexable {
     public void setMaterial(Material material) { this.material = material; }
 
     @Override
-    public Point getGridPos() { return gridPos; }
+    public GridPos getGridPos() { return gridPos; }
     @Override
-    public void setGridPos(Point point) {
-        point = point == null ? new Point() : point;
-        this.gridPos.x = Math.clamp(point.x, 0, GameLevel.MAX_WIDTH);
-        this.gridPos.y = Math.clamp(point.y, 0, GameLevel.MAX_HEIGHT);
+    public void setGridPos(GridPos point) {
+        this.gridPos.setX(Math.clamp(point.getX(), 0, GameLevel.MAX_WIDTH));
+        this.gridPos.setY(Math.clamp(point.getY(), 0, GameLevel.MAX_HEIGHT));
     }
 
     // GETTERS & SETTERS //
