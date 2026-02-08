@@ -67,7 +67,7 @@ public class GameLevel {
     }
 
     public GameTile getTile(GridPos p) { // I know I'm gonna accidentally switch y and x one of these days
-        if (p.inRange(0, WIDTH-1, 0, HEIGHT-1))
+        if (!p.inRange(0, WIDTH-1, 0, HEIGHT-1))
             throw new IllegalArgumentException("Invalid position");
         return grid[p.getY()][p.getX()];
     }
@@ -138,8 +138,7 @@ public class GameLevel {
             public GridPos getResultPos() { // Returns new point
                 GridPos t = Mover.getTranslationFromDirection(direction);
                 GridPos resultPos = new GridPos(card.getGridPos());
-                resultPos.add(t);
-                return resultPos;
+                return resultPos.add(t);
             }
 
             @Override
@@ -184,6 +183,7 @@ public class GameLevel {
                 // Get the priority intent (Top -> Left -> Right -> Bottom)
                 MoveIntent priorityIntent = null;
                 ArrayList<GridPos> surroundPos = getSurroundingPoints(resultPos);
+                System.out.println(surroundPos);
 
                 for (GridPos p: surroundPos) {
                     if (priorityIntent != null) break;
@@ -206,7 +206,7 @@ public class GameLevel {
                 // From here on we only care about the priority intent
 
                 // Check within range
-                if (resultPos.inRange(0, GameLevel.getInstance().WIDTH, 0, GameLevel.getInstance().HEIGHT)) {
+                if (!resultPos.inRange(0, GameLevel.getInstance().WIDTH, 0, GameLevel.getInstance().HEIGHT)) {
                     priorityIntent.status = IntentStatus.BLOCKED;
                     return;
                 }
