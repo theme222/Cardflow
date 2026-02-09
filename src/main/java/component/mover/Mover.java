@@ -18,26 +18,29 @@ abstract public class Mover implements GridIndexable {
     }
 
 
-    public abstract Direction getDirection();
-//    public abstract void setDirection(Direction direction);
+    public abstract Direction getDirection(); // This is what the game will read from when deciding where to send the card.
 
     protected GridPos gridPos;
-    protected Direction inputRotation; // Ensure never STAY
+    protected Direction rotation; // Ensure never STAY
 
-    public Mover(Direction inputRotation) {
+    public Mover(Direction rot) {
         this.gridPos = new GridPos();
         setGridPos(gridPos);
-        setInputRotation(inputRotation);
+        setRotation(rot);
     }
 
 
-    public Direction getInputRotation() {
-        return inputRotation;
+    public Direction getRotation() {
+        return rotation;
     }
 
-    public void setInputRotation(Direction inputRotation) {
-        if (inputRotation == Direction.STAY) inputRotation = Direction.UP;
-        this.inputRotation = inputRotation;
+    public void setRotation(Direction rot) {
+        if (rot == Direction.STAY) rot = Direction.UP;
+        this.rotation = rot;
+    }
+
+    public void rotate() {
+        setRotation(this.rotation.next());
     }
 
     @Override

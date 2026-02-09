@@ -6,7 +6,7 @@ import util.Direction;
 
 public class ConveyorConstructor extends TileConstructor<Conveyor> {
 
-    private Direction direction = Direction.UP;
+//    private Direction direction = Direction.UP;
 
     @Override
     public void preview() {
@@ -15,19 +15,6 @@ public class ConveyorConstructor extends TileConstructor<Conveyor> {
 
     @Override
     public Conveyor construct() {
-        return new Conveyor(direction);
-    }
-
-    @Override
-    public void cycleVariant() {
-        direction = direction.next();
-    }
-
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
+        return new Conveyor(Direction.UP);
     }
 }

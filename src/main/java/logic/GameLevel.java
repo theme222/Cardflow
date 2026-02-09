@@ -98,6 +98,27 @@ public class GameLevel {
         return true;
     }
 
+    public boolean addMover(Mover mover, GridPos newPoint) {
+        // Do nothing if position is occupied or cardSet contains the card already
+        if (moverSet.contains(mover)) return false;
+        if (newPoint == null) return false;
+        if (getTile(newPoint).getMover() != null) return false;
+        if (!setPositionOnGrid(mover, newPoint)) return false;
+
+        moverSet.add(mover);
+        return true;
+    }
+
+    public boolean removeMover(Mover mover) {
+        // Do nothing if it can't find the old mover
+        if (!moverSet.contains(mover)) return false;
+        if (getTile(mover.getGridPos()).getCard() == null) return false;
+
+        getTile(mover.getGridPos()).removeSameClassOnTile(mover);
+        moverSet.remove(mover);
+        return true;
+    }
+
     public boolean addCard(Card card, GridPos newPoint) {
         // Do nothing if position is occupied or cardSet contains the card already
         if (cardSet.contains(card)) return false;

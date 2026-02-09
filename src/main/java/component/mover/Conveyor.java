@@ -4,16 +4,16 @@ import util.*;
 
 public class Conveyor extends Mover {
 
-    public Conveyor(Direction inputRotation) {
-        super(inputRotation); // For normal conveyor this is trivial
+    public Conveyor(Direction rotation) {
+        super(rotation); // For normal conveyor this is trivial
     }
 
     @Override
     public String toString() {
-        return "Conveyor{"+inputRotation+'}';
+        return "Conveyor{"+rotation+'}';
     }
 
     @Override
-    public Direction getDirection() { return inputRotation; }
+    public Direction getDirection() { return rotation; }
 
 }

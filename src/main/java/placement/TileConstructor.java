@@ -9,5 +9,5 @@ public abstract class TileConstructor<T> {
     public abstract T construct();
 
     /** Cycle orientation / variant */
-    public abstract void cycleVariant();
+//    public abstract void cycleVariant(); // I feel like rotation should be univers
 }
