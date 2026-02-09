@@ -18,23 +18,30 @@
 }
 
 .game-tile {
-    -fx-background-color: gray;
-    -fx-border-color: black;
-    -fx-border-width: 2;
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+
+    -fx-background-color: rgb(216, 216, 216);
+    -fx-border-color: rgb(139, 139, 139);
+    -fx-border-width: 1;
+
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
 
+
 .game-grid {
-    -fx-hgap: 10;
-    -fx-vgap: 10;
+    -fx-hgap: 0;
+    -fx-vgap: 0;
     -fx-alignment: center;
-    -fx-border-color: yellow;
-    -fx-border-width: 2;
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
-    -fx-background-color: white;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
 }
+
 
 
 

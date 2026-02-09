@@ -1,6 +1,7 @@
 package logic;
 
 import component.mover.Mover;
+import util.*;
 
 import java.util.HashMap;
 
@@ -11,13 +12,13 @@ public class PlayerInventory {
     private static PlayerInventory instance;
     private HashMap<String, Integer> currentAvailableMovers;
 
-    private Mover.Direction currentRotation;
+    private Direction currentRotation;
     private String currentSelection;
 
     public HashMap<String, Integer> getCurrentAvailableMovers() { return currentAvailableMovers; }
     public void setCurrentAvailableMovers(HashMap<String, Integer> currentAvailableMovers) { this.currentAvailableMovers = currentAvailableMovers; }
-    public Mover.Direction getCurrentRotation() { return currentRotation; }
-    public void setCurrentRotation(Mover.Direction currentRotation) { this.currentRotation = currentRotation; }
+    public Direction getCurrentRotation() { return currentRotation; }
+    public void setCurrentRotation(Direction currentRotation) { this.currentRotation = currentRotation; }
     public String getCurrentSelection() { return currentSelection; }
     public void setCurrentSelection(String currentSelection) { this.currentSelection = currentSelection; }
     public static PlayerInventory getInstance() { return instance; }

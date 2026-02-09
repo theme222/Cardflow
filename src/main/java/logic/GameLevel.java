@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import util.*;
 
 
 public class GameLevel {
@@ -72,6 +73,17 @@ public class GameLevel {
         return grid[p.getY()][p.getX()];
     }
 
+    public GameTile[] getAdjacentTiles(GridPos p) { // hehe more helpers for meeeeeeeee
+        GameTile[] adjacent = new GameTile[4];
+        int x = p.getX();
+        int y = p.getY();
+        if (x > 0) adjacent[0] = grid[y][x-1]; else adjacent[0] = null;
+        if (x < WIDTH-1) adjacent[1] = grid[y][x+1]; else adjacent[1] = null;
+        if (y > 0) adjacent[2] = grid[y-1][x]; else adjacent[2] = null;
+        if (y < HEIGHT-1) adjacent[3] = grid[y+1][x]; else adjacent[3] = null;
+        return adjacent;
+    }
+
 
     // Returns success / failure
     public boolean setPositionOnGrid(GridIndexable gridIndexable, GridPos newPoint) {
@@ -126,13 +138,13 @@ public class GameLevel {
             }
 
             Card card;
-            Mover.Direction direction;
+            Direction direction;
             IntentStatus status;
 
-            public MoveIntent(Card c, Mover.Direction d) {
+            public MoveIntent(Card c, Direction d) {
                 card = c;
                 direction = d;
-                status = direction == Mover.Direction.STAY ? IntentStatus.BLOCKED :  IntentStatus.UNRESOLVED;
+                status = direction == Direction.STAY ? IntentStatus.BLOCKED :  IntentStatus.UNRESOLVED;
             }
 
             public GridPos getResultPos() { // Returns new point
@@ -275,7 +287,7 @@ public class GameLevel {
         for (Card card: cardSet) {
             // Get direction from the mover under the card
             Mover mover = getTile(card.getGridPos()).getMover();
-            Mover.Direction direction = mover == null ? Mover.Direction.STAY : mover.getDirection();
+            Direction direction = mover == null ? Direction.STAY : mover.getDirection();
 
             // Calculate and fill up the intent hashmap for later access
             MoveIntent intent = new MoveIntent(card, direction);

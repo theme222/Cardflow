@@ -1,6 +1,6 @@
 package component.mover;
 
-import java.awt.*;
+import util.*;
 
 public class Conveyor extends Mover {
 

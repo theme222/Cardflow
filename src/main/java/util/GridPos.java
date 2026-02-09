@@ -44,6 +44,10 @@ public class GridPos implements Cloneable {
         return new GridPos(this.x + x, this.y + y);
     }
 
+    public GridPos addDirection(Direction direction) {
+        return new GridPos(this.x + direction.dx(), this.y + direction.dy());
+    }
+
     public boolean inRange(int xMin, int xMax, int yMin, int yMax) {
         return x >= xMin && x <= xMax && y >= yMin && y <= yMax;
     }

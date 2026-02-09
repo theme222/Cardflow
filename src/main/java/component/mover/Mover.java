@@ -2,17 +2,11 @@ package component.mover;
 
 import util.GridIndexable;
 import logic.GameLevel;
-import util.GridPos;
+import util.*;
 
 abstract public class Mover implements GridIndexable {
 
-    public enum Direction {
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT,
-        STAY
-    }
+    
 
     public static GridPos getTranslationFromDirection(Direction direction) {
         return switch (direction) {
