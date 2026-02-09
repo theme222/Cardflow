@@ -29,17 +29,17 @@
 
 .text-title {
     -fx-font-size: 26px;
-    -fx-font-weight: bold;
+    -fx-font-weight: 800;
 }
 
 .text-heading {
     -fx-font-size: 20px;
-    -fx-font-weight: bold;
+    -fx-font-weight: 600;
 }
 
 .text-subheading {
     -fx-font-size: 16px;
-    -fx-font-weight: semi-bold;
+    -fx-font-weight: 400;
 }
 
 .text-body {
@@ -48,6 +48,7 @@
 
 .text-small {
     -fx-font-size: 12px;
+    -fx-font-weight: 100;
 }
 
 .text-wrap {

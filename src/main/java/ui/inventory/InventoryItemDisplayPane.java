@@ -1,10 +1,12 @@
 package ui.inventory;
 
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import logic.PlayerInventory;
 
-public class InventoryItemDisplayPane extends VBox { // Generic object displayer (Maybe pass through string as args and it shows the image + name?)
+public class InventoryItemDisplayPane extends Button { // Generic object displayer (Maybe pass through string as args and it shows the image + name?)
     private String objectName; // Just to track
     private Label objectNameLabel; // TODO: Future change this to image
     private Label textDescriberLabel; // Right now is used for the amount of objects
@@ -28,6 +30,11 @@ public class InventoryItemDisplayPane extends VBox { // Generic object displayer
 
         updateUI(objectCount);
         this.objectName = objectName;
+
+        getChildren().addAll(objectNameLabel, textDescriberLabel);
+        setOnAction(event -> {
+            PlayerInventory.getInstance().setCurrentSelection(objectName);
+        });
     }
 
     public void updateUI(int objectCount) {
