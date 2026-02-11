@@ -6,13 +6,27 @@ import ui.render.RenderState;
 
 public final class CardRenderResolver {
 
-    private static final Image BASE_CARD_IMAGE = new Image(
-            CardRenderResolver.class.getResourceAsStream(
-                    "/asset/card/card-base.png"),
+    private static final Image PLASTIC_CARD_IMAGE = new Image(
+            CardRenderResolver.class.getResourceAsStream( "/asset/card/plastic-card.png"),
             0, 0,
             true,
             false
     );
+
+    private static final Image STONE_CARD_IMAGE = new Image(
+            CardRenderResolver.class.getResourceAsStream( "/asset/card/stone-card.png"),
+            0, 0,
+            true,
+            false
+    );
+
+    private static final Image METAL_CARD_IMAGE = new Image(
+            CardRenderResolver.class.getResourceAsStream( "/asset/card/metal-card.png"),
+            0, 0,
+            true,
+            false
+    );
+
 
     private static final double CARD_WIDTH  = 50;
     private static final double CARD_HEIGHT = 70;
@@ -20,7 +34,12 @@ public final class CardRenderResolver {
     private CardRenderResolver() {}
 
     public static RenderState resolve(Card card) {
-        RenderState state = new RenderState(BASE_CARD_IMAGE, CARD_WIDTH, CARD_HEIGHT, 0, false, 1.0);
-        return state;
+        Image toRender = switch (card.getMaterial()) {
+            case PLASTIC -> PLASTIC_CARD_IMAGE;
+            case STONE -> STONE_CARD_IMAGE;
+            case METAL -> METAL_CARD_IMAGE;
+            default -> PLASTIC_CARD_IMAGE;
+        };
+        return new RenderState(toRender, CARD_WIDTH, CARD_HEIGHT, 0, false, 1.0);
     }
 }

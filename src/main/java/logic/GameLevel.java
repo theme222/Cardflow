@@ -92,7 +92,7 @@ public class GameLevel {
     }
 
     public boolean setPositionOnGrid(GridIndexable gridIndexable, GridPos newPoint, boolean force) {
-        if (!force && getTile(gridIndexable.getGridPos()).getSameClassOnTile(gridIndexable) != null) return false;
+        if (!force && getTile(newPoint).getSameClassOnTile(gridIndexable) != null) return false;
         getTile(newPoint).setSameClassOnTile(gridIndexable);
         gridIndexable.setGridPos(newPoint);
         return true;
