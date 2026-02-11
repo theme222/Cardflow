@@ -98,6 +98,27 @@ public class GameLevel {
         return true;
     }
 
+    public boolean addMover(Mover mover, GridPos newPoint) {
+        // Do nothing if position is occupied or cardSet contains the card already
+        if (moverSet.contains(mover)) return false;
+        if (newPoint == null) return false;
+        if (getTile(newPoint).getMover() != null) return false;
+        if (!setPositionOnGrid(mover, newPoint)) return false;
+
+        moverSet.add(mover);
+        return true;
+    }
+
+    public boolean removeMover(Mover mover) {
+        // Do nothing if it can't find the old mover
+        if (!moverSet.contains(mover)) return false;
+        if (getTile(mover.getGridPos()).getMover() == null) return false;
+
+        getTile(mover.getGridPos()).removeSameClassOnTile(mover);
+        moverSet.remove(mover);
+        return true;
+    }
+
     public boolean addCard(Card card, GridPos newPoint) {
         // Do nothing if position is occupied or cardSet contains the card already
         if (cardSet.contains(card)) return false;
@@ -343,7 +364,10 @@ public class GameLevel {
 
     // GETTERS & SETTERS //
 
-    public static GameLevel getInstance() { return instance; }
+    public static GameLevel getInstance() {
+        if (instance == null) throw new IllegalStateException("GameLevel has not been initialized");
+        return instance;
+    }
     public static void setInstance(GameLevel instance) { GameLevel.instance = instance; }
     public GameTile[][] getGrid() { return grid; }
     public void setGrid(GameTile[][] grid) { this.grid = grid; }

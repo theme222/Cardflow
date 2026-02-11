@@ -4,7 +4,6 @@ import util.GridIndexable;
 import logic.GameLevel;
 import util.GridPos;
 
-
 public class Card implements GridIndexable {
 
     public enum Suit {
@@ -24,7 +23,7 @@ public class Card implements GridIndexable {
     }
 
     protected Suit suit;
-    protected int value; // Valid value range from [0,12] (Ace -> 0, 2 -> 1, ... K -> 12)
+    protected int value; // Valid value range from [1,13] (Ace -> 1, 2 -> 2, ... K -> 13)
     protected Material material;
 
     protected GridPos gridPos;
@@ -73,10 +72,15 @@ public class Card implements GridIndexable {
         return value;
     }
 
-    public void setValue(int value) {
-        // Value wraps around if overflow or underflow
-        value = Math.floorMod(value, 13);
-        this.value = value;
+    public void setValue(int newValue) {
+        // Convert to 0–12 space
+        int zeroBased = newValue - 1;
+
+        // Apply mathematical modulo
+        zeroBased = ((zeroBased % 13) + 13) % 13;
+
+        // Convert back to 1–13
+        this.value = zeroBased + 1;
     }
 
     // GETTERS & SETTERS //

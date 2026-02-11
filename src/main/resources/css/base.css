@@ -1,0 +1,96 @@
+/* =========================
+   GLOBAL TEXT DEFAULTS
+   ========================= */
+
+.root {
+    -fx-font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+    -fx-font-size: 14px;
+    -fx-text-fill: #222;
+}
+
+/* Prevent focus outlines from affecting text */
+*:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+/* =========================
+   GENERIC TEXT
+   ========================= */
+
+.label,
+.text {
+    -fx-fill: #222;
+}
+
+/* =========================
+   HIERARCHY
+   ========================= */
+
+.text-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: 800;
+}
+
+.text-heading {
+    -fx-font-size: 20px;
+    -fx-font-weight: 600;
+}
+
+.text-subheading {
+    -fx-font-size: 16px;
+    -fx-font-weight: 400;
+}
+
+.text-body {
+    -fx-font-size: 14px;
+}
+
+.text-small {
+    -fx-font-size: 12px;
+    -fx-font-weight: 100;
+}
+
+.text-wrap {
+    -fx-wrap-text: true; 
+}
+
+/* =========================
+   EMPHASIS
+   ========================= */
+
+.text-muted {
+    -fx-opacity: 0.65;
+}
+
+.text-strong {
+    -fx-font-weight: bold;
+}
+
+.text-warning {
+    -fx-fill: #c0392b;
+}
+
+.text-success {
+    -fx-fill: #27ae60;
+}
+
+/* =========================
+   ALIGNMENT HELPERS
+   ========================= */
+
+.text-center {
+    -fx-text-alignment: center;
+}
+
+.text-right {
+    -fx-text-alignment: right;
+}
+
+/* =========================
+   MONOSPACE (DEBUG / VALUES)
+   ========================= */
+
+.text-mono {
+    -fx-font-family: "JetBrains Mono", "Consolas", monospace;
+}

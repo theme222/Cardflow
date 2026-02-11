@@ -14,7 +14,7 @@
   ],
 
   "availableMovers": [
-    { "name": "CONVEYOR", "count":  -1}
+    { "name": "CONVEYOR", "count":  10}
   ]
 }
 

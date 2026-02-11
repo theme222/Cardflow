@@ -3,6 +3,8 @@ package application.scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import logic.GameLevel;
+import logic.PlayerInventory;
+import ui.inventory.InventoryPane;
 import ui.render.GameTilePane;
 import application.Game;
 import javafx.geometry.Insets;
@@ -16,7 +18,8 @@ import util.GridPos;
 
 public class GameScene {
 
-    static GameTilePane[][] gameGridTilePanes;
+    public static GameTilePane[][] gameGridTilePanes;
+    public static InventoryPane inventoryPane;
 
     public static void updateTileAndAdjacent(GridPos pos) {
         updateIfValid(pos);
@@ -39,6 +42,7 @@ public class GameScene {
     public static Scene create(GameLevel level) {
 
         GameLevel.setInstance(level); // Most components will rely on this
+        PlayerInventory.setInstance(new PlayerInventory(level));
 
         // TODO: MODIFY THIS TO BE A REGULAR PANE AND ADD A TILING MANAGER TO ALLOW GOOD
         // LOOKING ANIMS AND STUFF :D
@@ -77,11 +81,11 @@ public class GameScene {
         VBox infoPane = new VBox();
         infoPane.setPadding(new Insets(10));
 
-        HBox mainLayout = new HBox();
-        mainLayout.getChildren().addAll(gameGrid, infoPane);
+        inventoryPane = new InventoryPane(PlayerInventory.getInstance());
 
-        // mainLayout.setPadding(new Insets(30));
-        // mainLayout.setSpacing(30);
+        HBox mainLayout = new HBox();
+        mainLayout.getChildren().addAll(gameGrid, inventoryPane);
+
         mainLayout.setAlignment(Pos.BASELINE_CENTER);
 
         StackPane root = new StackPane();
@@ -95,7 +99,7 @@ public class GameScene {
                 new KeyCodeCombination(KeyCode.SPACE),
                 () -> {
                     level.doTick();
-                    for (GridPos point : level.changedPoints) {
+                    for (GridPos point : level.changedPoints) { // TODO: THIS SHOULD BE MOVED TO GAMESTATE
                         gameGridTilePanes[point.getY()][point.getX()].updateUI();
                     }
                 });
