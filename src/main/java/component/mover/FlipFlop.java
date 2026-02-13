@@ -1,9 +1,10 @@
 package component.mover;
 
+import logic.GameLevel;
 import util.Direction;
 
 public class FlipFlop extends Mover {
-    private boolean isActive; // Default counterclockwise of current direction otherwise clockwise
+    private boolean isActive; // Default current direction otherwise opposite
 
     public boolean isActive() {
         return isActive;
@@ -20,13 +21,15 @@ public class FlipFlop extends Mover {
 
     @Override
     public Direction getDirectionStateless() {
-        return isActive ? getRotation().prev(): getRotation().next();
+        return isActive ? getRotation(): getRotation().opposite();
     }
 
     @Override
     public Direction getDirection() {
         Direction toReturn = getDirectionStateless();
-        isActive = !isActive;
+        if (GameLevel.getInstance().getTile(getGridPos()).getCard() != null) {
+            isActive = !isActive;
+        }
         return toReturn;
     }
 

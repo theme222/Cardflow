@@ -2,6 +2,7 @@ package util;
 
 import component.card.Card;
 import component.modifier.changer.MaterialSetter;
+import component.modifier.changer.Subtractor;
 import logic.GameLevel;
 import component.GameTile;
 import component.modifier.Modifier;
@@ -72,6 +73,7 @@ public class LevelLoader {
         return switch (modName) {
             case "." -> null;
             case "ADD" -> new Adder(Integer.parseInt(value));
+            case "SUB" -> new Subtractor(Integer.parseInt(value));
             case "SETSUT" -> new SuitSetter(parseSuit(value));
             case "SETMAT" -> new MaterialSetter(parseMaterial(value));
             case "ENTER" -> new Entrance();
@@ -84,7 +86,7 @@ public class LevelLoader {
         String moverClassName = moverJson.getString("name").toUpperCase();
         int moverCount = moverJson.getInt("count");
 
-        String[] validClassNames = { "CONVEYOR" };
+        String[] validClassNames = { "CONVEYOR", "FLIPFLOP" };
         if (moverCount < -1)
             throw new IllegalArgumentException("Invalid mover count " + moverCount); // -1 for infinity
 

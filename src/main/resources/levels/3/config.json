@@ -1,0 +1,23 @@
+{
+  "name": "Left Right goodnight!",
+  "width": 5,
+  "height": 5,
+
+  "inputCards": [
+    { "suit": "SPADE", "value": 6, "material": "PLASTIC" },
+    { "suit": "SPADE", "value": 8, "material": "PLASTIC" },
+    { "suit": "SPADE", "value": 10, "material": "PLASTIC" }
+  ],
+
+  "outputCards": [
+    { "suit": "HEART", "value": 4, "material": "PLASTIC" },
+    { "suit": "DIAMOND", "value": 6, "material": "PLASTIC" },
+    { "suit": "HEART", "value": 8, "material": "PLASTIC" }
+  ],
+
+  "availableMovers": [
+    { "name": "CONVEYOR", "count": -1},
+    { "name": "FLIPFLOP", "count":  1}
+  ]
+}
+
