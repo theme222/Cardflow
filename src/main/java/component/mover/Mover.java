@@ -18,7 +18,11 @@ abstract public class Mover implements GridIndexable {
     }
 
 
-    public abstract Direction getDirection(); // This is what the game will read from when deciding where to send the card.
+    public abstract Direction getDirectionStateless(); // This will get the direction where it will send without potentially modifying the internals (like flipflop or delay that changes when you read it)
+
+    public Direction getDirection() { // This is what the game will read from when deciding where to send the card.
+        return getDirectionStateless();
+    }
 
     protected GridPos gridPos;
     protected Direction rotation; // Ensure never STAY

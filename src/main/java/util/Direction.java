@@ -8,12 +8,12 @@ public enum Direction {
         UP, RIGHT, DOWN, LEFT
     };
 
-    public Direction next() {
+    public Direction next() { // clockwise rotation
         if (this == STAY) return STAY;
         return CARDINALS[(ordinal() + 1) % CARDINALS.length];
     }
 
-    public Direction prev() {
+    public Direction prev() { // counterclockwise rotation
         if (this == STAY) return STAY;
         return CARDINALS[(ordinal() + CARDINALS.length - 1) % CARDINALS.length];
     }

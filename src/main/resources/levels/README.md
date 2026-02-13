@@ -32,7 +32,7 @@ Example layout looks like this
   ],
 
   "availableMovers": [
-    { "name": "CONVEYOR", "count":  0},
+    { "name": "CONVEYOR", "count":  -1},
     { "name": "FLIPFLOP", "count":  2}
   ]
 }

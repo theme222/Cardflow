@@ -1,0 +1,19 @@
+{
+  "name": "1 Goes in 1 Comes out",
+  "width": 4,
+  "height": 5,
+
+  "inputCards": [
+    { "suit": "DIAMOND", "value": 1, "material": "PLASTIC" }
+  ],
+
+  "outputCards": [
+    { "suit": "DIAMOND", "value": 11 }
+  ],
+
+  "availableMovers": [
+    { "name": "CONVEYOR", "count": -1},
+    { "name": "FLIPFLOP", "count":  1}
+  ]
+}
+

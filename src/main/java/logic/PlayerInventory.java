@@ -1,6 +1,7 @@
 package logic;
 
 import component.mover.Conveyor;
+import component.mover.FlipFlop;
 import component.mover.Mover;
 import util.*;
 
@@ -27,6 +28,7 @@ public class PlayerInventory {
     public static Mover getMoverObjectByName(String name, Direction rotation) {
         return switch (name) {
             case "CONVEYOR" -> new Conveyor(rotation);
+            case "FLIPFLOP" -> new FlipFlop(rotation);
             default -> throw new IllegalStateException("Unknown name: " + name);
         };
     }

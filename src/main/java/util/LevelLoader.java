@@ -1,12 +1,13 @@
 package util;
 
 import component.card.Card;
-import component.modifier.changer.MaterialSetter;
+import component.modifier.changer.*;
+import component.modifier.combinator.Merger;
+import component.modifier.combinator.Splitter;
+import component.modifier.combinator.Vaporizer;
 import logic.GameLevel;
 import component.GameTile;
 import component.modifier.Modifier;
-import component.modifier.changer.Adder;
-import component.modifier.changer.SuitSetter;
 import component.modifier.pathway.Entrance;
 import component.modifier.pathway.Exit;
 
@@ -72,8 +73,13 @@ public class LevelLoader {
         return switch (modName) {
             case "." -> null;
             case "ADD" -> new Adder(Integer.parseInt(value));
+            case "SUB" -> new Subtractor(Integer.parseInt(value));
             case "SETSUT" -> new SuitSetter(parseSuit(value));
             case "SETMAT" -> new MaterialSetter(parseMaterial(value));
+            case "SETNUM" -> new NumberSetter(Integer.parseInt(value));
+            case "VAP" -> new Vaporizer();
+            case "MERGE" -> new Merger();
+            case "SPLIT" -> new Splitter();
             case "ENTER" -> new Entrance();
             case "EXIT" -> new Exit();
             default -> throw new IllegalArgumentException("Invalid modifier " + modifier);
@@ -84,7 +90,7 @@ public class LevelLoader {
         String moverClassName = moverJson.getString("name").toUpperCase();
         int moverCount = moverJson.getInt("count");
 
-        String[] validClassNames = { "CONVEYOR" };
+        String[] validClassNames = { "CONVEYOR", "FLIPFLOP" };
         if (moverCount < -1)
             throw new IllegalArgumentException("Invalid mover count " + moverCount); // -1 for infinity
 

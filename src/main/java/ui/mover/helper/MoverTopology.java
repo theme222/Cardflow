@@ -2,12 +2,13 @@ package ui.mover.helper;
 
 import component.GameTile;
 import component.mover.Conveyor;
+import component.mover.Mover;
 import logic.GameLevel;
 import util.*;
 
-public final class ConveyorTopology {
+public final class MoverTopology {
 
-    public enum ConveyorShape {
+    public enum MoverShape {
         STRAIGHT,
         TURN_LEFT,
         TURN_RIGHT,
@@ -17,8 +18,7 @@ public final class ConveyorTopology {
         MERGE_ALL
     }
 
-    public static ConveyorShape resolve(
-            Conveyor conveyor, GridPos pos) {
+    public static MoverShape resolve(Mover conveyor, GridPos pos) {
         GameTile[] tiles = GameLevel.getInstance().getAdjacentTiles(pos);
         Direction forward = conveyor.getDirection();
 
@@ -58,20 +58,20 @@ public final class ConveyorTopology {
                 ", Right: " + RIGHT_FOUND);
 
         if (STRAIGHT_FOUND && LEFT_FOUND && RIGHT_FOUND) {
-            return ConveyorShape.MERGE_ALL;
+            return MoverShape.MERGE_ALL;
         } else if (STRAIGHT_FOUND && LEFT_FOUND) {
-            return ConveyorShape.MERGE_STRAIGHT_LEFT;
+            return MoverShape.MERGE_STRAIGHT_LEFT;
         } else if (STRAIGHT_FOUND && RIGHT_FOUND) {
-            return ConveyorShape.MERGE_STRAIGHT_RIGHT;
+            return MoverShape.MERGE_STRAIGHT_RIGHT;
         } else if (LEFT_FOUND && RIGHT_FOUND) {
-            return ConveyorShape.MERGE_LEFT_RIGHT;
+            return MoverShape.MERGE_LEFT_RIGHT;
         } else if (STRAIGHT_FOUND) {
-            return ConveyorShape.STRAIGHT;
+            return MoverShape.STRAIGHT;
         } else if (LEFT_FOUND) {
-            return ConveyorShape.TURN_LEFT;
+            return MoverShape.TURN_LEFT;
         } else if (RIGHT_FOUND) {
-            return ConveyorShape.TURN_RIGHT;
+            return MoverShape.TURN_RIGHT;
         }
-        return ConveyorShape.STRAIGHT;
+        return MoverShape.STRAIGHT;
     }
 }

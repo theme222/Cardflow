@@ -25,7 +25,7 @@ public class PlacementController { // Is this supposed to be a user interaction 
 
         if (button == MouseButton.SECONDARY) {
             if (tile.getMover() != null)
-                tile.getMover().setRotation(tile.getMover().getDirection().next());
+                tile.getMover().rotate();
             else
                 PlayerInventory.getInstance().cycleRotation();
         }

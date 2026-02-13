@@ -1,5 +1,6 @@
 package logic;
 
+import component.mover.Delay;
 import util.GridIndexable;
 import component.GameTile;
 import component.card.Card;
