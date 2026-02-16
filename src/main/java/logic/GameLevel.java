@@ -262,7 +262,11 @@ public class GameLevel {
                 if (GameLevel.getInstance().getTile(resultPos).getCard() != null) {
                     // Resolve the next position
                     if (seen.contains(resultPos)) { // We have evaluated this position before (implies cycle)
-                        priorityIntent.status = IntentStatus.MOVED;
+                        // Checking whether cards are facing each other [C1 -> <- C2]
+                        if (byCurrent.get(resultPos).getResultPos().equals(priorityIntent.getCurrentPos()))
+                            priorityIntent.status = IntentStatus.BLOCKED;
+                        else
+                            priorityIntent.status = IntentStatus.MOVED;
                         return;
                     }
 
