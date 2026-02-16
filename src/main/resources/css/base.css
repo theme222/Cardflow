@@ -39,12 +39,12 @@
    ========================= */
 
 .text-title {
-    -fx-font-size: 26px;
+    -fx-font-size: 32px;
     -fx-font-weight: 800;
 }
 
 .text-heading {
-    -fx-font-size: 20px;
+    -fx-font-size: 24px;
     -fx-font-weight: 600;
 }
 
@@ -54,11 +54,11 @@
 }
 
 .text-body {
-    -fx-font-size: 14px;
+    -fx-font-size: 12px;
 }
 
 .text-small {
-    -fx-font-size: 12px;
+    -fx-font-size: 8px;
     -fx-font-weight: 100;
 }
 
@@ -104,4 +104,51 @@
 
 .text-mono {
     -fx-font-family: "Mozart NBP", "JetBrains Mono", "Consolas", monospace;
+}
+
+/* ============================= */
+/* BASE GAME BUTTON STYLE */
+/* ============================= */
+
+.button {
+    -fx-font-size: 16px;
+
+    -fx-background-color: #f4f4f4;
+    -fx-text-fill: #222;
+
+    -fx-padding: 8 16 8 16;
+
+    -fx-border-color: #222;
+    -fx-border-width: 2;
+
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #e0e0e0;
+}
+
+.button:pressed {
+    -fx-background-color: #cfcfcf;
+    -fx-translate-y: 1px;
+}
+
+.button:disabled {
+    -fx-opacity: 0.4;
+}
+
+.button.round {
+    -fx-background-radius: 999;
+    -fx-border-radius: 999;
+
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+
+    -fx-pref-width: 40px;
+    -fx-pref-height: 40px;
+
+    -fx-padding: 0;
 }

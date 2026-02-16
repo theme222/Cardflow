@@ -1,9 +1,12 @@
 package application.view;
 
+import application.ViewManager;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import logic.GameLevel;
 import logic.PlayerInventory;
+import ui.button.BackButton;
 import ui.inventory.InventoryPane;
 import ui.render.GameTilePane;
 import application.Game;
@@ -91,7 +94,8 @@ public class GameView extends View {
 
         mainLayout.setAlignment(Pos.BASELINE_CENTER);
 
-        root.getChildren().add(mainLayout);
+
+        root.getChildren().addAll(mainLayout, new BackButton());
         root.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
     }
 

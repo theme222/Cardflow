@@ -1,13 +1,12 @@
 package application.view;
 
+import application.ViewManager;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.StackPane;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 
 public class MainMenuView extends View {
 
@@ -16,8 +15,27 @@ public class MainMenuView extends View {
     public MainMenuView() {
         super();
         setInstance(this);
+
+        Label title = new Label("Cardflow");
+        title.getStyleClass().addAll("text-title");
+
+        Label subtitle = new Label("Final Project for Programming Methodology CEDT Class");
+        subtitle.getStyleClass().addAll("text-heading", "text-muted");
+
+        Button playButton = new Button("Play >");
+        playButton.setOnAction(event -> {
+            ViewManager.getInstance().transitionZoomView(new LevelSelectorView());
+        });
+
+        VBox layout = new VBox();
+
+        layout.setSpacing(50);
+        layout.setPadding(new Insets(20));
+        layout.setAlignment(Pos.CENTER);
+        layout.getChildren().addAll(title, subtitle, playButton);
+
         root.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-        root.getChildren().add(new Text("MainMenuScene"));
+        root.getChildren().add(layout);
     }
 
     public static MainMenuView getInstance() {

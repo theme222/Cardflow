@@ -8,8 +8,6 @@ import application.view.LevelSelectorView;
 import application.view.MainMenuView;
 import component.GameTile;
 import javafx.application.Platform;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import logic.GameLevel;
@@ -29,7 +27,7 @@ public final class Game {
 
         ViewManager.init(primaryStage);
         ViewManager managerInstance =  ViewManager.getInstance();
-        managerInstance.switchView(new MainMenuView());
+        managerInstance.transitionSwitchView(new MainMenuView());
 
         managerInstance.scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
@@ -37,7 +35,7 @@ public final class Game {
                     if (!managerInstance.currentViewIs(LevelSelectorView.class)) return;
                     try {
                         GameLevel sandbox = LevelLoader.loadSandboxLevel();
-                        managerInstance.switchView(new GameView(sandbox));
+                        managerInstance.transitionFadeView(new GameView(sandbox));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -45,7 +43,7 @@ public final class Game {
                 case SPACE: {
                     if (!managerInstance.currentViewIs(GameView.class)) return;
                     GameLevel.getInstance().doTick();
-                    for (GridPos point : GameLevel.getInstance().changedPoints) { // TODO: THIS SHOULD BE MOVED TO GAMESTATE
+                    for (GridPos point : GameLevel.getInstance().changedPoints) {
                         GameView.getInstance().getGameGridTilePanes()[point.getY()][point.getX()].updateUI();
                     }
                 }

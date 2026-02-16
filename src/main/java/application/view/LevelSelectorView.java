@@ -1,16 +1,13 @@
 package application.view;
 
-import application.Game;
 import application.ViewManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import logic.GameLevel;
+import ui.button.BackButton;
 import util.LevelLoader;
 
 import java.io.IOException;
@@ -37,7 +34,7 @@ public class LevelSelectorView extends View {
             levelSelectButton.getStyleClass().setAll("level-select-button");
             levelSelectButton.setOnAction(actionEvent -> {
                 try {
-                    ViewManager.getInstance().switchView(new GameView(LevelLoader.loadLevel(veryEffectivelyFinal)));
+                    ViewManager.getInstance().transitionFadeView(new GameView(LevelLoader.loadLevel(veryEffectivelyFinal)));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -53,7 +50,7 @@ public class LevelSelectorView extends View {
 
         layout.setPadding(new Insets(20));
 
-        root.getChildren().add(layout);
+        root.getChildren().addAll(layout, new BackButton());
         root.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
     }
 
