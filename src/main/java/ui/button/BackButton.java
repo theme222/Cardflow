@@ -1,5 +1,6 @@
 package ui.button;
 
+import application.TransitionType;
 import application.ViewManager;
 import application.view.View;
 import javafx.application.Platform;
@@ -16,10 +17,7 @@ public class BackButton extends VBox {
         backButton.setOnAction(e -> {
 
             ViewManager manager = ViewManager.getInstance();
-            View destination = manager.getPreviousView();
-            if (destination == null) Platform.exit();
-            manager.transitionFadeView(destination);
-
+            if (!manager.switchToPreviousView(TransitionType.FADE)) Platform.exit(); // if go back is fail just leave the game.
         });
 
         setPadding(new Insets(10));

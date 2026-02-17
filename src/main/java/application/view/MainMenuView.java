@@ -1,5 +1,6 @@
 package application.view;
 
+import application.TransitionType;
 import application.ViewManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -24,7 +25,7 @@ public class MainMenuView extends View {
 
         Button playButton = new Button("Play >");
         playButton.setOnAction(event -> {
-            ViewManager.getInstance().transitionZoomView(new LevelSelectorView());
+            ViewManager.getInstance().switchView(new LevelSelectorView(), TransitionType.ZOOM);
         });
 
         VBox layout = new VBox();

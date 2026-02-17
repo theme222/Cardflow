@@ -25,9 +25,8 @@ public final class Game {
             System.exit(0);
         });
 
-        ViewManager.init(primaryStage);
-        ViewManager managerInstance =  ViewManager.getInstance();
-        managerInstance.transitionSwitchView(new MainMenuView());
+        ViewManager.init(primaryStage, new MainMenuView());
+        ViewManager managerInstance = ViewManager.getInstance();
 
         managerInstance.scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
@@ -35,7 +34,7 @@ public final class Game {
                     if (!managerInstance.currentViewIs(LevelSelectorView.class)) return;
                     try {
                         GameLevel sandbox = LevelLoader.loadSandboxLevel();
-                        managerInstance.transitionFadeView(new GameView(sandbox));
+                        managerInstance.switchView(new GameView(sandbox), TransitionType.FADE);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

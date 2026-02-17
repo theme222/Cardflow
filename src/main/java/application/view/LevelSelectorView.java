@@ -1,5 +1,6 @@
 package application.view;
 
+import application.TransitionType;
 import application.ViewManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -34,7 +35,7 @@ public class LevelSelectorView extends View {
             levelSelectButton.getStyleClass().setAll("level-select-button");
             levelSelectButton.setOnAction(actionEvent -> {
                 try {
-                    ViewManager.getInstance().transitionFadeView(new GameView(LevelLoader.loadLevel(veryEffectivelyFinal)));
+                    ViewManager.getInstance().switchView(new GameView(LevelLoader.loadLevel(veryEffectivelyFinal)), TransitionType.FADE);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
