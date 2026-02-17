@@ -65,9 +65,10 @@ public class PlayerInventory {
         // TODO: Maybe also do a check with the current game state?
         if (position == null) return;
         GameLevel game = GameLevel.getInstance();
-        if (game.removeMover(game.getTile(position).getMover())) {
+        Mover toRemove = game.getTile(position).getMover();
+        if (game.removeMover(toRemove)) {
             // Successfully removed so we increment the selection
-            modifyAvailableMovers(currentSelection, 1);
+            modifyAvailableMovers(toRemove.getClass().getSimpleName().toUpperCase(), 1); // this is peak java idk what you are talking about
         }
     }
 
