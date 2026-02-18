@@ -4,17 +4,19 @@
   "height": 9,
 
   "inputCards": [
-    { "suit": "HEART", "value": 7, "material": "PLASTIC" },
-    { "suit": "SPADE", "value": 10, "material": "PLASTIC" }
+    { "suit": "DIAMOND", "value": 1, "material": "PLASTIC" },
+    { "suit": "DIAMOND", "value": 2, "material": "PLASTIC" },
+    { "suit": "DIAMOND", "value": 3, "material": "PLASTIC" }
   ],
 
   "outputCards": [
-    { "suit": "HEART", "value": 8},
-    { "suit": "SPADE", "value": 11}
+    { "suit": "HEART", "value": 1 },
+    { "suit": "HEART", "value": 2 },
+    { "suit": "HEART", "value": 3 }
   ],
 
   "availableMovers": [
-    { "name": "CONVEYOR", "count":  10}
+    { "name": "CONVEYOR", "count":  9}
   ]
 }
 

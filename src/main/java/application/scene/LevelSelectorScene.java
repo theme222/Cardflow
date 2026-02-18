@@ -31,7 +31,7 @@ public class LevelSelectorScene {
             levelSelectButton.getStyleClass().setAll("level-select-button");
             levelSelectButton.setOnAction(actionEvent -> {
                 try {
-                    SceneManager.getInstance().showGame(LevelLoader.loadLevel(veryEffectivelyFinal));
+                    SceneManager.getInstance().showGame(LevelLoader.loadLevel(String.valueOf(veryEffectivelyFinal)));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -58,7 +58,7 @@ public class LevelSelectorScene {
             switch (event.getCode()) {
                 case BACK_SPACE -> {
                     try {
-                        GameLevel sandbox = LevelLoader.loadSandboxLevel();
+                        GameLevel sandbox = LevelLoader.loadLevel("sandbox");
                         SceneManager.getInstance().showGame(sandbox); // or whatever your level swap method is
                     } catch (IOException e) {
                         e.printStackTrace();

@@ -28,8 +28,6 @@ public class Card implements GridIndexable {
 
     protected GridPos gridPos;
 
-    private boolean isInfinite = false;
-
     // WARNING DO NOT CALL THIS FUNCTION TO CREATE A CARD
     // PLEASE LOOK INTO GameLevel.addCard() instead
 
@@ -38,14 +36,12 @@ public class Card implements GridIndexable {
         this(Suit.SPADE, 1, Material.PLASTIC);
     }
 
-    public Card(Suit suit, int value, Material material) {
-        this(suit, value, material, new GridPos(0, 0));
+    public Card(Card card) {
+        this(card.getSuit(), card.getValue(), card.getMaterial(), card.getGridPos());
     }
 
-    public Card(Suit suit, int value, Material material, int count) {
-        this(suit, value, material);
-        // hehe boii
-        isInfinite = (count <= 0);
+    public Card(Suit suit, int value, Material material) {
+        this(suit, value, material, new GridPos(0, 0));
     }
 
     public Card(Suit suit, int value, Material material, GridPos gridPos) {
@@ -54,10 +50,6 @@ public class Card implements GridIndexable {
         setValue(value);
         setMaterial(material);
         setGridPos(gridPos);
-    }
-
-    public boolean isInfiniteCard() {
-        return isInfinite;
     }
 
     public Suit getSuit() {
@@ -110,5 +102,19 @@ public class Card implements GridIndexable {
                 suit +
                 "," + value +
                 '}';
+    }
+
+    public boolean equals(Card card, boolean checkMaterial) {
+        return this.getMaterial() == card.getMaterial() &&
+                this.getSuit() == card.getSuit() &&
+                this.getValue() == card.getValue() &&
+                (checkMaterial ? this.getMaterial() == card.getMaterial(): true);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Card))
+            return false;
+        return equals((Card) object, false);
     }
 }

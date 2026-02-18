@@ -1,6 +1,6 @@
 package logic;
 
-import component.mover.Delay;
+import util.CardCount;
 import util.GridIndexable;
 import component.GameTile;
 import component.card.Card;
@@ -8,7 +8,6 @@ import component.modifier.Modifier;
 import component.mover.Mover;
 import util.GridPos;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -26,8 +25,8 @@ public class GameLevel {
     public final int HEIGHT;
     public final String LEVELNAME;
 
-    public final List<Card> INPUT_CARDS;
-    public final List<Card> OUTPUT_CARDS;
+    public final List<CardCount> INPUT_CARDS;
+    public final List<CardCount> OUTPUT_CARDS;
 
     public final HashMap<String, Integer> AVAILABLE_MOVERS;
     // Constant throughout level //
@@ -35,6 +34,7 @@ public class GameLevel {
     // A Card must exist in the set and in the level tile at the same time.
     // We are doing redundancy to improve speed (RAM is cheap anyways)
     private GameTile[][] grid;
+    public final ArrayList<Card> exitedCardsList;
     public final HashSet<Card> cardSet;
     public final HashSet<Modifier> modifierSet;
     public final HashSet<Mover> moverSet;
@@ -45,8 +45,8 @@ public class GameLevel {
             String levelName,
             int width,
             int height,
-            List<Card> inputCards,
-            List<Card> outputCards,
+            List<CardCount> inputCards,
+            List<CardCount> outputCards,
             HashMap<String, Integer> availableMovers,
             GameTile[][] grid,
             HashSet<Modifier> modifierSet
@@ -61,8 +61,9 @@ public class GameLevel {
         this.grid = grid;
 
         this.modifierSet = modifierSet;
-        this.cardSet = new HashSet<>();
+        this.cardSet = new HashSet<>(); // Could move this and the moverSet outside incase we do a load from "save state" or other things like that
         this.moverSet = new HashSet<>();
+        this.exitedCardsList = new ArrayList<>();
         this.changedPoints = new HashSet<>();
         this.currentTick = true;
     }
