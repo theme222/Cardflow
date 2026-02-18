@@ -33,7 +33,7 @@ public final class Game {
                 case BACK_SPACE: {
                     if (!managerInstance.currentViewIs(LevelSelectorView.class)) return;
                     try {
-                        GameLevel sandbox = LevelLoader.loadSandboxLevel();
+                        GameLevel sandbox = LevelLoader.loadLevel("sandbox");
                         managerInstance.switchView(new GameView(sandbox), TransitionType.FADE);
                     } catch (IOException e) {
                         e.printStackTrace();

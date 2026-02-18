@@ -14,6 +14,7 @@ public class BackButton extends VBox {
     public BackButton() {
         Button backButton = new Button("<");
         backButton.getStyleClass().add("round");
+        backButton.setFocusTraversable(false);
         backButton.setOnAction(e -> {
 
             ViewManager manager = ViewManager.getInstance();

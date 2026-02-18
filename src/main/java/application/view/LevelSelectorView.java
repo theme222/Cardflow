@@ -35,7 +35,10 @@ public class LevelSelectorView extends View {
             levelSelectButton.getStyleClass().setAll("level-select-button");
             levelSelectButton.setOnAction(actionEvent -> {
                 try {
-                    ViewManager.getInstance().switchView(new GameView(LevelLoader.loadLevel(veryEffectivelyFinal)), TransitionType.FADE);
+                    ViewManager.getInstance().switchView(
+                            new GameView(LevelLoader.loadLevel(String.valueOf(veryEffectivelyFinal))),
+                            TransitionType.FADE
+                    );
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
