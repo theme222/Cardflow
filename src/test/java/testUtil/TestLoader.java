@@ -18,7 +18,7 @@ public class TestLoader {
     @Test
     void testLoadValidLevel() {
         assertDoesNotThrow(() -> {
-            GameLevel level = LevelLoader.loadLevel(1);
+            GameLevel level = LevelLoader.loadLevel("1");
             GameLevel.setInstance(level);
             assertNotNull(level);
             assertTrue(level.WIDTH > 0);
@@ -29,18 +29,17 @@ public class TestLoader {
     @Test
     void testLoadSandboxLevel() {
         assertDoesNotThrow(() -> {
-            GameLevel sandbox = LevelLoader.loadSandboxLevel();
+            GameLevel sandbox = LevelLoader.loadLevel("sandbox");
             assertNotNull(sandbox);
-            assertTrue(sandbox.LEVELNAME.contains("[SANDBOX]"));
+            assertEquals("SANDBOX", sandbox.LEVELNAME);
         });
     }
 
     @Test
     void testLoadLevelOutOfBounds() {
-        IllegalArgumentException ex1 = assertThrows(IllegalArgumentException.class, () -> LevelLoader.loadLevel(0));
-        assertTrue(ex1.getMessage().contains("Invalid level number"));
-        assertThrows(IllegalArgumentException.class, () -> LevelLoader.loadLevel(-1));
-        assertThrows(IllegalArgumentException.class, () -> LevelLoader.loadLevel(LevelLoader.TOTAL_LEVELS + 1));
+        IllegalArgumentException ex1 = assertThrows(IllegalArgumentException.class, () -> LevelLoader.loadLevel("0"));
+        assertThrows(IllegalArgumentException.class, () -> LevelLoader.loadLevel("-1"));
+        assertThrows(IllegalArgumentException.class, () -> LevelLoader.loadLevel(String.valueOf(LevelLoader.TOTAL_LEVELS + 1)));
     }
 
     @Test

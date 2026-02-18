@@ -117,7 +117,7 @@ public class LevelLoader {
                 .getResourceAsStream(basePath + "/level.tsv");
 
         if (configStream == null || layoutStream == null) {
-            throw new IOException("Failed to load level " + level);
+            throw new IllegalArgumentException("Failed to load level " + level);
         }
 
         try ( // https://www.w3schools.com/java/java_try_catch_resources.asp
