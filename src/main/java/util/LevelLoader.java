@@ -91,7 +91,7 @@ public class LevelLoader {
         String moverClassName = moverJson.getString("name").toUpperCase();
         int moverCount = moverJson.getInt("count");
 
-        String[] validClassNames = { "CONVEYOR", "FLIPFLOP" };
+        String[] validClassNames = { "CONVEYOR", "FLIPFLOP", "PARITYFILTER" };
         if (moverCount < -1)
             throw new IllegalArgumentException("Invalid mover count " + moverCount); // -1 for infinity
 

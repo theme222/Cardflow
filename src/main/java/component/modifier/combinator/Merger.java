@@ -9,8 +9,9 @@ public class Merger extends Combinator {
     private Card previousCard;
 
     @Override
-    public void modify() {
-        Card toModify = GameLevel.getInstance().getTile(getGridPos()).getCard();
+    public void modify(Card toModify) {
+        if (checkSetDisable(toModify));
+
         if (toModify == null) return;
         if (previousCard != null) {
             // Add value of previous card to this card

@@ -1,4 +1,4 @@
 ENTER	.	.	.
 .	ADD:1	.	.
-.	.	SETMAT:s	.
+.	.	ADD:2	.
 .	.	.	EXIT

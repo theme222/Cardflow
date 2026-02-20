@@ -5,8 +5,8 @@ import logic.GameLevel;
 
 public class NumberSetter extends Changer<Integer> {
 
-    public void modify() {
-        Card toModify = GameLevel.getInstance().getTile(getGridPos()).getCard();
+    @Override
+    public void change(Card toModify) {
         if (toModify != null) toModify.setValue(changeValue);
     }
 

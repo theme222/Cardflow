@@ -8,8 +8,9 @@ public class Vaporizer extends Combinator {
     public Vaporizer() {}
 
     @Override
-    public void modify() {
-        Card toModify = GameLevel.getInstance().getTile(getGridPos()).getCard();
+    public void modify(Card toModify) {
+        if (checkSetDisable(toModify)) return;
+
         if (toModify != null) GameLevel.getInstance().removeCard(toModify);
     }
 

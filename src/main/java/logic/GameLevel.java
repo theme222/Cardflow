@@ -356,7 +356,7 @@ public class GameLevel {
         // Round two baby lets do this
         for (Modifier modifier: modifierSet) {
             changedPoints.add(modifier.getGridPos()); // ASSUMPTION: ALL MODIFIERS AFFECT ONLY THEIR OWN SQUARE
-            modifier.modify();
+            modifier.modify(getTile(modifier.getGridPos()).getCard());
         }
         System.out.println("DONE MODIFY TICK"); // TODO: DEBUG
     }

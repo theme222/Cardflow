@@ -9,8 +9,9 @@ public class Splitter extends Combinator {
     private Card cardToSpawn;
 
     @Override
-    public void modify() {
-        Card toModify = GameLevel.getInstance().getTile(getGridPos()).getCard();
+    public void modify(Card toModify) {
+        if (checkSetDisable(toModify)) return;
+
         if (cardToSpawn == null) {
             if (toModify == null) return;
             toModify.setValue(toModify.getValue() / 2);

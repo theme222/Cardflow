@@ -11,11 +11,10 @@ public class Entrance extends Pathway { // Entrance and exit lives on the same l
     }
 
     @Override
-    public void modify() {
+    public void modify(Card toModify) {
         Card toAdd = getCurrentCard(GameLevel.getInstance().INPUT_CARDS);
         if (toAdd == null) return;
-        GameLevel.getInstance().addCard(toAdd, getGridPos());
-        currentIndex++;
+        if (GameLevel.getInstance().addCard(toAdd, getGridPos())) currentIndex++;
     }
 
     @Override

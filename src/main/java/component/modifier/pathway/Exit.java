@@ -9,11 +9,10 @@ public class Exit extends Pathway {
     }
 
     @Override
-    public void modify() {
-        Card toRemove = GameLevel.getInstance().getTile(getGridPos()).getCard();
-        if (GameLevel.getInstance().removeCard(toRemove)) {
-            System.out.println("Got card " + toRemove + " expected " + getCurrentCard(GameLevel.getInstance().OUTPUT_CARDS));
-            GameLevel.getInstance().exitedCardsList.add(toRemove);
+    public void modify(Card toModify) {
+        if (GameLevel.getInstance().removeCard(toModify)) {
+            System.out.println("Got card " + toModify + " expected " + getCurrentCard(GameLevel.getInstance().OUTPUT_CARDS));
+            GameLevel.getInstance().exitedCardsList.add(toModify);
             currentIndex++;
         }
     }

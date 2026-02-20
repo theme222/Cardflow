@@ -5,8 +5,8 @@ import logic.GameLevel;
 
 public class MaterialSetter extends Changer<Card.Material> {
 
-    public void modify() {
-        Card toModify = GameLevel.getInstance().getTile(getGridPos()).getCard();
+    @Override
+    public void change(Card toModify) {
         if (toModify != null) toModify.setMaterial(changeValue);
     }
 

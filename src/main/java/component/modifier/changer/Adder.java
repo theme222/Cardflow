@@ -16,8 +16,7 @@ public class Adder extends Changer<Integer> { // Generic type argument can't be 
     }
 
     @Override
-    public void modify() {
-        Card toModify = GameLevel.getInstance().getTile(getGridPos()).getCard();
+    public void change(Card toModify) {
         if (toModify != null) toModify.setValue(toModify.getValue() + changeValue);
     }
 }

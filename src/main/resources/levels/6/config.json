@@ -1,0 +1,27 @@
+{
+  "name": "Full House",
+  "width": 7,
+  "height": 3,
+
+  "inputCards": [
+    { "suit": "CLUB", "value": 5, "material": "PLASTIC" },
+    { "suit": "CLUB", "value": 2, "material": "PLASTIC" },
+    { "suit": "CLUB", "value": 5, "material": "PLASTIC" },
+    { "suit": "CLUB", "value": 2, "material": "PLASTIC" },
+    { "suit": "CLUB", "value": 2, "material": "PLASTIC" }
+  ],
+
+  "outputCards": [
+    { "suit": "DIAMOND", "value": 2, "material": "PLASTIC" },
+    { "suit": "DIAMOND", "value": 2, "material": "PLASTIC" },
+    { "suit": "DIAMOND", "value": 2, "material": "PLASTIC" },
+    { "suit": "HEART", "value": 5, "material": "PLASTIC" },
+    { "suit": "HEART", "value": 5, "material": "PLASTIC" }
+  ],
+
+  "availableMovers": [
+    { "name": "CONVEYOR", "count": -1},
+    { "name": "PARITYFILTER", "count": 1}
+  ]
+}
+

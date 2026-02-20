@@ -1,8 +1,6 @@
 package logic;
 
-import component.mover.Conveyor;
-import component.mover.FlipFlop;
-import component.mover.Mover;
+import component.mover.*;
 import util.*;
 
 import java.util.HashMap;
@@ -29,6 +27,8 @@ public class PlayerInventory {
         return switch (name) {
             case "CONVEYOR" -> new Conveyor(rotation);
             case "FLIPFLOP" -> new FlipFlop(rotation);
+            case "PARITYFILTER" -> new ParityFilter(rotation);
+            case "REDBLACKFILTER" -> new RedBlackFilter(rotation);
             default -> throw new IllegalStateException("Unknown name: " + name);
         };
     }
