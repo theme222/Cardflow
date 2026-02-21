@@ -5,5 +5,6 @@ public enum RenderLayer {
     MOVER,
     MODIFIER,
     CARD,
+    CARDANIM,
     OVERLAY
 }

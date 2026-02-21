@@ -21,7 +21,7 @@ public class ConveyorRenderer extends Renderer<Conveyor> {
         return TILE_SIZE;
     }
 
-    public void render(Conveyor conveyor, Pane node, GridPos pos) {
+    public void render(Conveyor conveyor, Pane node, GridPos pos, boolean animating) {
         RenderState state = ConveyorRenderResolver.resolve(conveyor, pos, TILE_SIZE);
         draw(node, state);
     }

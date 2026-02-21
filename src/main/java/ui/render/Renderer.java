@@ -8,7 +8,10 @@ public abstract class Renderer<T> {
 
     protected abstract double tileSize();
 
-    public abstract void render(T tile, Pane node, util.GridPos pos);
+    public void render(T tile, Pane node, util.GridPos pos){
+        render(tile, node, pos, false);
+    }
+    public abstract void render(T tile, Pane node, util.GridPos pos, boolean animating);
 
     protected void draw(Pane node, RenderState state) {
         double w = state.width();

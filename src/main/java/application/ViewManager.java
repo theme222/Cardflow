@@ -54,6 +54,7 @@ public class ViewManager { // Switching views instead of switching scenes to all
             // Switches view without transitions or anything
             sceneRoot.getChildren().remove(prevView.getRoot());
             sceneRoot.getChildren().add(newView.getRoot());
+            resizeToCurrentView();
         }
 
         private void transitionFadeView(View prevView, View newView) {
@@ -68,9 +69,11 @@ public class ViewManager { // Switching views instead of switching scenes to all
                 fadeIn.setFromValue(0);
                 fadeIn.setToValue(1);
                 fadeIn.play();
+                resizeToCurrentView();
             });
 
             fadeOut.play();
+            
         }
 
         private void transitionZoomView(View prevView, View newView) {
@@ -155,5 +158,11 @@ public class ViewManager { // Switching views instead of switching scenes to all
     public boolean currentViewIs(Class<? extends View> viewClass) {
         return viewClass.isInstance(getCurrentView());
     }
+
+    private void resizeToCurrentView() {
+    Platform.runLater(() -> {
+        stage.sizeToScene();
+    });
+}
 
 }

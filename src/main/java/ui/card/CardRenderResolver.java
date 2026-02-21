@@ -40,6 +40,6 @@ public final class CardRenderResolver {
             case METAL -> METAL_CARD_IMAGE;
             default -> PLASTIC_CARD_IMAGE;
         };
-        return new RenderState(toRender, CARD_WIDTH, CARD_HEIGHT, 1, 1, 0, false, 1.0);
+        return new RenderState(toRender, CARD_WIDTH, CARD_HEIGHT, 0, 0, 0, false, 1.0);
     }
 }

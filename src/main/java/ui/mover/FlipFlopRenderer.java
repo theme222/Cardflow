@@ -22,7 +22,7 @@ public class FlipFlopRenderer extends Renderer<FlipFlop> {
         return TILE_SIZE;
     }
 
-    public void render(FlipFlop flipFlop, Pane node, GridPos pos) {
+    public void render(FlipFlop flipFlop, Pane node, GridPos pos, boolean animating) {
         RenderState state = FlipFlopRenderResolver.resolve(flipFlop, pos, TILE_SIZE);
         draw(node, state);
     }

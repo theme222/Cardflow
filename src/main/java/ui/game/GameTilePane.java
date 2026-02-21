@@ -35,14 +35,14 @@ public class GameTilePane extends Pane {
             getStyleClass().add("game-tile");
         }
 
-        Text debugText = new Text(10, 20, "Layer: " + layer + "\nPos: " + pos);
-        debugText.setStyle("-fx-fill: red; -fx-font-size: 14;");
+        //Text debugText = new Text(10, 20, "Layer: " + layer + "\nPos: " + pos);
+        //debugText.setStyle("-fx-fill: red; -fx-font-size: 14;");
 
         
 
         updateUI();
 
-        this.getChildren().add(debugText);
+        //this.getChildren().add(debugText);
     }
 
     public void updateUIAdjacent() {

@@ -13,7 +13,7 @@ public class EmptyTileRenderer extends Renderer<GameTile> {
     public EmptyTileRenderer() {}
 
     @Override
-    public void render(GameTile tile, Pane node, GridPos pos) {
+    public void render(GameTile tile, Pane node, GridPos pos, boolean animating) {
         //node.setText("norway" + tile.toString());
     }
 

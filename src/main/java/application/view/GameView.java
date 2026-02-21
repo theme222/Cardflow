@@ -45,7 +45,7 @@ public class GameView extends View {
     public GameView(GameLevel level) {
         super();
         setInstance(this);
-
+        
         GameLevel.setInstance(level); // Most components will rely on this
         PlayerInventory.setInstance(new PlayerInventory(level));
 
@@ -62,11 +62,12 @@ public class GameView extends View {
         HBox mainLayout = new HBox();
         mainLayout.getChildren().addAll(gameGrid, inventoryPane);
 
-        mainLayout.setAlignment(Pos.BASELINE_CENTER);
+        mainLayout.setAlignment(Pos.TOP_CENTER);
 
 
         root.getChildren().addAll(mainLayout, new BackButton());
         root.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+
 
         // Register to receive render events and update affected tiles
         EventBus.register(RenderEvent.class, ev -> {

@@ -10,17 +10,20 @@ import application.view.GameView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import logic.GameLevel;
+import registry.render.FloatingLayerRegistry;
 import registry.render.RenderLayer;
 import util.Direction;
 import util.GridPos;
 
 public class GameRenderStack extends StackPane {
 
-    private final EnumMap<RenderLayer, GameGrid> layers = new EnumMap<>(RenderLayer.class);
+    private final EnumMap<RenderLayer, Pane> layers = new EnumMap<>(RenderLayer.class);
 
     public void updateIfValid(GridPos pos) {
-        for (GameGrid grid : layers.values()) {
-            grid.updateIfValid(pos);
+        for (Pane pane : layers.values()) {
+            if (pane instanceof GameGrid) {
+                ((GameGrid) pane).updateIfValid(pos);
+            }
         }
     }
 
@@ -33,7 +36,7 @@ public class GameRenderStack extends StackPane {
 
         for (RenderLayer layer : RenderLayer.values()) {
 
-            GameGrid pane;
+            Pane pane;
 
             if (layer == RenderLayer.BASE) {
 
@@ -52,8 +55,11 @@ public class GameRenderStack extends StackPane {
 
                 pane.setMouseTransparent(false);
 
-            } else {
-
+            } else if (FloatingLayerRegistry.INSTANCE.isFloating(layer)) {
+                pane = new Pane();
+                pane.setMouseTransparent(true);
+                FloatingLayerRegistry.INSTANCE.registerEntry(layer, pane);
+            } else{
                 pane = new GameGrid(level, layer, null);
                 pane.setMouseTransparent(true);
             }

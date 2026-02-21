@@ -55,8 +55,11 @@ public class MovementTickResolver {
 
                 changedPoints.add(intent.getCurrentPos());
                 changedPoints.add(intent.getResultPos());
-                gameLevel.setPositionOnGrid(intent.card, intent.getResultPos(), true);
+                System.out.println("Moved " + intent.card + " from " + intent.getCurrentPos() + " to " + intent.getResultPos()); // TODO: DEBUG
                 movements.add(new CardMovement(intent.card, intent.getCurrentPos(), intent.getResultPos()));
+                
+                gameLevel.setPositionOnGrid(intent.card, intent.getResultPos(), true); // THIS IS MUTABLE AND CAN CAUSE PROBLEMS IF YOU REF IT AFTER
+                
             } else if (intent.status == MoveIntent.IntentStatus.UNRESOLVED) {
                 throw new RuntimeException("UHHHHHHHHHHHHHHHH HOW??????");
             }

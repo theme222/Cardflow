@@ -7,8 +7,11 @@ import component.mover.FlipFlop;
 import event.EventBus;
 import logic.event.AfterMovementEvent;
 import logic.movement.MovementTickResolver;
+import registry.render.FloatingLayerRegistry;
+import registry.render.RenderLayer;
 import registry.render.RendererRegistry;
 import ui.base.EmptyTileRenderer;
+import ui.card.CardMovementAnimation;
 import ui.card.CardRenderer;
 import ui.mover.ConveyorRenderer;
 import ui.mover.FlipFlopRenderer;
@@ -18,6 +21,8 @@ public class GameBootstrap {
     public static void init() {
         registerRenderer();
         registerEvents();
+        
+        registerLayers();
     }
 
     public static void registerRenderer() {
@@ -29,6 +34,11 @@ public class GameBootstrap {
     }
 
     public static void registerEvents() {
-        EventBus.register(AfterMovementEvent.class, ev -> CardRenderer.INSTANCE.onMovementTick(ev));
+        EventBus.register(AfterMovementEvent.class, CardRenderer.INSTANCE.movementListener);
+    }
+
+    public static void registerLayers() {
+        // register floating layers
+        FloatingLayerRegistry.INSTANCE.markFloating(RenderLayer.CARDANIM);
     }
 }
