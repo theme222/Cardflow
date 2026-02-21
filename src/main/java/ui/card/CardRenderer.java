@@ -13,7 +13,7 @@ import logic.event.AfterMovementEvent;
 import logic.movement.CardMovement;
 import registry.render.RenderLayer;
 import ui.render.Renderer;
-import ui.render.GameTilePane;
+import ui.game.GameTilePane;
 import ui.render.RenderState;
 import util.GridPos;
 

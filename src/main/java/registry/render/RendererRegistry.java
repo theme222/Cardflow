@@ -3,14 +3,8 @@ package registry.render;
 import java.util.HashMap;
 import java.util.Map;
 
-import component.GameTile;
-import component.card.Card;
-import component.mover.Conveyor;
-import component.mover.FlipFlop;
 import ui.render.Renderer;
 import ui.base.*;
-import ui.card.CardRenderer;
-import ui.mover.*;
 
 public final class RendererRegistry {
 

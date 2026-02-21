@@ -32,6 +32,7 @@ public class PlacementController { // Is this supposed to be a user interaction 
         }
 
         GameView.getInstance().getInventoryPane().updateUI(); // Not sure if this is the best place to put it
+        System.out.println("Clicked tile at " + tile.getGridPos());
         return Set.of(tile.getGridPos());
     }
 
