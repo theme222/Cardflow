@@ -3,6 +3,11 @@ package ui.render;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import util.Config;
 
 public abstract class Renderer<T> {
 
@@ -48,6 +53,31 @@ public abstract class Renderer<T> {
                 w,
                 h);
 
+        gc.restore();
+    }
+
+    protected void textWithCanvas(Pane node, String text, RenderState renderState, Canvas canvas) { // thx chatgpt <3
+        // RenderState is only used for width, height and alpha here. No image is read.
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        int fontSize = (int)(96 / Math.pow(2, text.length())); // rough sizing calculations
+        Font font = Font.font(Config.MONOSPACE_FONT, fontSize);
+
+        gc.save();
+        gc.setGlobalAlpha(renderState.alpha());
+        gc.setFont(font);
+        gc.setTextAlign(TextAlignment.CENTER);
+
+        Text temp = new Text(text);
+        temp.setFont(font);
+
+        // Centering the text. I have no idea what any of this means but it works ¯\_(ツ)_/¯
+        double textHeight = temp.getLayoutBounds().getHeight();
+        double baselineOffset = temp.getBaselineOffset();
+
+        double x = renderState.width() / 2;
+        double y = renderState.height() / 2 + (baselineOffset - textHeight / 2);
+
+        gc.fillText(text, x, y);
         gc.restore();
     }
 

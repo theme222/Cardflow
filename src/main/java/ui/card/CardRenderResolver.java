@@ -2,78 +2,49 @@ package ui.card;
 
 import component.card.Card;
 import javafx.scene.image.Image;
+import ui.render.RenderResolver;
 import ui.render.RenderState;
 
 import javax.imageio.ImageIO;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class CardRenderResolver {
+public final class CardRenderResolver extends RenderResolver {
     // Longer than GTA V load times
 
-    private class MaterialImage {
+    private static class MaterialImage {
 
         private static final String RESOURCE_DIR = "/asset/card/material/";
         private static final String[] FILENAMES = {"glass", "metal", "plastic", "rubber", "stone"};
         private static final Map<String, Image> images = new HashMap<>();
 
         static {
-            for (String filename : FILENAMES) {
-                images.put(
-                    filename,
-                    new Image(
-                        CardRenderResolver.class.getResourceAsStream( RESOURCE_DIR + filename + ".png"),
-            0, 0, true, false
-                    )
-                );
-            }
+            loadImageFiles(RESOURCE_DIR, FILENAMES, images, ".png");
         }
 
     }
 
-    private class SuitImage {
+    private static class SuitImage {
 
         private static final String RESOURCE_DIR = "/asset/card/suit/";
         private static final String[] FILENAMES = { "club", "heart", "diamond", "spade"};
         private static final Map<String, Image> images = new HashMap<>();
 
         static {
-            for (String filename : FILENAMES) {
-                images.put(
-                    filename,
-                    new Image(
-                            CardRenderResolver.class.getResourceAsStream( RESOURCE_DIR + filename + ".png"),
-                            0, 0, true, false
-                    )
-                );
-            }
+            loadImageFiles(RESOURCE_DIR, FILENAMES, images, ".png");
         }
 
     }
 
-    private class ValueImage {
+    private static class ValueImage {
         private static final String RESOURCE_DIR = "/asset/card/value/";
         private static final String[] FILENAMES = {"a", "2", "3", "4", "5", "6", "7", "8", "9", "10", "j", "q", "k"};
         private static final Map<String, Image> blackImages = new HashMap<>(); // _Black
         private static final Map<String, Image> whiteImages = new HashMap<>(); // _White
 
         static { // Is it better to load case by case and cache it like that? maybe. Do I care? no.
-            for (String filename : FILENAMES) {
-                blackImages.put(
-                    filename,
-                    new Image(
-                            CardRenderResolver.class.getResourceAsStream( RESOURCE_DIR + filename + "_black.png"),
-                            0, 0, true, false
-                    )
-                );
-                whiteImages.put(
-                    filename,
-                    new Image(
-                            CardRenderResolver.class.getResourceAsStream( RESOURCE_DIR + filename + "_white.png"),
-                            0, 0, true, false
-                    )
-                );
-            }
+            loadImageFiles(RESOURCE_DIR, FILENAMES, blackImages, "_black.png");
+            loadImageFiles(RESOURCE_DIR, FILENAMES, whiteImages, "_white.png");
         }
 
     }

@@ -5,6 +5,7 @@ import javafx.scene.layout.Pane;
 import registry.render.RenderLayer;
 import ui.render.RenderState;
 import ui.render.Renderer;
+import util.Config;
 import util.GridPos;
 
 public class ConveyorRenderer extends Renderer<Conveyor> {
@@ -12,17 +13,15 @@ public class ConveyorRenderer extends Renderer<Conveyor> {
     public static final ConveyorRenderer INSTANCE =
             new ConveyorRenderer();
 
-    private static final double TILE_SIZE = 85;
-
     private ConveyorRenderer() {}
 
     @Override
     protected double tileSize() {
-        return TILE_SIZE;
+        return Config.TILE_SIZE;
     }
 
     public void render(Conveyor conveyor, Pane node, GridPos pos) {
-        RenderState state = ConveyorRenderResolver.resolve(conveyor, pos, TILE_SIZE);
+        RenderState state = ConveyorRenderResolver.resolve(conveyor, pos, 1);
         draw(node, state);
     }
 

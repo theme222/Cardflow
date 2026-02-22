@@ -8,6 +8,7 @@ import javafx.scene.layout.Pane;
 import registry.render.RenderLayer;
 import ui.render.RenderState;
 import ui.render.Renderer;
+import util.Config;
 import util.GridPos;
 
 public class RedBlackFilterRenderer extends Renderer<RedBlackFilter> {
@@ -15,17 +16,15 @@ public class RedBlackFilterRenderer extends Renderer<RedBlackFilter> {
     public static final RedBlackFilterRenderer INSTANCE =
             new RedBlackFilterRenderer();
 
-    private static final double TILE_SIZE = 85;
-
     private RedBlackFilterRenderer() {}
 
     @Override
     protected double tileSize() {
-        return TILE_SIZE;
+        return Config.TILE_SIZE;
     }
 
     public void render(RedBlackFilter redBlackFilter, Pane node, GridPos pos) {
-        RenderState state = RedBlackFilterRenderResolver.resolve(redBlackFilter, pos, TILE_SIZE);
+        RenderState state = RedBlackFilterRenderResolver.resolve(redBlackFilter, pos, 1);
         draw(node, state);
     }
 

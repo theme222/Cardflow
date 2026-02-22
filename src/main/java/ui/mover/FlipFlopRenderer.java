@@ -6,6 +6,7 @@ import javafx.scene.layout.Pane;
 import registry.render.RenderLayer;
 import ui.render.RenderState;
 import ui.render.Renderer;
+import util.Config;
 import util.GridPos;
 
 public class FlipFlopRenderer extends Renderer<FlipFlop> {
@@ -13,17 +14,15 @@ public class FlipFlopRenderer extends Renderer<FlipFlop> {
     public static final FlipFlopRenderer INSTANCE =
             new FlipFlopRenderer();
 
-    private static final double TILE_SIZE = 85;
-
     private FlipFlopRenderer() {}
 
     @Override
     protected double tileSize() {
-        return TILE_SIZE;
+        return Config.TILE_SIZE;
     }
 
     public void render(FlipFlop flipFlop, Pane node, GridPos pos) {
-        RenderState state = FlipFlopRenderResolver.resolve(flipFlop, pos, TILE_SIZE);
+        RenderState state = FlipFlopRenderResolver.resolve(flipFlop, pos, 1);
         draw(node, state);
     }
 

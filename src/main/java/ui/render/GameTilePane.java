@@ -76,6 +76,11 @@ public class GameTilePane extends Button {
             System.out.println("Rendering card on tile " + tile.getGridPos());
             render(RenderLayer.CARD, tile.getCard());
         }
+
+        if (tile.getModifier() != null) {
+            render(RenderLayer.MODIFIER, tile.getModifier());
+        }
+
     }
 
     private void clearLayers() {

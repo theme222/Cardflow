@@ -5,10 +5,13 @@ import java.util.Map;
 
 import component.GameTile;
 import component.card.Card;
+import component.modifier.changer.*;
 import component.mover.Conveyor;
 import component.mover.FlipFlop;
 import component.mover.ParityFilter;
 import component.mover.RedBlackFilter;
+import ui.modifier.changer.ArithmeticRenderer;
+import ui.modifier.changer.SetterRenderer;
 import ui.render.Renderer;
 import ui.base.*;
 import ui.card.CardRenderer;
@@ -28,6 +31,10 @@ public final class RendererRegistry {
         register(FlipFlop.class, FlipFlopRenderer.INSTANCE);
         register(ParityFilter.class, ParityFilterRenderer.INSTANCE);
         register(RedBlackFilter.class, RedBlackFilterRenderer.INSTANCE);
+        register(Arithmetic.class, ArithmeticRenderer.INSTANCE);
+        register(MaterialSetter.class, SetterRenderer.INSTANCE);
+        register(NumberSetter.class, SetterRenderer.INSTANCE);
+        register(SuitSetter.class, SetterRenderer.INSTANCE);
     }
 
     public <T> void register(Class<T> type, Renderer<? super T> renderer) {

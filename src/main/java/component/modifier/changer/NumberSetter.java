@@ -3,7 +3,7 @@ package component.modifier.changer;
 import component.card.Card;
 import logic.GameLevel;
 
-public class NumberSetter extends Changer<Integer> {
+public class NumberSetter extends Setter<Integer> {
 
     @Override
     public void change(Card toModify) {

@@ -1,25 +1,25 @@
 package ui.mover;
 
-import component.mover.Conveyor;
 import component.mover.FlipFlop;
 import javafx.scene.image.Image;
-import ui.mover.helper.MoverTopology;
-import ui.mover.helper.MoverTopology.MoverShape;
-import ui.mover.helper.RenderResolver;
+import ui.render.RenderResolver;
 import ui.render.RenderState;
 import util.GridPos;
 
-public final class FlipFlopRenderResolver extends RenderResolver {
+import java.util.HashMap;
+import java.util.Map;
 
-    private static final Image BASE_IMAGE = new Image(
-            FlipFlopRenderResolver.class.getResourceAsStream(
-                    "/asset/tiles/mover/conveyor/conveyor-base.png"),
-            0, 0, true, false);
+public final class FlipFlopRenderResolver extends MoverRenderResolver {
 
-    private static final Image TURN_RIGHT_IMAGE = new Image(
-            FlipFlopRenderResolver.class.getResourceAsStream(
-                    "/asset/tiles/mover/conveyor/conveyor-turn-right.png"),
-            0, 0, true, false);
+    private static class FlipFlopImage {
+        private static final String RESOURCE_DIR = "/asset/tiles/mover/flipflop/";
+        private static final String[] FILENAMES = {"flipflop-base", "flipflop-turn"};
+        public static final Map<String, Image> images = new HashMap<>();
+
+        static {
+            loadImageFiles(RESOURCE_DIR, FILENAMES, images, ".png");
+        }
+    }
 
     private FlipFlopRenderResolver() {}
 
@@ -28,9 +28,9 @@ public final class FlipFlopRenderResolver extends RenderResolver {
             GridPos pos,
             double alpha
     ) {
-        MoverShape topology = MoverTopology.resolve(flipFlop, pos);
+        MoverTopology.MoverShape topology = MoverTopology.resolve(flipFlop, pos);
 
-        SpriteData sprite = selectSprite(topology);
+        SpriteData sprite = selectSprite(topology, FlipFlopImage.images, "flipflop");
 
         double rotation = rotationFor(flipFlop) + sprite.rotationOffset();
 
@@ -42,19 +42,6 @@ public final class FlipFlopRenderResolver extends RenderResolver {
                 sprite.mirrorX(),
                 alpha
         );
-    }
-
-    private static SpriteData selectSprite( MoverShape topology ) {
-        return switch (topology) {
-            case TURN_RIGHT ->
-                new SpriteData(TURN_RIGHT_IMAGE, -90, false);
-
-            case TURN_LEFT ->
-                new SpriteData(TURN_RIGHT_IMAGE, +90, true);
-
-            default ->
-                new SpriteData(BASE_IMAGE, 0, false);
-        };
     }
 
 }

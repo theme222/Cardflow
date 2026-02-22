@@ -3,7 +3,7 @@ package component.modifier.changer;
 import component.card.Card;
 import logic.GameLevel;
 
-public class Divider extends Changer<Integer> { // Generic type argument can't be primitive. This works basically the same way tho.
+public class Divider extends Arithmetic { // Generic type argument can't be primitive. This works basically the same way tho.
 
     @Override
     public void setChange(Integer changeValue) { // Can't be <= 0
