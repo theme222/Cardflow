@@ -7,6 +7,9 @@ import logic.GameLevel;
 
 public class Exit extends Pathway {
 
+    private int countCorrectExits = 0;
+    private int countTotalExits = 0;
+
     public Exit() {
     }
 
@@ -14,10 +17,22 @@ public class Exit extends Pathway {
     public void modify() {
         Card toRemove = GameLevel.getInstance().getTile(getGridPos()).getCard();
         if (GameLevel.getInstance().removeCard(toRemove)) {
-            System.out.println("Got card " + toRemove + " expected " + getCurrentCard(GameLevel.getInstance().OUTPUT_CARDS));
+            Card expectedCard = getCurrentCard(GameLevel.getInstance().OUTPUT_CARDS);
+            System.out.println("Got card " + toRemove + " expected " + expectedCard);
+            
+            
+            if(toRemove.equals(expectedCard, true)) {
+                System.out.println("Correct card exited!");
+                countCorrectExits++;
+            } else {
+                System.out.println("Incorrect card exited!");
+            }
+            countTotalExits++;
+
             GameLevel.getInstance().exitedCardsList.add(toRemove);
-            EventBus.emit(new CardExitEvent(getGridPos(), toRemove));
+            EventBus.emit(new CardExitEvent(getGridPos(), toRemove, countCorrectExits, countTotalExits));
             currentIndex++;
+            
         }
     }
 

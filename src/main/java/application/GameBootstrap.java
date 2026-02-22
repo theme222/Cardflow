@@ -8,7 +8,10 @@ import component.modifier.pathway.event.CardExitEvent;
 import component.mover.Conveyor;
 import component.mover.FlipFlop;
 import event.EventBus;
+import logic.GameEndCondition;
+import logic.GameWin;
 import logic.event.AfterMovementEvent;
+import logic.event.end.GameWinEvent;
 import logic.movement.MovementTickResolver;
 import registry.render.FloatingLayerRegistry;
 import registry.render.RenderLayer;
@@ -42,6 +45,10 @@ public class GameBootstrap {
         EventBus.register(AfterMovementEvent.class, CardRenderer.INSTANCE.movementListener);
         EventBus.register(CardEnterEvent.class, EntranceEffect.INSTANCE::applyEffect);
         EventBus.register(CardExitEvent.class, ExitEffect.INSTANCE::applyEffect);
+
+        EventBus.register(CardExitEvent.class, GameEndCondition.INSTANCE::checkWinCondition);
+
+        EventBus.register(GameWinEvent.class, GameWin.INSTANCE::onWin);
     }
 
     public static void registerLayers() {
