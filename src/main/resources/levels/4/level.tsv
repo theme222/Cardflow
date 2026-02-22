@@ -1,5 +1,5 @@
 .	.	.	ENTER
 VAP	VAP	.	.
-VAP	SETNUM:11	.	.
+VAP	SETVAL:11	.	.
 VAP	VAP	.	.
 .	.	.	EXIT

@@ -20,7 +20,7 @@ public class RedBlackFilter extends Mover {
 
         if (toMove == null) return Direction.STAY;
         else if (toMove.getSuit() == Card.Suit.HEART || toMove.getSuit() == Card.Suit.DIAMOND) return getRotation();
-        else return getRotation().next();
+        else return getRotation().prev();
     }
 
     @Override

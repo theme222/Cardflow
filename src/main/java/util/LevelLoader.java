@@ -77,7 +77,7 @@ public class LevelLoader {
             case "DIV" -> new Divider(Integer.parseInt(value));
             case "SETSUT" -> new SuitSetter(parseSuit(value));
             case "SETMAT" -> new MaterialSetter(parseMaterial(value));
-            case "SETNUM" -> new NumberSetter(Integer.parseInt(value));
+            case "SETVAL" -> new ValueSetter(Integer.parseInt(value));
             case "VAP" -> new Vaporizer();
             case "MERGE" -> new Merger();
             case "SPLIT" -> new Splitter();
@@ -91,7 +91,7 @@ public class LevelLoader {
         String moverClassName = moverJson.getString("name").toUpperCase();
         int moverCount = moverJson.getInt("count");
 
-        String[] validClassNames = { "CONVEYOR", "FLIPFLOP", "PARITYFILTER", "REDBLACKFILTER" };
+        String[] validClassNames = { "CONVEYOR", "FLIPFLOP", "PARITYFILTER", "REDBLACKFILTER", "DELAY" };
         if (moverCount < -1)
             throw new IllegalArgumentException("Invalid mover count " + moverCount); // -1 for infinity
 

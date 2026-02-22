@@ -19,7 +19,7 @@ public class ParityFilter extends Mover {
 
         if (toMove == null) return Direction.STAY;
         else if (toMove.getValue() % 2 == 0) return getRotation();
-        else return getRotation().next();
+        else return getRotation().prev();
     }
 
     @Override

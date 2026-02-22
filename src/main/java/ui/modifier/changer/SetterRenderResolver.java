@@ -1,9 +1,7 @@
 package ui.modifier.changer;
 
 import component.modifier.changer.*;
-import component.mover.Conveyor;
 import javafx.scene.image.Image;
-import ui.mover.MoverRenderResolver;
 import ui.render.RenderResolver;
 import ui.render.RenderState;
 import util.Config;
@@ -41,7 +39,7 @@ public final class SetterRenderResolver extends RenderResolver {
             double alpha
     ) {
         Image symbol;
-        if (setter instanceof NumberSetter)
+        if (setter instanceof ValueSetter)
             symbol = SetterImage.images.get("modify-base");
         else // Suit & Material Setter
             symbol = SetterImage.images.get("modify-" + setter.getChange().toString().toLowerCase()); // it is simply a skill issue if this doesn't work

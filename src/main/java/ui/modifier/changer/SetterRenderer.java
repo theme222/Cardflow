@@ -1,14 +1,9 @@
 package ui.modifier.changer;
 
-import component.modifier.changer.Arithmetic;
+import component.modifier.changer.ValueSetter;
 import component.modifier.changer.Setter;
-import component.modifier.changer.SuitSetter;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.TextAlignment;
 import registry.render.RenderLayer;
 import ui.render.RenderState;
 import ui.render.Renderer;
@@ -30,6 +25,9 @@ public class SetterRenderer extends Renderer<Setter<?>> {
     public void render(Setter<?> setter, Pane node, GridPos pos) {
         RenderState state = SetterRenderResolver.resolve(setter, pos, Config.MODIFIER_ALPHA);
         draw(node, state);
+        if (setter instanceof ValueSetter)
+            textWithCanvas(node, setter.getChange().toString(), state, (Canvas)node.getChildren().getFirst());
+
     }
 
     @Override

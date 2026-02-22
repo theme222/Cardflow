@@ -30,6 +30,7 @@ public abstract class MoverRenderResolver extends RenderResolver {
     ) {}
 
     public static SpriteData selectSprite(MoverTopology.MoverShape topology, Map<String, Image> images, String className) {
+        // Sprite name should be in the form of className + - + action so we can reuse this function :D
         return switch (topology) {
             case TURN_RIGHT -> new SpriteData(images.get(className + "-turn"), -90, false);
             case TURN_LEFT -> new SpriteData(images.get(className + "-turn"), +90, true);
@@ -63,13 +64,13 @@ public abstract class MoverRenderResolver extends RenderResolver {
 
             for (int i = 0; i < tiles.length; i++) {
                 GameTile tile = tiles[i];
-                if (tile != null && tile.getMover() != null && tile.getMover() instanceof Conveyor) {
-                    Conveyor adjacentConveyor = (Conveyor) tile.getMover();
-                    Direction adjacentDirection = adjacentConveyor.getRotation();
+                if (tile != null && tile.getMover() != null) {
+                    Mover adjacentMover = tile.getMover();
+                    Direction adjacentDirection = adjacentMover.getRotation();
                     // check if facing into
                     if(!tile.getGridPos().addDirection(adjacentDirection).equals(pos)) continue;
 
-                    System.out.println("Adjacent conveyor at " + adjacentConveyor.getGridPos() +
+                    System.out.println("Adjacent conveyor at " + adjacentMover.getGridPos() +
                             " facing " + adjacentDirection +
                             " relative to conveyor at " + pos +
                             " facing " + forward);

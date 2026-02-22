@@ -1,16 +1,15 @@
 package component.modifier.changer;
 
 import component.card.Card;
-import logic.GameLevel;
 
-public class NumberSetter extends Setter<Integer> {
+public class ValueSetter extends Setter<Integer> {
 
     @Override
     public void change(Card toModify) {
         if (toModify != null) toModify.setValue(changeValue);
     }
 
-    public NumberSetter(int changeValue) {
+    public ValueSetter(int changeValue) {
         this.changeType = ChangeType.NUMBER;
         setChange(changeValue);
     }

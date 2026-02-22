@@ -29,6 +29,7 @@ public class PlayerInventory {
             case "FLIPFLOP" -> new FlipFlop(rotation);
             case "PARITYFILTER" -> new ParityFilter(rotation);
             case "REDBLACKFILTER" -> new RedBlackFilter(rotation);
+            case "DELAY" -> new Delay(rotation);
             default -> throw new IllegalStateException("Unknown name: " + name);
         };
     }

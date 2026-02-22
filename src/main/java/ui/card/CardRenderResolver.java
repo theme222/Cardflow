@@ -78,14 +78,8 @@ public final class CardRenderResolver extends RenderResolver {
 
         boolean useWhite = true; // TODO idk man it kinda just looks better with white all the time
 
-        String valueString = String.valueOf(card.getValue());
-        if (valueString.equals("1")) valueString = "a";
-        else if (valueString.equals("11")) valueString = "j";
-        else if (valueString.equals("12")) valueString = "q";
-        else if (valueString.equals("13")) valueString = "k";
-
         Image toRender = (useWhite ? ValueImage.whiteImages: ValueImage.blackImages).getOrDefault(
-            valueString,
+            card.getValueAsString(),
             ValueImage.whiteImages.get("1")
         );
 

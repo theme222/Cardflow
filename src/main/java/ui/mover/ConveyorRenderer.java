@@ -9,6 +9,7 @@ import util.Config;
 import util.GridPos;
 
 public class ConveyorRenderer extends Renderer<Conveyor> {
+    // I'm starting to realize after I've already copy and pasted all these files that I could have done it in one.
 
     public static final ConveyorRenderer INSTANCE =
             new ConveyorRenderer();
