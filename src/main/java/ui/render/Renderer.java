@@ -11,8 +11,6 @@ import util.Config;
 
 public abstract class Renderer<T> {
 
-    protected abstract double tileSize();
-
     public abstract void render(T tile, Pane node, util.GridPos pos);
 
     protected void draw(Pane node, RenderState state) {
@@ -25,7 +23,7 @@ public abstract class Renderer<T> {
         double w = state.width();
         double h = state.height();
 
-        double tile = tileSize();
+        double tile = Config.TILE_SIZE;
 
         // 🔥 CENTER THE CANVAS IN THE TILE
         canvas.setLayoutX((tile - w) / 2.0);

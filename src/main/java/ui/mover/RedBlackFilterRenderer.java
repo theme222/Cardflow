@@ -18,11 +18,6 @@ public class RedBlackFilterRenderer extends Renderer<RedBlackFilter> {
 
     private RedBlackFilterRenderer() {}
 
-    @Override
-    protected double tileSize() {
-        return Config.TILE_SIZE;
-    }
-
     public void render(RedBlackFilter redBlackFilter, Pane node, GridPos pos) {
         RenderState state = RedBlackFilterRenderResolver.resolve(redBlackFilter, pos, 1);
         draw(node, state);

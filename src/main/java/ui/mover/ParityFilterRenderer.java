@@ -17,11 +17,6 @@ public class ParityFilterRenderer extends Renderer<ParityFilter> {
 
     private ParityFilterRenderer() {}
 
-    @Override
-    protected double tileSize() {
-        return Config.TILE_SIZE;
-    }
-
     public void render(ParityFilter parityFilter, Pane node, GridPos pos) {
         RenderState state = ParityFilterRenderResolver.resolve(parityFilter, pos, 1);
         draw(node, state);

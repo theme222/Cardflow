@@ -6,9 +6,11 @@ import java.util.Map;
 import component.GameTile;
 import component.card.Card;
 import component.modifier.changer.*;
+import component.modifier.combinator.Combinator;
 import component.mover.*;
 import ui.modifier.changer.ArithmeticRenderer;
 import ui.modifier.changer.SetterRenderer;
+import ui.modifier.combinator.CombinatorRenderer;
 import ui.render.Renderer;
 import ui.base.*;
 import ui.card.CardRenderer;
@@ -33,6 +35,7 @@ public final class RendererRegistry {
         register(MaterialSetter.class, SetterRenderer.INSTANCE);
         register(ValueSetter.class, SetterRenderer.INSTANCE);
         register(SuitSetter.class, SetterRenderer.INSTANCE);
+        register(Combinator.class, CombinatorRenderer.INSTANCE);
     }
 
     public <T> void register(Class<T> type, Renderer<? super T> renderer) {

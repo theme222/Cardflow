@@ -16,11 +16,6 @@ public class FlipFlopRenderer extends Renderer<FlipFlop> {
 
     private FlipFlopRenderer() {}
 
-    @Override
-    protected double tileSize() {
-        return Config.TILE_SIZE;
-    }
-
     public void render(FlipFlop flipFlop, Pane node, GridPos pos) {
         RenderState state = FlipFlopRenderResolver.resolve(flipFlop, pos, 1);
         draw(node, state);

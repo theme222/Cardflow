@@ -4,6 +4,7 @@ import component.card.Card;
 import javafx.scene.image.Image;
 import ui.render.RenderResolver;
 import ui.render.RenderState;
+import util.Helper;
 
 import javax.imageio.ImageIO;
 import java.util.HashMap;
@@ -79,7 +80,7 @@ public final class CardRenderResolver extends RenderResolver {
         boolean useWhite = true; // TODO idk man it kinda just looks better with white all the time
 
         Image toRender = (useWhite ? ValueImage.whiteImages: ValueImage.blackImages).getOrDefault(
-            card.getValueAsString(),
+            Helper.getValueAsString(card.getValue()),
             ValueImage.whiteImages.get("1")
         );
 

@@ -31,8 +31,4 @@ public class EmptyTileRenderer extends Renderer<GameTile> {
         return RenderLayer.BASE;
     }
 
-    @Override
-    protected double tileSize() {
-        return Config.TILE_SIZE;
-    }
 }

@@ -16,11 +16,6 @@ public class ConveyorRenderer extends Renderer<Conveyor> {
 
     private ConveyorRenderer() {}
 
-    @Override
-    protected double tileSize() {
-        return Config.TILE_SIZE;
-    }
-
     public void render(Conveyor conveyor, Pane node, GridPos pos) {
         RenderState state = ConveyorRenderResolver.resolve(conveyor, pos, 1);
         draw(node, state);

@@ -16,17 +16,10 @@ public class CardRenderer extends Renderer<Card> {
     public static final CardRenderer INSTANCE =
             new CardRenderer();
 
-    private static final double TILE_SIZE = 85;
-
     private static final Font CARD_FONT =
             Font.font("Mozart NBP", 16);
 
     private CardRenderer() {}
-
-    @Override
-    protected double tileSize() {
-        return TILE_SIZE;
-    }
 
     @Override
     public void render(Card card, Pane node, GridPos pos) {

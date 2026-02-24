@@ -9,6 +9,7 @@ import ui.render.RenderState;
 import ui.render.Renderer;
 import util.Config;
 import util.GridPos;
+import util.Helper;
 
 public class SetterRenderer extends Renderer<Setter<?>> {
 
@@ -17,16 +18,11 @@ public class SetterRenderer extends Renderer<Setter<?>> {
 
     private SetterRenderer() {}
 
-    @Override
-    protected double tileSize() {
-        return Config.TILE_SIZE;
-    }
-
     public void render(Setter<?> setter, Pane node, GridPos pos) {
         RenderState state = SetterRenderResolver.resolve(setter, pos, Config.MODIFIER_ALPHA);
         draw(node, state);
-        if (setter instanceof ValueSetter)
-            textWithCanvas(node, setter.getChange().toString(), state, (Canvas)node.getChildren().getFirst());
+        if (setter instanceof ValueSetter valueSetter)
+            textWithCanvas(node, Helper.getValueAsString(valueSetter.getChange()).toUpperCase(), state, (Canvas)node.getChildren().getFirst());
 
     }
 

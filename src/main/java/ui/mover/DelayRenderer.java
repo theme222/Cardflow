@@ -15,11 +15,6 @@ public class DelayRenderer extends Renderer<Delay> {
 
     private DelayRenderer() {}
 
-    @Override
-    protected double tileSize() {
-        return Config.TILE_SIZE;
-    }
-
     public void render(Delay delay, Pane node, GridPos pos) {
         RenderState state = DelayRenderResolver.resolve(delay, pos, 1);
         draw(node, state);

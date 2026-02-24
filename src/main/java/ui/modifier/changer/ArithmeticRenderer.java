@@ -20,11 +20,6 @@ public class ArithmeticRenderer extends Renderer<Arithmetic> {
 
     private ArithmeticRenderer() {}
 
-    @Override
-    protected double tileSize() {
-        return Config.TILE_SIZE;
-    }
-
     public void render(Arithmetic arithmetic, Pane node, GridPos pos) {
         RenderState state = ArithmeticRenderResolver.resolve(arithmetic, pos, Config.MODIFIER_ALPHA);
 

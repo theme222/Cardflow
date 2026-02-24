@@ -75,16 +75,7 @@ public class Card implements GridIndexable {
         this.value = zeroBased + 1;
     }
 
-    public String getValueAsString() {
-        // Always returns the lowercase version
-        return switch (getValue()) {
-            case 1 -> "a";
-            case 11 -> "j";
-            case 12 -> "q";
-            case 13 -> "k";
-            default -> String.valueOf(getValue());
-        };
-    }
+
 
     // GETTERS & SETTERS //
 
