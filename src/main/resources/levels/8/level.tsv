@@ -1,0 +1,7 @@
+.	.	ENTER	.	.
+.	.	.	.	.
+.	ADD:2	ADD:2	ADD:2	.
+.	ADD:2	EXIT	ADD:2	.
+.	ADD:2	ADD:2	ADD:2	.
+.	.	.	.	.
+.	.	SETMAT:m	.	.

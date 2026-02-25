@@ -75,6 +75,8 @@ public class Card implements GridIndexable {
         this.value = zeroBased + 1;
     }
 
+
+
     // GETTERS & SETTERS //
 
     public Material getMaterial() { return material; }

@@ -1,33 +1,27 @@
 package component.mover;
 
+import component.card.Card;
+import logic.GameLevel;
 import util.Direction;
 
 public class Delay extends Mover {
 
-    private boolean isActive;
+    private Card cardToMove; // The current card it was trying to move if it isn't the same (because it got vaporized) then it will reset
 
     public Delay(Direction rot) {
         super(rot);
-        isActive = false;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
     }
 
     @Override
     public Direction getDirectionStateless() {
+        boolean isActive = cardToMove == GameLevel.getInstance().getTile(getGridPos()).getCard();
         return isActive ? getRotation(): Direction.STAY;
     }
 
     @Override
     public Direction getDirection() {
         Direction toReturn = getDirectionStateless();
-        isActive = !isActive;
+        cardToMove = GameLevel.getInstance().getTile(getGridPos()).getCard();
         return toReturn;
     }
 

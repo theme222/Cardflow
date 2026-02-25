@@ -1,0 +1,24 @@
+{
+  "name": "What goes around comes around",
+  "width": 5,
+  "height": 9,
+
+  "inputCards": [
+    { "suit": "SPADE", "value": 2, "material": "PLASTIC" },
+    { "suit": "HEART", "value": 2, "material": "PLASTIC" },
+    { "suit": "DIAMOND", "value": 2, "material": "PLASTIC" },
+    { "suit": "CLUB", "value": 2, "material": "PLASTIC" }
+  ],
+
+  "outputCards": [
+    { "suit": "SPADE", "value": 11 },
+    { "suit": "HEART", "value": 11 },
+    { "suit": "DIAMOND", "value": 11 },
+    { "suit": "CLUB", "value": 11 }
+  ],
+
+  "availableMovers": [
+    { "name": "CONVEYOR", "count": 24}
+  ]
+}
+

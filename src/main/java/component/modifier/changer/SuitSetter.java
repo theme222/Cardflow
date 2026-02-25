@@ -3,10 +3,10 @@ package component.modifier.changer;
 import component.card.Card;
 import logic.GameLevel;
 
-public class SuitSetter extends Changer<Card.Suit> {
+public class SuitSetter extends Setter<Card.Suit> {
 
-    public void modify() {
-        Card toModify = GameLevel.getInstance().getTile(getGridPos()).getCard();
+    @Override
+    public void change(Card toModify) {
         if (toModify != null) toModify.setSuit(changeValue);
     }
 

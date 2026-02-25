@@ -2,9 +2,7 @@ package util;
 
 import component.card.Card;
 import component.modifier.changer.*;
-import component.modifier.combinator.Merger;
-import component.modifier.combinator.Splitter;
-import component.modifier.combinator.Vaporizer;
+import component.modifier.combinator.*;
 import logic.GameLevel;
 import component.GameTile;
 import component.modifier.Modifier;
@@ -73,12 +71,16 @@ public class LevelLoader {
             case "." -> null;
             case "ADD" -> new Adder(Integer.parseInt(value));
             case "SUB" -> new Subtractor(Integer.parseInt(value));
+            case "MUL" -> new Multiplier(Integer.parseInt(value));
+            case "DIV" -> new Divider(Integer.parseInt(value));
             case "SETSUT" -> new SuitSetter(parseSuit(value));
             case "SETMAT" -> new MaterialSetter(parseMaterial(value));
-            case "SETNUM" -> new NumberSetter(Integer.parseInt(value));
+            case "SETVAL" -> new ValueSetter(Integer.parseInt(value));
             case "VAP" -> new Vaporizer();
             case "MERGE" -> new Merger();
             case "SPLIT" -> new Splitter();
+            case "DUP" -> new Duplicator();
+            case "ABS" -> new Absorber();
             case "ENTER" -> new Entrance();
             case "EXIT" -> new Exit();
             default -> throw new IllegalArgumentException("Invalid modifier " + modifier);
@@ -89,7 +91,7 @@ public class LevelLoader {
         String moverClassName = moverJson.getString("name").toUpperCase();
         int moverCount = moverJson.getInt("count");
 
-        String[] validClassNames = { "CONVEYOR", "FLIPFLOP" };
+        String[] validClassNames = { "CONVEYOR", "FLIPFLOP", "PARITYFILTER", "REDBLACKFILTER", "DELAY" };
         if (moverCount < -1)
             throw new IllegalArgumentException("Invalid mover count " + moverCount); // -1 for infinity
 

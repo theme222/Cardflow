@@ -1,26 +1,30 @@
 package ui.mover;
 
 import component.mover.Conveyor;
-import ui.mover.helper.MoverTopology;
-import ui.mover.helper.MoverTopology.MoverShape;
-import ui.mover.helper.RenderResolver;
+import ui.card.CardRenderResolver;
+import ui.render.RenderResolver;
 import ui.render.RenderState;
-import ui.render.Renderer;
+import util.Direction;
 import util.GridPos;
 
 import javafx.scene.image.Image;
 
-public final class ConveyorRenderResolver extends RenderResolver {
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 
-    private static final Image BASE_IMAGE = new Image(
-            ConveyorRenderResolver.class.getResourceAsStream(
-                    "/asset/tiles/mover/conveyor/conveyor-base.png"),
-            0, 0, true, false);
+public final class ConveyorRenderResolver extends MoverRenderResolver {
 
-    private static final Image TURN_RIGHT_IMAGE = new Image(
-            ConveyorRenderResolver.class.getResourceAsStream(
-                    "/asset/tiles/mover/conveyor/conveyor-turn-right.png"),
-            0, 0, true, false);
+    private static class ConveyorImage {
+        private static final String RESOURCE_DIR = "/asset/tiles/mover/conveyor/";
+        private static final String[] FILENAMES = {"-base", "-turn", "-merge-a", "-merge-b", "-merge-c"};
+        public static final Map<String, Image> images = new HashMap<>();
+
+        static {
+            loadImageFiles(RESOURCE_DIR + "conveyor", FILENAMES, images, ".png");
+        }
+    }
+
 
     private ConveyorRenderResolver() {}
 
@@ -29,34 +33,21 @@ public final class ConveyorRenderResolver extends RenderResolver {
             GridPos pos,
             double alpha
     ) {
-        MoverShape topology = MoverTopology.resolve(conveyor, pos);
-
-        SpriteData sprite = selectSprite(topology);
-
+        EnumSet<Direction> topology = MoverTopology.resolve(conveyor, pos);
+        SpriteData sprite = SpriteSelector.regular(topology, ConveyorImage.images, "conveyor");
         double rotation = rotationFor(conveyor) + sprite.rotationOffset();
 
         return new RenderState(
                 sprite.image(),
                 85,
                 85,
-                0,0,
+                0,
+                0,
                 rotation,
                 sprite.mirrorX(),
                 alpha
         );
     }
 
-    private static RenderResolver.SpriteData selectSprite(MoverTopology.MoverShape topology ) {
-        return switch (topology) {
-            case TURN_RIGHT ->
-                    new RenderResolver.SpriteData(TURN_RIGHT_IMAGE, -90, false);
-
-            case TURN_LEFT ->
-                    new RenderResolver.SpriteData(TURN_RIGHT_IMAGE, +90, true);
-
-            default ->
-                    new RenderResolver.SpriteData(BASE_IMAGE, 0, false);
-        };
-    }
 
 }

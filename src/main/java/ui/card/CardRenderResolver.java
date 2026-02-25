@@ -2,44 +2,85 @@ package ui.card;
 
 import component.card.Card;
 import javafx.scene.image.Image;
+import ui.render.RenderResolver;
 import ui.render.RenderState;
+import util.Helper;
 
-public final class CardRenderResolver {
+import javax.imageio.ImageIO;
+import java.util.HashMap;
+import java.util.Map;
 
-    private static final Image PLASTIC_CARD_IMAGE = new Image(
-            CardRenderResolver.class.getResourceAsStream( "/asset/card/plastic-card.png"),
-            0, 0,
-            true,
-            false
-    );
+public final class CardRenderResolver extends RenderResolver {
+    // Longer than GTA V load times
 
-    private static final Image STONE_CARD_IMAGE = new Image(
-            CardRenderResolver.class.getResourceAsStream( "/asset/card/stone-card.png"),
-            0, 0,
-            true,
-            false
-    );
+    private static class MaterialImage {
 
-    private static final Image METAL_CARD_IMAGE = new Image(
-            CardRenderResolver.class.getResourceAsStream( "/asset/card/metal-card.png"),
-            0, 0,
-            true,
-            false
-    );
+        private static final String RESOURCE_DIR = "/asset/card/material/";
+        private static final String[] FILENAMES = {"glass", "metal", "plastic", "rubber", "stone"};
+        private static final Map<String, Image> images = new HashMap<>();
 
+        static {
+            loadImageFiles(RESOURCE_DIR, FILENAMES, images, ".png");
+        }
+
+    }
+
+    private static class SuitImage {
+
+        private static final String RESOURCE_DIR = "/asset/card/suit/";
+        private static final String[] FILENAMES = { "club", "heart", "diamond", "spade"};
+        private static final Map<String, Image> images = new HashMap<>();
+
+        static {
+            loadImageFiles(RESOURCE_DIR, FILENAMES, images, ".png");
+        }
+
+    }
+
+    private static class ValueImage {
+        private static final String RESOURCE_DIR = "/asset/card/value/";
+        private static final String[] FILENAMES = {"a", "2", "3", "4", "5", "6", "7", "8", "9", "10", "j", "q", "k"};
+        private static final Map<String, Image> images = new HashMap<>(); // _Black
+
+        static { // Is it better to load case by case and cache it like that? maybe. Do I care? no.
+            loadImageFiles(RESOURCE_DIR, FILENAMES, images, ".png");
+        }
+
+    }
 
     private static final double CARD_WIDTH  = 50;
     private static final double CARD_HEIGHT = 70;
 
     private CardRenderResolver() {}
 
-    public static RenderState resolve(Card card) {
-        Image toRender = switch (card.getMaterial()) {
-            case PLASTIC -> PLASTIC_CARD_IMAGE;
-            case STONE -> STONE_CARD_IMAGE;
-            case METAL -> METAL_CARD_IMAGE;
-            default -> PLASTIC_CARD_IMAGE;
-        };
+    public static RenderState resolveMaterial(Card card) {
+
+        Image toRender = MaterialImage.images.getOrDefault(
+            card.getMaterial().toString().toLowerCase(),
+            MaterialImage.images.get("plastic")
+        );
+
+        return new RenderState(toRender, CARD_WIDTH, CARD_HEIGHT, 0, 0, 0, false, card.getMaterial() == Card.Material.GLASS ? 0.5: 1.0);
+    }
+
+    public static RenderState resolveSuit(Card card) {
+
+        Image toRender = SuitImage.images.getOrDefault(
+                card.getSuit().toString().toLowerCase(),
+                MaterialImage.images.get("spade")
+        );
+
         return new RenderState(toRender, CARD_WIDTH, CARD_HEIGHT, 0, 0, 0, false, 1.0);
     }
+
+    public static RenderState resolveValue(Card card) {
+
+        Image toRender = ValueImage.images.getOrDefault(
+            Helper.getValueAsString(card.getValue()),
+            ValueImage.images.get("1")
+        );
+
+        return new RenderState(toRender, CARD_WIDTH, CARD_HEIGHT, 0, 0, 0, false, 1.0);
+    }
+
 }

@@ -1,0 +1,19 @@
+{
+  "name": "Reduce Reuse Recycle",
+  "width": 4,
+  "height": 7,
+
+  "inputCards": [
+    { "suit": "DIAMOND", "value": 1, "material": "PLASTIC" }
+  ],
+
+  "outputCards": [
+    { "suit": "DIAMOND", "value": 7, "material": "PLASTIC" }
+  ],
+
+  "availableMovers": [
+    { "name": "CONVEYOR", "count": -1},
+    { "name": "FLIPFLOP", "count": -1}
+  ]
+}
+

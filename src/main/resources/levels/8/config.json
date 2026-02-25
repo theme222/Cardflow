@@ -1,0 +1,25 @@
+{
+  "name": "Half n Half",
+  "width": 5,
+  "height": 7,
+
+  "inputCards": [
+    { "suit": "CLUB", "value": 6, "material": "PLASTIC" },
+    { "suit": "DIAMOND", "value": 6, "material": "PLASTIC" },
+    { "suit": "CLUB", "value": 10, "material": "PLASTIC" },
+    { "suit": "DIAMOND", "value": 10, "material": "PLASTIC" }
+  ],
+
+  "outputCards": [
+    { "suit": "CLUB", "value": 6 },
+    { "suit": "DIAMOND", "value": 8 },
+    { "suit": "CLUB", "value": 10 },
+    { "suit": "DIAMOND", "value": 12 }
+  ],
+
+  "availableMovers": [
+    { "name": "CONVEYOR", "count": -1 },
+    { "name": "REDBLACKFILTER", "count": 1 }
+  ]
+}
+

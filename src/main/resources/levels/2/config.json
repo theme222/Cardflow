@@ -1,16 +1,18 @@
 {
   "name": "Can we get much Higher?",
-  "width": 5,
-  "height": 9,
+  "width": 4,
+  "height": 4,
 
   "inputCards": [
-    { "suit": "HEART", "value": 13, "material": "PLASTIC" },
-    { "suit": "CLUB", "value": 1, "material": "PLASTIC" }
+    { "suit": "HEART", "value": 11, "material": "PLASTIC" },
+    { "suit": "HEART", "value": 12, "material": "PLASTIC" },
+    { "suit": "HEART", "value": 13, "material": "PLASTIC" }
   ],
 
   "outputCards": [
-    { "suit": "HEART", "value": 1},
-    { "suit": "CLUB", "value": 2}
+    { "suit": "HEART", "value": 1 },
+    { "suit": "HEART", "value": 2 },
+    { "suit": "HEART", "value": 3 }
   ],
 
   "availableMovers": [

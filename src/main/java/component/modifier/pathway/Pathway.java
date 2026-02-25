@@ -6,7 +6,7 @@ import component.modifier.Modifier;
 
 import java.util.List;
 
-public abstract class Pathway extends Modifier {
+public abstract class Pathway extends Modifier { // Pathways can't be disabled
 
     protected int currentIndex;
 

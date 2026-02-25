@@ -1,36 +1,43 @@
 package ui.mover;
 
-import component.mover.Conveyor;
 import component.mover.FlipFlop;
 import javafx.scene.image.Image;
-import ui.mover.helper.MoverTopology;
-import ui.mover.helper.MoverTopology.MoverShape;
-import ui.mover.helper.RenderResolver;
+import ui.render.RenderResolver;
 import ui.render.RenderState;
+import util.Direction;
 import util.GridPos;
 
-public final class FlipFlopRenderResolver extends RenderResolver {
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
-    private static final Image BASE_IMAGE = new Image(
-            FlipFlopRenderResolver.class.getResourceAsStream(
-                    "/asset/tiles/mover/conveyor/conveyor-base.png"),
-            0, 0, true, false);
+public final class FlipFlopRenderResolver extends MoverRenderResolver {
 
-    private static final Image TURN_RIGHT_IMAGE = new Image(
-            FlipFlopRenderResolver.class.getResourceAsStream(
-                    "/asset/tiles/mover/conveyor/conveyor-turn-right.png"),
-            0, 0, true, false);
+    private static class FlipFlopImage {
+        private static final String RESOURCE_DIR = "/asset/tiles/mover/flipflop/";
+        private static final String[] FILENAMES = {"-base", "-merge-a", "-merge-c"};
+        public static final Map<String, Image> floorImages = new HashMap<>();
+        public static final Map<String, Image> overlayBlueImages = new HashMap<>();
+        public static final Map<String, Image> overlayRedImages = new HashMap<>();
+
+        static {
+            loadImageFiles(RESOURCE_DIR + "flipflop-f", FILENAMES, floorImages, ".png");
+            loadImageFiles(RESOURCE_DIR + "flipflop-b", FILENAMES, overlayBlueImages, ".png");
+            loadImageFiles(RESOURCE_DIR + "flipflop-r", FILENAMES, overlayRedImages, ".png");
+        }
+    }
 
     private FlipFlopRenderResolver() {}
 
-    public static RenderState resolve(
+    public static RenderState resolveFloor(
             FlipFlop flipFlop,
             GridPos pos,
             double alpha
     ) {
-        MoverShape topology = MoverTopology.resolve(flipFlop, pos);
 
-        SpriteData sprite = selectSprite(topology);
+        EnumSet<Direction> topology = MoverTopology.resolve(flipFlop, pos);
+        SpriteData sprite = SpriteSelector.flipFlop(topology, FlipFlopImage.floorImages, "flipflop-f");
 
         double rotation = rotationFor(flipFlop) + sprite.rotationOffset();
 
@@ -38,24 +45,40 @@ public final class FlipFlopRenderResolver extends RenderResolver {
                 sprite.image(),
                 85,
                 85,
-                0, 0,
+                0,
+                0,
                 rotation,
                 sprite.mirrorX(),
                 alpha
         );
     }
 
-    private static SpriteData selectSprite( MoverShape topology ) {
-        return switch (topology) {
-            case TURN_RIGHT ->
-                new SpriteData(TURN_RIGHT_IMAGE, -90, false);
+    public static RenderState resolveOverlay(
+            FlipFlop flipFlop,
+            GridPos pos,
+            double alpha
+    ) {
 
-            case TURN_LEFT ->
-                new SpriteData(TURN_RIGHT_IMAGE, +90, true);
+        EnumSet<Direction> topology = MoverTopology.resolve(flipFlop, pos);
+        SpriteData sprite = null;
+        if (flipFlop.isActive())
+            sprite = SpriteSelector.flipFlop(topology, FlipFlopImage.overlayBlueImages, "flipflop-b");
+        else
+            sprite = SpriteSelector.flipFlop(topology, FlipFlopImage.overlayRedImages, "flipflop-r");
 
-            default ->
-                new SpriteData(BASE_IMAGE, 0, false);
-        };
+        double rotation = rotationFor(flipFlop) + sprite.rotationOffset();
+
+        return new RenderState(
+                sprite.image(),
+                85,
+                85,
+                0,
+                0,
+                rotation,
+                sprite.mirrorX(),
+                alpha
+        );
     }
+
 
 }

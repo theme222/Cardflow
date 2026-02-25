@@ -2,11 +2,15 @@ package application;
 
 import component.GameTile;
 import component.card.Card;
+import component.modifier.changer.Arithmetic;
+import component.modifier.changer.MaterialSetter;
+import component.modifier.changer.SuitSetter;
+import component.modifier.changer.ValueSetter;
+import component.modifier.combinator.Combinator;
 import component.modifier.pathway.Exit;
 import component.modifier.pathway.event.CardEnterEvent;
 import component.modifier.pathway.event.CardExitEvent;
-import component.mover.Conveyor;
-import component.mover.FlipFlop;
+import component.mover.*;
 import event.EventBus;
 import logic.GameEndCondition;
 import logic.GameWin;
@@ -19,10 +23,12 @@ import registry.render.RendererRegistry;
 import ui.base.EmptyTileRenderer;
 import ui.card.CardMovementAnimation;
 import ui.card.CardRenderer;
+import ui.modifier.changer.ArithmeticRenderer;
+import ui.modifier.changer.SetterRenderer;
+import ui.modifier.combinator.CombinatorRenderer;
 import ui.modifier.pathway.EntranceEffect;
 import ui.modifier.pathway.ExitEffect;
-import ui.mover.ConveyorRenderer;
-import ui.mover.FlipFlopRenderer;
+import ui.mover.*;
 
 public class GameBootstrap {
 
@@ -35,10 +41,21 @@ public class GameBootstrap {
 
     public static void registerRenderer() {
         // Initialize the renderer registry
-        RendererRegistry.INSTANCE.register(Card.class, CardRenderer.INSTANCE);
-        RendererRegistry.INSTANCE.register(GameTile.class, EmptyTileRenderer.INSTANCE);
-        RendererRegistry.INSTANCE.register(Conveyor.class, ConveyorRenderer.INSTANCE);
-        RendererRegistry.INSTANCE.register(FlipFlop.class, FlipFlopRenderer.INSTANCE);
+        RendererRegistry regInstance = RendererRegistry.INSTANCE;
+
+        regInstance.register(Card.class, CardRenderer.INSTANCE);
+
+        regInstance.register(GameTile.class, EmptyTileRenderer.INSTANCE);
+        regInstance.register(Conveyor.class, ConveyorRenderer.INSTANCE);
+        regInstance.register(FlipFlop.class, FlipFlopRenderer.INSTANCE);
+        regInstance.register(ParityFilter.class, ParityFilterRenderer.INSTANCE);
+        regInstance.register(RedBlackFilter.class, RedBlackFilterRenderer.INSTANCE);
+        regInstance.register(Delay.class, DelayRenderer.INSTANCE);
+        regInstance.register(Arithmetic.class, ArithmeticRenderer.INSTANCE);
+        regInstance.register(MaterialSetter.class, SetterRenderer.INSTANCE);
+        regInstance.register(ValueSetter.class, SetterRenderer.INSTANCE);
+        regInstance.register(SuitSetter.class, SetterRenderer.INSTANCE);
+        regInstance.register(Combinator.class, CombinatorRenderer.INSTANCE);
     }
 
     public static void registerEvents() {

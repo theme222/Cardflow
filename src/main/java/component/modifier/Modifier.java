@@ -1,5 +1,6 @@
 package component.modifier;
 
+import component.card.Card;
 import util.GridIndexable;
 import logic.GameLevel;
 import util.GridPos;
@@ -22,6 +23,15 @@ abstract public class Modifier implements GridIndexable {
     public boolean isDisabled() { return isDisabled; }
     public void setDisabled(boolean disabled) { isDisabled = disabled; }
 
+    public boolean checkSetDisable(Card card) {
+        if (card == null) return isDisabled();
+        if (card.getMaterial() == Card.Material.CORRUPTED) {
+            setDisabled(true);
+            card.setMaterial(Card.Material.PLASTIC);
+        }
+        return isDisabled();
+    }
+
     @Override
     public GridPos getGridPos() { return gridPos; }
     @Override
@@ -38,5 +48,5 @@ abstract public class Modifier implements GridIndexable {
     // GETTERS & SETTERS //
 
     // isBlocking needs to be set on inherit.
-     public abstract void modify();
+     public abstract void modify(Card toModify);
 }
