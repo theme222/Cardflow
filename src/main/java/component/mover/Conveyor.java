@@ -16,6 +16,11 @@ public class Conveyor extends Mover {
     @Override
     public Direction getDirectionStateless() { return rotation; }
 
+    @Override
+    public Direction[] getValidOutputDirections() {
+        return new Direction[]{getRotation()};
+    }
+
     // getDirection already defined
 
 }

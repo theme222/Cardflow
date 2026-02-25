@@ -25,4 +25,9 @@ public class Delay extends Mover {
         return toReturn;
     }
 
+    @Override
+    public Direction[] getValidOutputDirections() {
+        return new Direction[]{getRotation()};
+    }
+
 }

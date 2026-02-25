@@ -28,5 +28,9 @@ public class RedBlackFilter extends Mover {
         return getDirectionStateless();
     }
 
+    @Override
+    public Direction[] getValidOutputDirections() {
+        return new Direction[]{getRotation(), getRotation().prev()};
+    }
 
 }

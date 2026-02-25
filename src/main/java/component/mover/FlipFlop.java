@@ -33,4 +33,9 @@ public class FlipFlop extends Mover {
         return toReturn;
     }
 
+    @Override
+    public Direction[] getValidOutputDirections() {
+        return new Direction[]{getRotation(), getRotation().opposite()};
+    }
+
 }

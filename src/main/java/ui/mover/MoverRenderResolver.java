@@ -95,26 +95,31 @@ public abstract class MoverRenderResolver extends RenderResolver {
 
             for (int i = 0; i < tiles.length; i++) {
                 GameTile tile = tiles[i];
-                if (tile != null && tile.getMover() != null) {
-                    Mover adjacentMover = tile.getMover();
-                    Direction adjacentDirection = adjacentMover.getRotation();
-                    // check if facing into
-                    if(!tile.getGridPos().addDirection(adjacentDirection).equals(pos)) continue;
+                if (tile == null || tile.getMover() == null) continue;
 
-                    System.out.println("Adjacent conveyor at " + adjacentMover.getGridPos() +
-                            " facing " + adjacentDirection +
-                            " relative to conveyor at " + pos +
-                            " facing " + forward);
+                Mover adjacentMover = tile.getMover();
 
-                    if (forward.equals(adjacentDirection)) {
-                        moverInputs.add(Direction.DOWN); // BEHIND
-                    } else if (forward.isLeftOf(adjacentDirection)) {
-                        moverInputs.add(Direction.LEFT);
-                    } else if (forward.isRightOf(adjacentDirection)) {
-                        moverInputs.add(Direction.RIGHT);
-                    } else if (forward.isOpposite(adjacentDirection)) {
-                        moverInputs.add(Direction.UP); // AHEAD
+                Direction[] possibleAdjDirections = adjacentMover.getValidOutputDirections();
+                Direction adjacentDirection = null;
+
+                // check if facing into
+                for (Direction direction : possibleAdjDirections) {
+                    if(tile.getGridPos().addDirection(direction).equals(pos)) {
+                        adjacentDirection = direction;
+                        break;
                     }
+                }
+
+                if (adjacentDirection == null) continue;
+
+                if (forward.equals(adjacentDirection)) {
+                    moverInputs.add(Direction.DOWN); // BEHIND
+                } else if (forward.isLeftOf(adjacentDirection)) {
+                    moverInputs.add(Direction.LEFT);
+                } else if (forward.isRightOf(adjacentDirection)) {
+                    moverInputs.add(Direction.RIGHT);
+                } else if (forward.isOpposite(adjacentDirection)) {
+                    moverInputs.add(Direction.UP); // AHEAD
                 }
             }
 

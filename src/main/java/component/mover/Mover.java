@@ -43,6 +43,8 @@ abstract public class Mover implements GridIndexable {
         this.rotation = rot;
     }
 
+    public abstract Direction[] getValidOutputDirections();
+
     public void rotate() {
         setRotation(this.rotation.next());
     }
