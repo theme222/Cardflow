@@ -45,9 +45,9 @@ public abstract class MoverRenderResolver extends RenderResolver {
             else if (topology.containsAll(EnumSet.of(Direction.LEFT,  Direction.DOWN)))
                 return new SpriteData(images.get("-merge-b"), 0, true);
             else if (topology.contains(Direction.LEFT))
-                return new SpriteData(images.get("-turn"), +90, false);
+                return new SpriteData(images.get("-turn"), 0, true);
             else if (topology.contains(Direction.RIGHT))
-                return new SpriteData(images.get("-turn"), -90, false);
+                return new SpriteData(images.get("-turn"), 0, false);
             else
                 return new SpriteData(images.get("-base"), 0, false);
         }
@@ -56,13 +56,13 @@ public abstract class MoverRenderResolver extends RenderResolver {
             // FlipFlop
             // DOWN and UP doesn't do anything
             if (topology.containsAll(EnumSet.of(Direction.LEFT, Direction.RIGHT)))
-                return new SpriteData(images.get("-merge-c"), +90, false);
+                return new SpriteData(images.get("-merge-c"), 0, false);
             else if (topology.contains(Direction.RIGHT))
-                return new SpriteData(images.get("-merge-a"), +90, true);
+                return new SpriteData(images.get("-merge-a"), 0, true);
             else if (topology.contains(Direction.LEFT))
-                return new SpriteData(images.get("-merge-a"), +90, false);
+                return new SpriteData(images.get("-merge-a"), 0, false);
             else
-                return new SpriteData(images.get("-base"), +90, false);
+                return new SpriteData(images.get("-base"), 0, false);
         }
 
         public static SpriteData filter(EnumSet<Direction> topology, Map<String, Image> images, String prefix) {

@@ -36,14 +36,16 @@ public abstract class Renderer<T> {
 
         gc.save();
         gc.setGlobalAlpha(state.alpha());
+        gc.translate(w / 2, h / 2);
 
         // rotate around renderable center
-        gc.translate(w / 2, h / 2);
         gc.rotate(state.rotationDeg());
 
+        // mirror
         if (state.mirrorX()) {
             gc.scale(-1, 1);
         }
+
         gc.drawImage(
                 state.image(),
                 -w / 2,
