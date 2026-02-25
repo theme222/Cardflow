@@ -71,6 +71,10 @@ public class GameTilePane extends Pane {
                     render(RenderLayer.MOVER, tile.getMover());
                 }
                 break;
+            case RenderLayer.MODIFIER:
+                if(tile.getModifier() != null)
+                    render(RenderLayer.MODIFIER, tile.getModifier());
+                break;
             
             default:
                 break;

@@ -72,13 +72,13 @@ public class GameTilePane extends Button {
             render(RenderLayer.MOVER, tile.getMover());
         }
 
-        if (tile.getModifier() != null) {
-            render(RenderLayer.MODIFIER, tile.getModifier());
-        }
-
         if (tile.getCard() != null) {
             System.out.println("Rendering card on tile " + tile.getGridPos());
             render(RenderLayer.CARD, tile.getCard());
+        }
+
+        if (tile.getModifier() != null) {
+            render(RenderLayer.MODIFIER, tile.getModifier());
         }
 
     }

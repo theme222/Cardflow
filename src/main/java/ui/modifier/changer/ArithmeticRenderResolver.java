@@ -16,7 +16,7 @@ public final class ArithmeticRenderResolver extends RenderResolver {
 
     private static class ArithmeticImage {
         private static final String RESOURCE_DIR = "/asset/tiles/modifier/changer/arithmetic/";
-        private static final String[] FILENAMES = {"modify-add", "modify-subtract", "modify-multiply", "modify-divide"};
+        private static final String[] FILENAMES = {"modify-adder", "modify-subtractor", "modify-multiplier", "modify-divider"};
         public static final Map<String, Image> images = new HashMap<>();
 
         static {
@@ -33,24 +33,14 @@ public final class ArithmeticRenderResolver extends RenderResolver {
             double alpha
     ) {
 
-        Image symbol = null;
-        if (arithmetic instanceof Adder) {
-            symbol = ArithmeticImage.images.get("modify-add");
-        }
-        else if (arithmetic instanceof Subtractor) {
-            symbol = ArithmeticImage.images.get("modify-subtract");
-        }
-        else if (arithmetic instanceof Multiplier) {
-            symbol = ArithmeticImage.images.get("modify-multiply");
-        }
-        else if (arithmetic instanceof Divider) {
-            symbol = ArithmeticImage.images.get("modify-divide");
-        }
+        Image symbol = ArithmeticImage.images.get("modify-" + arithmetic.getClass().getSimpleName().toLowerCase());
 
         return new RenderState(
                 symbol,
                 Config.TILE_SIZE,
                 Config.TILE_SIZE,
+                0,
+                0,
                 0,
                 false,
                 alpha

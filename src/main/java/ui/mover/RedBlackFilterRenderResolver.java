@@ -30,7 +30,7 @@ public final class RedBlackFilterRenderResolver extends MoverRenderResolver {
             double alpha
     ) {
         EnumSet<Direction> topology = MoverTopology.resolve(redBlackFilter, pos);
-        SpriteData sprite = SpriteSelector.filter(topology, RedBlackFilterImage.images, "redblackfilter");
+        SpriteData sprite = SpriteSelector.filter(topology, RedBlackFilterImage.images);
 
         double rotation = rotationFor(redBlackFilter) + sprite.rotationOffset();
 

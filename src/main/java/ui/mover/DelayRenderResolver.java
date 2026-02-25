@@ -32,7 +32,7 @@ public final class DelayRenderResolver extends MoverRenderResolver {
     ) {
 
         EnumSet<Direction> topology = MoverTopology.resolve(delay, pos);
-        SpriteData sprite = SpriteSelector.regular(topology, DelayImage.images, "delay");
+        SpriteData sprite = SpriteSelector.regular(topology, DelayImage.images);
         double rotation = rotationFor(delay) + sprite.rotationOffset();
 
         return new RenderState(

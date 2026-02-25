@@ -17,7 +17,7 @@ public class ParityFilterRenderer extends Renderer<ParityFilter> {
 
     private ParityFilterRenderer() {}
 
-    public void render(ParityFilter parityFilter, Pane node, GridPos pos) {
+    public void render(ParityFilter parityFilter, Pane node, GridPos pos, boolean animated) {
         RenderState state = ParityFilterRenderResolver.resolve(parityFilter, pos, 1);
         draw(node, state);
     }

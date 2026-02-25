@@ -8,6 +8,7 @@ import component.modifier.changer.SuitSetter;
 import component.modifier.changer.ValueSetter;
 import component.modifier.combinator.Combinator;
 import component.modifier.pathway.Exit;
+import component.modifier.pathway.Pathway;
 import component.modifier.pathway.event.CardEnterEvent;
 import component.modifier.pathway.event.CardExitEvent;
 import component.mover.*;
@@ -28,6 +29,7 @@ import ui.modifier.changer.SetterRenderer;
 import ui.modifier.combinator.CombinatorRenderer;
 import ui.modifier.pathway.EntranceEffect;
 import ui.modifier.pathway.ExitEffect;
+import ui.modifier.pathway.PathwayRenderer;
 import ui.mover.*;
 
 public class GameBootstrap {
@@ -56,6 +58,7 @@ public class GameBootstrap {
         regInstance.register(ValueSetter.class, SetterRenderer.INSTANCE);
         regInstance.register(SuitSetter.class, SetterRenderer.INSTANCE);
         regInstance.register(Combinator.class, CombinatorRenderer.INSTANCE);
+        regInstance.register(Pathway.class, PathwayRenderer.INSTANCE);
     }
 
     public static void registerEvents() {

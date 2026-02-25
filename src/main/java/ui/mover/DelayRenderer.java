@@ -15,7 +15,7 @@ public class DelayRenderer extends Renderer<Delay> {
 
     private DelayRenderer() {}
 
-    public void render(Delay delay, Pane node, GridPos pos) {
+    public void render(Delay delay, Pane node, GridPos pos, boolean animated) {
         RenderState state = DelayRenderResolver.resolve(delay, pos, 1);
         draw(node, state);
     }

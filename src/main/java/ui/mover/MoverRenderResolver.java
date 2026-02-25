@@ -33,7 +33,7 @@ public abstract class MoverRenderResolver extends RenderResolver {
     public static final class SpriteSelector {
         // I know this looks bad but I promise you its not really that bad
         // DOWN = BEHIND, UP = AHEAD
-        public static SpriteData regular(EnumSet<Direction> topology, Map<String, Image> images, String prefix) {
+        public static SpriteData regular(EnumSet<Direction> topology, Map<String, Image> images) {
             // Conveyor + Delay
             // UP doesn't do anything
             if (topology.containsAll(EnumSet.of(Direction.DOWN,  Direction.LEFT, Direction.RIGHT)))
@@ -52,7 +52,7 @@ public abstract class MoverRenderResolver extends RenderResolver {
                 return new SpriteData(images.get("-base"), 0, false);
         }
 
-        public static SpriteData flipFlop(EnumSet<Direction> topology, Map<String, Image> images, String prefix) {
+        public static SpriteData flipFlop(EnumSet<Direction> topology, Map<String, Image> images) {
             // FlipFlop
             // DOWN and UP doesn't do anything
             if (topology.containsAll(EnumSet.of(Direction.LEFT, Direction.RIGHT)))
@@ -65,7 +65,7 @@ public abstract class MoverRenderResolver extends RenderResolver {
                 return new SpriteData(images.get("-base"), 0, false);
         }
 
-        public static SpriteData filter(EnumSet<Direction> topology, Map<String, Image> images, String prefix) {
+        public static SpriteData filter(EnumSet<Direction> topology, Map<String, Image> images) {
             // ParityFilter + RedBlackFilter
             // UP AND LEFT doesn't do anything
             if (topology.containsAll(EnumSet.of(Direction.DOWN, Direction.RIGHT)))

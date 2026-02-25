@@ -20,7 +20,7 @@ public class CombinatorRenderer extends Renderer<Combinator> {
 
     private CombinatorRenderer() {}
 
-    public void render(Combinator combinator, Pane node, GridPos pos) {
+    public void render(Combinator combinator, Pane node, GridPos pos, boolean animated) {
         RenderState state = CombinatorRenderResolver.resolve(combinator, pos, Config.MODIFIER_ALPHA);
         draw(node, state);
     }

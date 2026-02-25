@@ -41,6 +41,8 @@ public class CombinatorRenderResolver extends RenderResolver {
                 Config.TILE_SIZE,
                 Config.TILE_SIZE,
                 0,
+                0,
+                0,
                 false,
                 alpha
         );

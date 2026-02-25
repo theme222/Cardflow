@@ -31,7 +31,7 @@ public final class ParityFilterRenderResolver extends MoverRenderResolver {
     ) {
 
         EnumSet<Direction> topology = MoverTopology.resolve(parityFilter, pos);
-        SpriteData sprite = SpriteSelector.filter(topology, ParityFilterImage.images, "parityfilter");
+        SpriteData sprite = SpriteSelector.filter(topology, ParityFilterImage.images);
 
         double rotation = rotationFor(parityFilter) + sprite.rotationOffset();
 

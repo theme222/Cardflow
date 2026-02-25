@@ -14,16 +14,16 @@ public class Entrance extends Pathway { // Entrance and exit lives on the same l
 
     @Override
     public void modify(Card toModify) {
+        // Here toModify is just the card that is currently in the same tile as the entrance
+        // So we genuinely ignore that bum
+
         Card toAdd = getCurrentCard(GameLevel.getInstance().INPUT_CARDS);
         if (toAdd == null) return;
 
-        // TODO: CHECK THIS
-        GameLevel.getInstance().addCard(toAdd, getGridPos());
-        EventBus.emit(new CardEnterEvent(getGridPos(), toAdd));
-        currentIndex++;
-        // TODO: CHECK THIS
-
-//        if (GameLevel.getInstance().addCard(toAdd, getGridPos())) currentIndex++;
+        if (GameLevel.getInstance().addCard(toAdd, getGridPos())) {
+            EventBus.emit(new CardEnterEvent(getGridPos(), toAdd));
+            currentIndex++;
+        }
     }
 
     @Override

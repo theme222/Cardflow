@@ -18,7 +18,7 @@ public class RedBlackFilterRenderer extends Renderer<RedBlackFilter> {
 
     private RedBlackFilterRenderer() {}
 
-    public void render(RedBlackFilter redBlackFilter, Pane node, GridPos pos) {
+    public void render(RedBlackFilter redBlackFilter, Pane node, GridPos pos, boolean animated) {
         RenderState state = RedBlackFilterRenderResolver.resolve(redBlackFilter, pos, 1);
         draw(node, state);
     }

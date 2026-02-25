@@ -34,7 +34,7 @@ public final class ConveyorRenderResolver extends MoverRenderResolver {
             double alpha
     ) {
         EnumSet<Direction> topology = MoverTopology.resolve(conveyor, pos);
-        SpriteData sprite = SpriteSelector.regular(topology, ConveyorImage.images, "conveyor");
+        SpriteData sprite = SpriteSelector.regular(topology, ConveyorImage.images);
         double rotation = rotationFor(conveyor) + sprite.rotationOffset();
 
         return new RenderState(

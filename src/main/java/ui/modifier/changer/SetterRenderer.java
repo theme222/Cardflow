@@ -18,7 +18,7 @@ public class SetterRenderer extends Renderer<Setter<?>> {
 
     private SetterRenderer() {}
 
-    public void render(Setter<?> setter, Pane node, GridPos pos) {
+    public void render(Setter<?> setter, Pane node, GridPos pos, boolean animated) {
         RenderState state = SetterRenderResolver.resolve(setter, pos, Config.MODIFIER_ALPHA);
         draw(node, state);
         if (setter instanceof ValueSetter valueSetter)

@@ -37,7 +37,7 @@ public final class FlipFlopRenderResolver extends MoverRenderResolver {
     ) {
 
         EnumSet<Direction> topology = MoverTopology.resolve(flipFlop, pos);
-        SpriteData sprite = SpriteSelector.flipFlop(topology, FlipFlopImage.floorImages, "flipflop-f");
+        SpriteData sprite = SpriteSelector.flipFlop(topology, FlipFlopImage.floorImages);
 
         double rotation = rotationFor(flipFlop) + sprite.rotationOffset();
 
@@ -62,9 +62,9 @@ public final class FlipFlopRenderResolver extends MoverRenderResolver {
         EnumSet<Direction> topology = MoverTopology.resolve(flipFlop, pos);
         SpriteData sprite = null;
         if (flipFlop.isActive())
-            sprite = SpriteSelector.flipFlop(topology, FlipFlopImage.overlayBlueImages, "flipflop-b");
+            sprite = SpriteSelector.flipFlop(topology, FlipFlopImage.overlayBlueImages);
         else
-            sprite = SpriteSelector.flipFlop(topology, FlipFlopImage.overlayRedImages, "flipflop-r");
+            sprite = SpriteSelector.flipFlop(topology, FlipFlopImage.overlayRedImages);
 
         double rotation = rotationFor(flipFlop) + sprite.rotationOffset();
 

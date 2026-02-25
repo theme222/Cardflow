@@ -20,7 +20,7 @@ public class ArithmeticRenderer extends Renderer<Arithmetic> {
 
     private ArithmeticRenderer() {}
 
-    public void render(Arithmetic arithmetic, Pane node, GridPos pos) {
+    public void render(Arithmetic arithmetic, Pane node, GridPos pos, boolean animated) {
         RenderState state = ArithmeticRenderResolver.resolve(arithmetic, pos, Config.MODIFIER_ALPHA);
 
         draw(node, state);
