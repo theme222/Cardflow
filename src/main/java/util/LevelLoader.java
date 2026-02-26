@@ -186,6 +186,7 @@ public class LevelLoader {
             // ---------- CSV parsing ---------- //
 
             return new GameLevel(
+                    level,
                     levelName,
                     levelWidth,
                     levelHeight,

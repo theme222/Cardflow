@@ -38,4 +38,6 @@ public class FlipFlop extends Mover {
         return new Direction[]{getRotation(), getRotation().opposite()};
     }
 
+    @Override
+    public void reset() {setActive(true);}
 }

@@ -20,7 +20,7 @@ public class Exit extends Pathway {
             System.out.println("Got card " + toRemove + " expected " + expectedCard);
             
             
-            if(toRemove.equals(expectedCard)) {
+            if(toRemove.isEquivalent(expectedCard)) {
                 System.out.println("Correct card exited!");
                 countCorrectExits++;
             } else {
@@ -38,5 +38,12 @@ public class Exit extends Pathway {
     @Override
     public boolean isBlocking() {
         return false;
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        countCorrectExits = 0;
+        countTotalExits = 0;
     }
 }

@@ -2,18 +2,20 @@ package engine;
 
 import engine.event.ModifyEndedEvent;
 import engine.event.MovementEndedEvent;
+import engine.event.PausedEvent;
 import event.EventBus;
 import event.RenderEvent;
 import logic.GameLevel;
 
 import javafx.animation.AnimationTimer;
+import util.Config;
 
 public class TickEngine {
 
     private static EngineState state = EngineState.PAUSED;
 
     private static long lastTick = 0;
-    private static final long TICK_INTERVAL_NS = 500_000_000;
+    private static final long TICK_INTERVAL_NS = (long) (Config.TICK_DURATION_MS * 1e6);
 
     private static final AnimationTimer timer = new AnimationTimer() {
         @Override
@@ -29,13 +31,13 @@ public class TickEngine {
 
     public static void play() {
         state = EngineState.RUNNING;
-        start();
+        startTimer();
         System.out.println("Game started");
     }
 
     public static void pause() {
         state = EngineState.PAUSED;
-        stop();
+        stopTimer();
     }
 
     public static void step() {
@@ -46,19 +48,20 @@ public class TickEngine {
 
     public static void reset() {
         pause();
-        //GameLevel.getInstance().reset(); // You must implement this
+        GameLevel.getInstance().resetLevel();
         EventBus.emit(new RenderEvent(GameLevel.getInstance().changedPoints));
     }
 
-    private static void start() {
+    private static void startTimer() {
         if(lastTick != 0) return; // Prevent restarting the timer if it's already running
         lastTick = System.nanoTime();
         timer.start();
     }
 
-    private static void stop() {
+    private static void stopTimer() {
         lastTick = 0;
         timer.stop();
+        EventBus.emit(new PausedEvent());
     }
 
     private static TickPhase currentPhase = TickPhase.MOVEMENT;

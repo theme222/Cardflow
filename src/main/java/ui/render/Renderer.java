@@ -18,22 +18,24 @@ public abstract class Renderer<T> {
 
     protected void draw(Pane node, RenderState state) {
         Canvas canvas = new Canvas(state.width(), state.height());
-        drawWithCanvas(node, state, canvas);
+        drawWithCanvas(node, state, canvas, true);
         node.getChildren().setAll(canvas);
     }
 
-    protected void drawWithCanvas(Pane node, RenderState state, Canvas canvas) {
+    protected void drawWithCanvas(Pane node, RenderState state, Canvas canvas, boolean centerToTile) {
         double w = state.width();
         double h = state.height();
 
         double tile = Config.TILE_SIZE;
 
-        double offsetX = state.offsetX() * tile;
-        double offsetY = state.offsetY() * tile;
+        if (centerToTile) {
+            double offsetX = state.offsetX() * tile;
+            double offsetY = state.offsetY() * tile;
 
-        // 🔥 CENTER THE CANVAS IN THE TILE
-        canvas.setLayoutX((tile - w + offsetX) / 2.0);
-        canvas.setLayoutY((tile - h + offsetY) / 2.0);
+            // 🔥 CENTER THE CANVAS IN THE TILE
+            canvas.setLayoutX((tile - w + offsetX) / 2.0);
+            canvas.setLayoutY((tile - h + offsetY) / 2.0);
+        }
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
 

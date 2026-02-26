@@ -1,0 +1,78 @@
+/* =========================
+   HIERARCHY
+   ========================= */
+
+.text-title {
+    -fx-font-size: 48px;
+    -fx-font-weight: 800;
+}
+
+.text-heading {
+    -fx-font-size: 32px;
+    -fx-font-weight: 600;
+}
+
+.text-subheading {
+    -fx-font-size: 24px;
+    -fx-font-weight: 400;
+}
+
+.text-body {
+    -fx-font-size: 16px;
+}
+
+.text-small {
+    -fx-font-size: 12px;
+    -fx-font-weight: 100;
+}
+
+.text-wrap {
+    -fx-wrap-text: true;
+}
+
+/* =========================
+   EMPHASIS
+   ========================= */
+
+.text-muted {
+    -fx-opacity: 0.65;
+}
+
+.text-strong {
+    -fx-font-weight: bold;
+}
+
+.text-warning {
+    -fx-fill: #FFEA00;
+    -fx-text-fill: #FFEA00;
+}
+
+.text-success {
+    -fx-fill: #27ae60;
+    -fx-text-fill: #27ae60;
+}
+
+.text-white {
+    -fx-fill: white;
+    -fx-text-fill: white;
+}
+
+/* =========================
+   ALIGNMENT HELPERS
+   ========================= */
+
+.text-center {
+    -fx-text-alignment: center;
+}
+
+.text-right {
+    -fx-text-alignment: right;
+}
+
+/* =========================
+   MONOSPACE (DEBUG / VALUES)
+   ========================= */
+
+.text-mono {
+    -fx-font-family: "Mozart NBP", "JetBrains Mono", "Consolas", monospace;
+}

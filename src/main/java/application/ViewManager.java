@@ -1,6 +1,8 @@
 package application;
 
+import application.view.GameView;
 import application.view.View;
+import engine.TickEngine;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
@@ -14,7 +16,7 @@ import java.util.Stack;
 
 
 public class ViewManager { // Switching views instead of switching scenes to allow for custom transitions.
-    private static final String[] CSS_FILES= {"base.css", "cards.css", "tiles.css", "ui.css"};
+    private static final String[] CSS_FILES= {"base.css", "text.css", "border.css", "button.css", "cards.css", "tiles.css", "ui.css"};
     private static ViewManager instance;
     public final Stage stage;
     public final Scene scene;
@@ -139,11 +141,21 @@ public class ViewManager { // Switching views instead of switching scenes to all
     }
 
     public void switchView(View newView, TransitionType transitionType) {
+        if (currentViewIs(GameView.class)) TickEngine.reset(); // Making sure danm well that that thing doesn't run in the background
         viewTransition.transitionView(getCurrentView(), newView, transitionType);
         viewStack.push(newView);
     }
 
+    public void switchViewReplace(View newView, TransitionType transitionType) {
+        // Replace the top most view with this view. (Example: Next level button)
+        if (currentViewIs(GameView.class)) TickEngine.reset();
+        viewTransition.transitionView(getCurrentView(), newView, transitionType);
+        if (!viewStack.isEmpty()) viewStack.pop();
+        viewStack.push(newView);
+    }
+
     public boolean switchToPreviousView(TransitionType transitionType) {
+        if (currentViewIs(GameView.class)) TickEngine.reset();
         if (viewStack.size() <= 1) return false; // Can't really go back if theres nothing to go back to
         viewTransition.transitionView(viewStack.pop(), viewStack.peek(), transitionType);
         return true;

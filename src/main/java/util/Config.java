@@ -7,4 +7,6 @@ public final class Config {
     public static final String REGULAR_FONT = "Pixelated Elegance";
     public static final String MONOSPACE_FONT = "Mozart NBP";
 
+    public static final long TICK_DURATION_MS = 500;
+
 }

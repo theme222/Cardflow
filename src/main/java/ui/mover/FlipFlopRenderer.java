@@ -26,8 +26,8 @@ public class FlipFlopRenderer extends Renderer<FlipFlop> {
 
         // draw the floor
         // Calling draw with canvas manually to allow multiple draws on top of each other
-        drawWithCanvas(node, floorState, canvas);
-        drawWithCanvas(node, overlayState, canvas);
+        drawWithCanvas(node, floorState, canvas, true);
+        drawWithCanvas(node, overlayState, canvas, true);
         node.getChildren().setAll(canvas);
     }
 

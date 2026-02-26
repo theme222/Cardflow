@@ -7,8 +7,12 @@ import java.util.Set;
 
 import application.Game;
 import application.view.GameView;
+import javafx.geometry.Pos;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import logic.GameLevel;
 import registry.render.FloatingLayerRegistry;
 import registry.render.RenderLayer;
@@ -65,6 +69,7 @@ public class GameRenderStack extends StackPane {
             }
 
             layers.put(layer, pane);
+            pane.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
             getChildren().add(pane);
         }
     }

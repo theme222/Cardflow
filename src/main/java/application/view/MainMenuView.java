@@ -23,7 +23,8 @@ public class MainMenuView extends View {
         Label subtitle = new Label("Final Project for Programming Methodology CEDT Class");
         subtitle.getStyleClass().addAll("text-heading", "text-muted");
 
-        Button playButton = new Button("Play >");
+        Button playButton = new Button("Play ▶");
+        playButton.getStyleClass().add("button-primary");
         playButton.setOnAction(event -> {
             ViewManager.getInstance().switchView(new LevelSelectorView(), TransitionType.ZOOM);
         });

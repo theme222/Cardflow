@@ -18,4 +18,7 @@ public class Vaporizer extends Combinator {
     public boolean isBlocking() {
         return false;
     }
+
+    @Override
+    public void reset() {}
 }

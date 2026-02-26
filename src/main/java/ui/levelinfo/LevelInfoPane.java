@@ -1,5 +1,6 @@
-package ui.inventory;
+package ui.levelinfo;
 
+import engine.event.PausedEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -7,8 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import logic.GameLevel;
 import logic.PlayerInventory;
-import logic.event.AfterMovementEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,72 +18,95 @@ import engine.TickEngine;
 import engine.event.ModifyEndedEvent;
 import engine.event.MovementEndedEvent;
 import event.EventBus;
+import ui.card.CardInputListPane;
+import ui.card.CardOutputListPane;
 
-public class InventoryPane extends VBox { // thx chatgpt
+public class LevelInfoPane extends VBox { // thx chatgpt
 
     private final PlayerInventory inventory;
 
     private final Text titleText;
-    private final Text rotationText;
+    private final Label rotationLabel;
     private final VBox moversList;
     private final HBox controlPanel;
     private final Label phaseLabel;
+    private final CardInputListPane cardInputListPane;
+    private final CardOutputListPane cardOutputListPane;
 
     // Per-mover UI references
     private final Map<String, Button> moverButtons = new HashMap<>();
     private final Map<String, Text> moverCountTexts = new HashMap<>();
 
-    public InventoryPane(PlayerInventory inventory) {
-        this.inventory = inventory;
+    public LevelInfoPane() {
+        inventory = PlayerInventory.getInstance();
 
         setPadding(new Insets(12));
         setSpacing(10);
+        setAlignment(Pos.CENTER);
 
-        titleText = new Text("Inventory");
+        titleText = new Text(GameLevel.getInstance().LEVELNAME);
         titleText.getStyleClass().add("text-heading");
-
-        rotationText = new Text();
-        rotationText.getStyleClass().add("text-body");
 
         controlPanel = new HBox(10);
 
-        phaseLabel = new Label("Idle");
+        phaseLabel = new Label("Current Phase: Paused");
+
+        rotationLabel = new Label();
+        rotationLabel.getStyleClass().add("text-body");
+
+        HBox statusContainer = new HBox(10);
+        statusContainer.setAlignment(Pos.CENTER);
+        statusContainer.getChildren().addAll(phaseLabel, rotationLabel);
 
         moversList = new VBox(6);
 
+        cardInputListPane = new CardInputListPane("Input Cards", GameLevel.getInstance().INPUT_CARDS);
+
+        cardOutputListPane = new CardOutputListPane("Output Cards", GameLevel.getInstance().OUTPUT_CARDS);
+
         getChildren().addAll(
                 titleText,
-                rotationText,
-                phaseLabel,
+                cardInputListPane,
+                cardOutputListPane,
+                statusContainer,
                 controlPanel,
                 moversList
         );
 
         buildMoverRows();
         buildControlPanel();
-        updateUI();
+        updateInventoryUI();
 
         registerPhaseLabel();
     }
 
     private void registerPhaseLabel(){
-        EventBus.register(MovementEndedEvent.class, (e)->afterMovement(e));
-        EventBus.register(ModifyEndedEvent.class, (e)->afterModifying(e));
+        EventBus.register(MovementEndedEvent.class, this::afterMovement);
+        EventBus.register(ModifyEndedEvent.class, this::afterModifying);
+        EventBus.register(PausedEvent.class, this::afterPaused);
     }
 
     private void afterMovement(MovementEndedEvent event){
-        phaseLabel.setText("Moving >>>>>>");
+        phaseLabel.setText("Current Phase: Moving >>>");
     }
 
     private void afterModifying(ModifyEndedEvent event){
-        phaseLabel.setText("Modify $$$$$$"); // do whatever changes here
+        phaseLabel.setText("Current Phase: Modifying $$$"); // do whatever changes here
+    }
+
+    private void afterPaused(PausedEvent event){
+        phaseLabel.setText("Current Phase: Paused"); // do whatever changes here
     }
 
     private void buildControlPanel() {
-        Button pauseButton = new Button("Pause");
-        Button playButton = new Button("Play");
-        Button stepButton = new Button("Step");
-        Button resetButton = new Button("Reset");
+        Button playButton = new Button("Play ▶");
+        playButton.getStyleClass().add("button-success");
+        Button pauseButton = new Button("Pause ǁ");
+        pauseButton.getStyleClass().add("button-warning");
+        Button stepButton = new Button("Step →");
+        stepButton.getStyleClass().add("button-info");
+        Button resetButton = new Button("Reset ☕");
+        resetButton.getStyleClass().add("button-error");
 
         playButton.setOnAction(e -> TickEngine.play());
         pauseButton.setOnAction(e -> TickEngine.pause());
@@ -107,7 +131,7 @@ public class InventoryPane extends VBox { // thx chatgpt
 
             button.setOnAction(e -> {
                 inventory.setCurrentSelection(name);
-                updateUI();
+                updateInventoryUI();
             });
 
             // --- count text ---
@@ -126,13 +150,13 @@ public class InventoryPane extends VBox { // thx chatgpt
     }
 
     // Refresh all dynamic state
-    public void updateUI() {
+    public void updateInventoryUI() {
         updateRotation();
         updateMovers();
     }
 
     private void updateRotation() {
-        rotationText.setText(
+        rotationLabel.setText(
                 "Rotation: " + inventory.getCurrentRotation()
         );
     }

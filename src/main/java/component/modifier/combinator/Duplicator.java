@@ -27,4 +27,7 @@ public class Duplicator extends Combinator {
     public boolean isBlocking() {
         return cardToSpawn != null;
     }
+
+    @Override
+    public void reset() { cardToSpawn = null; }
 }
