@@ -12,7 +12,7 @@ public class Multiplier extends Arithmetic { // Generic type argument can't be p
 
     public Multiplier(int changeValue) {
         this.changeType = ChangeType.NUMBER;
-        this.changeValue = changeValue;
+        setChange(changeValue);
     }
 
     @Override
