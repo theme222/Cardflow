@@ -30,4 +30,5 @@ public class Entrance extends Pathway { // Entrance and exit lives on the same l
     public boolean isBlocking() {
         return false;
     }
+
 }

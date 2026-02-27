@@ -114,17 +114,19 @@ public class Card implements GridIndexable {
                 '}';
     }
 
-    public boolean equals(Card card, boolean checkMaterial) {
+    // !! NOT Overriding equals DUE TO HASH ISSUES USE isEquivalent INSTEAD !! //
+
+    public boolean isEquivalent(Card card, boolean checkMaterial) {
         return this.getMaterial() == card.getMaterial() &&
                 this.getSuit() == card.getSuit() &&
                 this.getValue() == card.getValue() &&
                 (checkMaterial ? this.getMaterial() == card.getMaterial(): true);
     }
 
-    @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof Card))
-            return false;
-        return equals((Card) object, false);
+    public boolean isEquivalent(Card card) {
+        if (card == null) return false;
+        return isEquivalent(card, false);
     }
+
+    // !! NOT Overriding equals DUE TO HASH ISSUES USE isEquivalent INSTEAD !! //
 }

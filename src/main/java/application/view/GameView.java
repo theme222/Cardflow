@@ -1,22 +1,22 @@
 package application.view;
 
 import application.ViewManager;
-import javafx.scene.control.Button;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
+import engine.TickEngine;
+import javafx.animation.Interpolator;
+import javafx.animation.TranslateTransition;
+import javafx.util.Duration;
 import logic.GameLevel;
 import logic.PlayerInventory;
+import logic.event.end.GameWinEvent;
+import registry.render.RendererRegistry;
 import ui.button.BackButton;
 import ui.game.GameRenderStack;
-import ui.game.GameTilePane;
-import ui.inventory.InventoryPane;
-import application.Game;
+import ui.game.GameWinOverlay;
+import ui.levelinfo.LevelInfoPane;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import util.Direction;
 import util.GridPos;
 import event.EventBus;
@@ -25,9 +25,11 @@ import event.RenderEvent;
 public class GameView extends View {
 
     private static GameView instance; // This value can be null and can be invalid (just because instance exists doesn't mean that it is the current view. You must check it on the viewManager.)
-    private InventoryPane inventoryPane;
-
-    final private GameRenderStack gameGrid;
+    private final LevelInfoPane levelInfoPane;
+    private final GameWinOverlay gameWinOverlay;
+    private final GameRenderStack gameGrid;
+    private Runnable unregisterUpdatePoints;
+    private Runnable unregisterShowWinOverlay;
 
     public void updateTileAndAdjacent(GridPos pos) {
         updateIfValid(pos);
@@ -49,20 +51,19 @@ public class GameView extends View {
         GameLevel.setInstance(level); // Most components will rely on this
         PlayerInventory.setInstance(new PlayerInventory(level));
 
-        // TODO: MODIFY THIS TO BE A REGULAR PANE AND ADD A TILING MANAGER TO ALLOW GOOD
-        // LOOKING ANIMS AND STUFF :D
-        
         gameGrid = new GameRenderStack(level);
 
         VBox infoPane = new VBox();
         infoPane.setPadding(new Insets(10));
 
-        inventoryPane = new InventoryPane(PlayerInventory.getInstance());
+        levelInfoPane = new LevelInfoPane();
+
+        gameWinOverlay = new GameWinOverlay();
 
         HBox mainLayout = new HBox();
-        mainLayout.getChildren().addAll(gameGrid, inventoryPane);
-
-        mainLayout.setAlignment(Pos.TOP_CENTER);
+        mainLayout.setAlignment(Pos.CENTER);
+        mainLayout.setSpacing(80);
+        mainLayout.getChildren().addAll(gameGrid, levelInfoPane);
 
 
         root.getChildren().addAll(mainLayout, new BackButton());
@@ -70,19 +71,58 @@ public class GameView extends View {
 
 
         // Register to receive render events and update affected tiles
-        EventBus.register(RenderEvent.class, ev -> {
-            for (GridPos point : ev.getChangedPoints()) {
-                updateIfValid(point);
+        unregisterUpdatePoints = EventBus.register(RenderEvent.class, this::updatePoints);
+        unregisterShowWinOverlay = EventBus.register(GameWinEvent.class, this::showGameWinOverlay);
+        TickEngine.reset();
+    }
+
+    @Override
+    public void cleanup() {
+        TickEngine.reset();
+        unregisterShowWinOverlay.run();
+        unregisterUpdatePoints.run();
+        getLevelInfoPane().cleanup();
+    }
+
+    public void updatePoints(RenderEvent ev) {
+        for (GridPos point : ev.getChangedPoints()) {
+            GameView.getInstance().updateIfValid(point); // I still don't know whats going on actually
+        }
+        ev.getChangedPoints().clear(); // Clearing here instead of inside gameLevel
+    }
+
+    public void showGameWinOverlay(GameWinEvent event) {
+        TickEngine.pause();
+        TranslateTransition drop = new TranslateTransition(Duration.millis(900), gameWinOverlay);
+        drop.setFromY(-ViewManager.getInstance().scene.getHeight());
+        drop.setToY(0);
+
+        Interpolator BOUNCE = new Interpolator() {
+            @Override
+            protected double curve(double t) {
+                if (t < 0.3636) {
+                    return 7.5625 * t * t;
+                } else if (t < 0.7272) {
+                    t -= 0.5454;
+                    return 7.5625 * t * t + 0.75;
+                } else if (t < 0.9090) {
+                    t -= 0.8181;
+                    return 7.5625 * t * t + 0.9375;
+                } else {
+                    t -= 0.9545;
+                    return 7.5625 * t * t + 0.984375;
+                }
             }
-        });
+        }; // Bounce effect (thx chatgpt)
+
+        drop.setInterpolator(BOUNCE);
+        drop.play();
+        root.getChildren().remove(gameWinOverlay);
+        root.getChildren().add(gameWinOverlay); // honestly idk
     }
 
-    public InventoryPane getInventoryPane() {
-        return inventoryPane;
-    }
-
-    public void setInventoryPane(InventoryPane inventoryPane) {
-        this.inventoryPane = inventoryPane;
+    public LevelInfoPane getLevelInfoPane() {
+        return levelInfoPane;
     }
 
     public static GameView getInstance() {

@@ -58,4 +58,6 @@ abstract public class Mover implements GridIndexable {
     }
 
     public boolean isBlocking() {return false;}
+
+    public void reset() { }
 }

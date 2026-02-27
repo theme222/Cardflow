@@ -28,4 +28,9 @@ public abstract class Pathway extends Modifier { // Pathways can't be disabled
     public boolean isBlocking() {
         return false;
     }
+
+    @Override
+    public void reset() {
+        currentIndex = 0;
+    }
 }

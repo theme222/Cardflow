@@ -38,8 +38,13 @@ public class CardRenderer extends Renderer<Card> {
 
     @Override
     public void render(Card card, Pane node, GridPos pos, boolean animating) {
+        render(card, node, pos, animating, true);
+    }
+
+    public void render(Card card, Pane node, GridPos pos, boolean animating, boolean centerToTile) {
+        // Center to Tile = false will give you the pane at the proper size.
         if(animatingCards.contains(card) && !animating) return; // skip rendering if animating to avoid conflicts
-        
+
         // draw the material
         RenderState matState = CardRenderResolver.resolveMaterial(card);
         RenderState suitState = CardRenderResolver.resolveSuit(card);
@@ -48,9 +53,9 @@ public class CardRenderer extends Renderer<Card> {
         Canvas canvas = new Canvas(matState.width(), matState.height());
 
         // Calling draw with canvas manually to allow multiple draws on top of each other
-        drawWithCanvas(node, matState, canvas);
-        drawWithCanvas(node, suitState, canvas);
-        drawWithCanvas(node, valueState, canvas);
+        drawWithCanvas(node, matState, canvas, centerToTile);
+        drawWithCanvas(node, suitState, canvas, centerToTile);
+        drawWithCanvas(node, valueState, canvas, centerToTile);
 
         node.getChildren().setAll(canvas);
     }

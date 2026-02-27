@@ -27,6 +27,7 @@ public class GameLevel {
     public final int WIDTH;
     public final int HEIGHT;
     public final String LEVELNAME;
+    public final String LEVELID;
 
     public final List<CardCount> INPUT_CARDS;
     public final List<CardCount> OUTPUT_CARDS;
@@ -44,6 +45,7 @@ public class GameLevel {
     public final HashSet<GridPos> changedPoints; // Positions on grid that needs a UI update
 
     public GameLevel(
+            String levelID,
             String levelName,
             int width,
             int height,
@@ -53,6 +55,7 @@ public class GameLevel {
             GameTile[][] grid,
             HashSet<Modifier> modifierSet
     ) {
+        this.LEVELID = levelID;
         this.LEVELNAME = levelName;
         this.WIDTH = width;
         this.HEIGHT = height;
@@ -154,8 +157,27 @@ public class GameLevel {
             changedPoints.add(modifier.getGridPos()); // ASSUMPTION: ALL MODIFIERS AFFECT ONLY THEIR OWN SQUARE
             modifier.modify(getTile(modifier.getGridPos()).getCard());
         }
+    }
 
+    public void resetLevel() {
 
+        Card[] arr = cardSet.toArray(new Card[0]); // doing it like this because god knows whats gonna happen if I iterate through the actual set
+        for (Card card: arr) {
+            changedPoints.add(card.getGridPos());
+            removeCard(card);
+        }
+
+        for (Mover mover: moverSet) {
+            changedPoints.add(mover.getGridPos());
+            mover.reset();
+        }
+
+        for (Modifier modifier: modifierSet) {
+            changedPoints.add(modifier.getGridPos());
+            modifier.reset();
+        }
+
+        exitedCardsList.clear();
     }
 
     // GETTERS & SETTERS //

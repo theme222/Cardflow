@@ -29,4 +29,7 @@ public class Merger extends Combinator {
     public boolean isBlocking() {
         return false;
     }
+
+    @Override
+    public void reset() { previousCard = null; }
 }

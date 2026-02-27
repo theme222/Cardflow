@@ -1,0 +1,30 @@
+
+/* Base border style (optional helper class) */
+.border {
+    -fx-border-color: #000;
+    -fx-border-width: 2px;
+}
+
+/* Info border (blue) */
+.border-error {
+    -fx-border-color: #138496;
+    -fx-border-width: 2px;
+}
+
+/* Success border (green) */
+.border-success {
+    -fx-border-color: #28a745;
+    -fx-border-width: 2px;
+}
+
+/* Warning border (yellow) */
+.border-warning {
+    -fx-border-color: #FFEA00;
+    -fx-border-width: 2px;
+}
+
+/* Error border (red) */
+.border-error {
+    -fx-border-color: #dc3545;
+    -fx-border-width: 2px;
+}

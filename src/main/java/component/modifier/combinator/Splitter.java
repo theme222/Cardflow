@@ -30,4 +30,7 @@ public class Splitter extends Combinator {
     public boolean isBlocking() {
         return cardToSpawn != null;
     }
+
+    @Override
+    public void reset() { cardToSpawn = null; }
 }

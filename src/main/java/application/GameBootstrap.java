@@ -7,22 +7,18 @@ import component.modifier.changer.MaterialSetter;
 import component.modifier.changer.SuitSetter;
 import component.modifier.changer.ValueSetter;
 import component.modifier.combinator.Combinator;
-import component.modifier.pathway.Exit;
 import component.modifier.pathway.Pathway;
 import component.modifier.pathway.event.CardEnterEvent;
 import component.modifier.pathway.event.CardExitEvent;
 import component.mover.*;
 import event.EventBus;
 import logic.GameEndCondition;
-import logic.GameWin;
 import logic.event.AfterMovementEvent;
 import logic.event.end.GameWinEvent;
-import logic.movement.MovementTickResolver;
 import registry.render.FloatingLayerRegistry;
 import registry.render.RenderLayer;
 import registry.render.RendererRegistry;
 import ui.base.EmptyTileRenderer;
-import ui.card.CardMovementAnimation;
 import ui.card.CardRenderer;
 import ui.modifier.changer.ArithmeticRenderer;
 import ui.modifier.changer.SetterRenderer;
@@ -67,8 +63,6 @@ public class GameBootstrap {
         EventBus.register(CardExitEvent.class, ExitEffect.INSTANCE::applyEffect);
 
         EventBus.register(CardExitEvent.class, GameEndCondition.INSTANCE::checkWinCondition);
-
-        EventBus.register(GameWinEvent.class, GameWin.INSTANCE::onWin);
     }
 
     public static void registerLayers() {

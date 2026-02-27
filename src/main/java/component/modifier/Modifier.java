@@ -58,5 +58,6 @@ abstract public class Modifier implements GridIndexable {
     // GETTERS & SETTERS //
 
     // isBlocking needs to be set on inherit.
-     public abstract void modify(Card toModify);
+    public abstract void modify(Card toModify);
+    public abstract void reset();
 }

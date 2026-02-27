@@ -2,6 +2,7 @@ package application.view;
 
 import application.TransitionType;
 import application.ViewManager;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -23,21 +24,36 @@ public class MainMenuView extends View {
         Label subtitle = new Label("Final Project for Programming Methodology CEDT Class");
         subtitle.getStyleClass().addAll("text-heading", "text-muted");
 
-        Button playButton = new Button("Play >");
+
+        Button playButton = new Button("Play ▶");
+        playButton.getStyleClass().add("button-primary");
         playButton.setOnAction(event -> {
             ViewManager.getInstance().switchView(new LevelSelectorView(), TransitionType.ZOOM);
         });
+
+        Button exitButton =  new Button("Exit");
+        exitButton.setOnAction(event -> {
+            Platform.exit();
+        });
+
+        HBox buttonContainer = new HBox();
+        buttonContainer.setSpacing(20);
+        buttonContainer.setAlignment(Pos.CENTER);
+        buttonContainer.getChildren().addAll(playButton, exitButton);
 
         VBox layout = new VBox();
 
         layout.setSpacing(50);
         layout.setPadding(new Insets(20));
         layout.setAlignment(Pos.CENTER);
-        layout.getChildren().addAll(title, subtitle, playButton);
+        layout.getChildren().addAll(title, subtitle, buttonContainer);
 
         root.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         root.getChildren().add(layout);
     }
+
+    @Override
+    public void cleanup() {}
 
     public static MainMenuView getInstance() {
         return instance;

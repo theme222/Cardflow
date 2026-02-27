@@ -1,0 +1,151 @@
+/* It's time to remake the entire tailwind framework for javafx whos with me? */
+
+/* ============================= */
+/* BASE GAME BUTTON STYLE */
+/* ============================= */
+
+.button {
+    -fx-font-size: 16px;
+
+    -fx-background-color: #f4f4f4;
+    -fx-text-fill: #222;
+
+    -fx-padding: 8 16 8 16;
+
+    -fx-border-color: #222;
+    -fx-border-width: 2;
+
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #e0e0e0;
+}
+
+.button:pressed {
+    -fx-background-color: #cfcfcf;
+    -fx-translate-y: 1px;
+}
+
+.button:disabled {
+    -fx-opacity: 0.4;
+}
+
+/* ============================= */
+/* INFO (Blue) */
+/* ============================= */
+
+.button-info {
+    -fx-background-color: #17a2b8;
+    -fx-text-fill: white;
+    -fx-border-color: #138496;
+    -fx-border-width: 2;
+}
+
+.button-info:hover {
+    -fx-background-color: #138496;
+}
+
+.button-info:pressed {
+    -fx-background-color: #117a8b;
+    -fx-translate-y: 1px;
+}
+
+
+/* ============================= */
+/* SUCCESS (Green) */
+/* ============================= */
+
+.button-success {
+    -fx-background-color: #28a745;
+    -fx-text-fill: white;
+    -fx-border-color: #1e7e34;
+    -fx-border-width: 2;
+}
+
+.button-success:hover {
+    -fx-background-color: #218838;
+}
+
+.button-success:pressed {
+    -fx-background-color: #1e7e34;
+    -fx-translate-y: 1px;
+}
+
+
+/* ============================= */
+/* WARNING (Yellow) */
+/* ============================= */
+
+.button-warning {
+    -fx-background-color: #ffc107;
+    -fx-text-fill: #222;
+    -fx-border-color: #d39e00;
+    -fx-border-width: 2;
+}
+
+.button-warning:hover {
+    -fx-background-color: #e0a800;
+}
+
+.button-warning:pressed {
+    -fx-background-color: #c69500;
+    -fx-translate-y: 1px;
+}
+
+
+/* ============================= */
+/* ERROR / DANGER (Red) */
+/* ============================= */
+
+.button-error {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+    -fx-border-color: #a71d2a;
+    -fx-border-width: 2;
+}
+
+.button-error:hover {
+    -fx-background-color: #c82333;
+}
+
+.button-error:pressed {
+    -fx-background-color: #a71d2a;
+    -fx-translate-y: 1px;
+}
+
+/* ============================= */
+/* PRIMARY (Purple / Violet) */
+/* ============================= */
+
+.button-primary {
+    -fx-background-color: #6f42c1;   /* base violet */
+    -fx-text-fill: white;
+    -fx-border-color: #4e2a8e;       /* darker border */
+    -fx-border-width: 2;
+}
+
+.button-primary:hover {
+    -fx-background-color: #5a32a3;   /* slightly darker */
+}
+
+.button-primary:pressed {
+    -fx-background-color: #4e2a8e;   /* darkest */
+    -fx-translate-y: 1px;
+}
+
+.button.round {
+    -fx-background-radius: 999;
+    -fx-border-radius: 999;
+
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+
+    -fx-pref-width: 40px;
+    -fx-pref-height: 40px;
+
+    -fx-padding: 0;
+}

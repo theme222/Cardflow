@@ -58,6 +58,9 @@ public class LevelSelectorView extends View {
         root.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
     }
 
+    @Override
+    public void cleanup() {}
+
     public static LevelSelectorView getInstance() {
         return instance;
     }

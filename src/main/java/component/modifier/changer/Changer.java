@@ -46,4 +46,7 @@ abstract public class Changer<T> extends Modifier { // I'm not sorry haha
         if (toModify.getMaterial() == Card.Material.RUBBER) change(toModify);
         change(toModify);
     }
+
+    @Override
+    public void reset() {}
 }

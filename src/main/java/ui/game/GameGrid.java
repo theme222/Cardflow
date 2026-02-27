@@ -11,6 +11,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.TilePane;
 import logic.GameLevel;
 import registry.render.RenderLayer;
+import util.Config;
 import util.GridPos;
 
 public class GameGrid extends GridPane {
@@ -54,18 +55,18 @@ public class GameGrid extends GridPane {
 
         for (int c = 0; c < level.WIDTH; c++) {
             ColumnConstraints col = new ColumnConstraints();
-            col.setMinWidth(85);
-            col.setPrefWidth(85);
-            col.setMaxWidth(85);
+            col.setMinWidth(Config.TILE_SIZE);
+            col.setPrefWidth(Config.TILE_SIZE);
+            col.setMaxWidth(Config.TILE_SIZE);
             col.setHgrow(Priority.NEVER);
             this.getColumnConstraints().add(col);
         }
 
         for (int r = 0; r < level.HEIGHT; r++) {
             RowConstraints row = new RowConstraints();
-            row.setMinHeight(85);
-            row.setPrefHeight(85);
-            row.setMaxHeight(85);
+            row.setMinHeight(Config.TILE_SIZE);
+            row.setPrefHeight(Config.TILE_SIZE);
+            row.setMaxHeight(Config.TILE_SIZE);
             row.setVgrow(Priority.NEVER);
             this.getRowConstraints().add(row);
         }
