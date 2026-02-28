@@ -1,6 +1,7 @@
 package component.mover;
 
 import component.card.Card;
+import component.card.Suit;
 import logic.GameLevel;
 import util.Direction;
 
@@ -19,7 +20,7 @@ public class RedBlackFilter extends Mover {
         Card toMove = GameLevel.getInstance().getTile(getGridPos()).getCard();
 
         if (toMove == null) return Direction.STAY;
-        else if (toMove.getSuit() == Card.Suit.HEART || toMove.getSuit() == Card.Suit.DIAMOND) return getRotation();
+        else if (toMove.getSuit() == Suit.HEART || toMove.getSuit() == Suit.DIAMOND) return getRotation();
         else return getRotation().prev();
     }
 

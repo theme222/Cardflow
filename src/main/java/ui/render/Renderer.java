@@ -18,6 +18,7 @@ public abstract class Renderer<T> {
 
     protected void draw(Pane node, RenderState state) {
         Canvas canvas = new Canvas(state.width(), state.height());
+        canvas.setMouseTransparent(true);
         drawWithCanvas(node, state, canvas, true);
         node.getChildren().setAll(canvas);
     }

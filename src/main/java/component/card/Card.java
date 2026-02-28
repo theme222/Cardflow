@@ -1,26 +1,14 @@
 package component.card;
 
+import javafx.scene.paint.Color;
+import ui.tooltip.Tippable;
+import ui.tooltip.Tooltip;
 import util.GridIndexable;
 import logic.GameLevel;
 import util.GridPos;
+import util.Util;
 
-public class Card implements GridIndexable {
-
-    public enum Suit {
-        HEART,
-        DIAMOND,
-        CLUB,
-        SPADE
-    }
-
-    public enum Material { // The reason why I didn't do inheritance is that the material is an attribute that changes often.
-        PLASTIC,
-        METAL,
-        STONE,
-        GLASS,
-        RUBBER,
-        CORRUPTED
-    }
+public class Card implements GridIndexable, Tippable {
 
     protected Suit suit;
     protected int value; // Valid value range from [1,13] (Ace -> 1, 2 -> 2, ... K -> 13)
@@ -129,4 +117,19 @@ public class Card implements GridIndexable {
     }
 
     // !! NOT Overriding equals DUE TO HASH ISSUES USE isEquivalent INSTEAD !! //
+
+    @Override
+    public Tooltip getTooltip() {
+        return new Tooltip(
+                Util.getValueAsDetailedString(getValue()) + " Of " + getSuit().toString() + "s",
+                Color.MEDIUMVIOLETRED,
+                "A card made out of ",
+                Tooltip.ref(getMaterial()),
+                ". It has the value of ",
+                Tooltip.ref(getValue()), // yes this displays a number
+                " with a ",
+                Tooltip.ref(getSuit()),
+                " suit."
+        );
+    }
 }

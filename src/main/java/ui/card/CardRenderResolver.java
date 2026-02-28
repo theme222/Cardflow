@@ -1,12 +1,12 @@
 package ui.card;
 
 import component.card.Card;
+import component.card.Material;
 import javafx.scene.image.Image;
 import ui.render.RenderResolver;
 import ui.render.RenderState;
-import util.Helper;
+import util.Util;
 
-import javax.imageio.ImageIO;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,7 +60,7 @@ public final class CardRenderResolver extends RenderResolver {
             MaterialImage.images.get("plastic")
         );
 
-        return new RenderState(toRender, CARD_WIDTH, CARD_HEIGHT, 0, 0, 0, false, card.getMaterial() == Card.Material.GLASS ? 0.5: 1.0);
+        return new RenderState(toRender, CARD_WIDTH, CARD_HEIGHT, 0, 0, 0, false, card.getMaterial() == Material.GLASS ? 0.5: 1.0);
     }
 
     public static RenderState resolveSuit(Card card) {
@@ -76,7 +76,7 @@ public final class CardRenderResolver extends RenderResolver {
     public static RenderState resolveValue(Card card) {
 
         Image toRender = ValueImage.images.getOrDefault(
-            Helper.getValueAsString(card.getValue()),
+            Util.getValueAsString(card.getValue()),
             ValueImage.images.get("1")
         );
 

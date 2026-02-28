@@ -1,6 +1,7 @@
 package component.modifier.changer;
 
 import component.card.Card;
+import component.card.Material;
 import component.modifier.Modifier;
 import logic.GameLevel;
 
@@ -43,10 +44,10 @@ abstract public class Changer<T> extends Modifier { // I'm not sorry haha
         if (checkSetDisable(toModify)) return;
         if (checkDestroyGlass(toModify)) return;
         if (toModify == null) return;
-        if (toModify.getMaterial() == Card.Material.RUBBER) change(toModify);
+        if (toModify.getMaterial() == Material.RUBBER) change(toModify);
         change(toModify);
     }
 
     @Override
-    public void reset() {}
+    public void reset() {this.setDisabled(false);}
 }

@@ -1,7 +1,12 @@
 package ui.game;
 
+import java.util.ArrayList;
+import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
+import application.Game;
+import application.view.GameView;
 import component.GameTile;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
@@ -11,6 +16,8 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.TilePane;
 import logic.GameLevel;
 import registry.render.RenderLayer;
+import ui.tooltip.Tooltip;
+import ui.tooltip.TooltipLayer;
 import util.Config;
 import util.GridPos;
 
@@ -27,10 +34,9 @@ public class GameGrid extends GridPane {
         gameGridTilePanes[pos.getY()][pos.getX()].updateUI();
     }
 
-    public GameGrid(GameLevel level, RenderLayer layer, BiConsumer<MouseEvent, GridPos> clickHandler) {
-        this.setMouseTransparent(true);
-
+    public GameGrid(GameLevel level, RenderLayer layer, TooltipLayer tooltipLayer) {
         gameGridTilePanes = new GameTilePane[level.HEIGHT][level.WIDTH];
+        this.setMouseTransparent(layer != RenderLayer.BASE);
 
         for (int i = 0; i < level.HEIGHT; i++) {
             for (int j = 0; j < level.WIDTH; j++) {
@@ -43,14 +49,26 @@ public class GameGrid extends GridPane {
 
                 int row = i;
                 int col = j;
+                GridPos position =  new GridPos(col, row);
 
-                if (clickHandler != null) {
+                if (layer == RenderLayer.BASE) {
+                    tilePane.setMouseTransparent(false);
+                    tilePane.setPickOnBounds(true);
                     tilePane.setOnMouseClicked(e -> {
-                        System.out.println("1 Clicked tile at " + col + ", " + row);
-                        clickHandler.accept(e, new GridPos(col, row));
+                        Set<GridPos> dirty = Game.onTileClick(
+                                level.getTile(position),
+                                e.getButton(),
+                                e.isShiftDown(),
+                                e.isControlDown());
+                        e.consume();
+                        System.out.println("Dirty tiles: " + dirty);
+                        dirty.forEach(GameView.getInstance()::updateTileAndAdjacent);
                     });
+
+                    tooltipLayer.bind(tilePane, GameLevel.getInstance().getTile(position));
                 }
             }
+
         }
 
         for (int c = 0; c < level.WIDTH; c++) {

@@ -101,4 +101,8 @@ public class GameTilePane extends Pane {
     public void setGameTileInfo(GameTile gameTileInfo) {
         this.tile = gameTileInfo;
     }
+
+//    public String toString() {
+//        return "GameTilePane " + layer;
+//    }
 }

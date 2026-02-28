@@ -1,6 +1,8 @@
 package testComponent;
 
 import component.card.Card;
+import component.card.Material;
+import component.card.Suit;
 import logic.GameLevel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,34 +16,34 @@ public class TestCard {
     @BeforeEach
     void setUp() {
         card1 = new Card();
-        card4 = new Card(Card.Suit.DIAMOND,6,Card.Material.STONE,new GridPos(1, 0));
+        card4 = new Card(Suit.DIAMOND,6,Material.STONE,new GridPos(1, 0));
     }
 
     @Test
     void testDefaultConstructor() {
-        assertEquals(Card.Suit.SPADE, card1.getSuit());
+        assertEquals(Suit.SPADE, card1.getSuit());
         assertEquals(1, card1.getValue());
-        assertEquals(Card.Material.PLASTIC, card1.getMaterial());
+        assertEquals(Material.PLASTIC, card1.getMaterial());
         assertEquals(0, card1.getGridPos().getX());
         assertEquals(0, card1.getGridPos().getY());
     }
 
     @Test
     void testThreeParameterConstructor() {
-        card2 = new Card(Card.Suit.DIAMOND,12,Card.Material.GLASS);
-        assertEquals(Card.Suit.DIAMOND, card2.getSuit());
+        card2 = new Card(Suit.DIAMOND,12,Material.GLASS);
+        assertEquals(Suit.DIAMOND, card2.getSuit());
         assertEquals(12, card2.getValue());
-        assertEquals(Card.Material.GLASS, card2.getMaterial());
+        assertEquals(Material.GLASS, card2.getMaterial());
         assertEquals(0, card2.getGridPos().getX());
         assertEquals(0, card2.getGridPos().getY());
     }
 
     @Test
     void testMasterConstructor() {
-        card2 = new Card(Card.Suit.CLUB,2,Card.Material.CORRUPTED,new GridPos(3, 4));
-        assertEquals(Card.Suit.CLUB, card2.getSuit());
+        card2 = new Card(Suit.CLUB,2,Material.CORRUPTED,new GridPos(3, 4));
+        assertEquals(Suit.CLUB, card2.getSuit());
         assertEquals(2, card2.getValue());
-        assertEquals(Card.Material.CORRUPTED, card2.getMaterial());
+        assertEquals(Material.CORRUPTED, card2.getMaterial());
         assertEquals(3, card2.getGridPos().getX());
         assertEquals(4, card2.getGridPos().getY());
     }
@@ -99,10 +101,10 @@ public class TestCard {
 
     @Test
     void testSettersForSuitAndMaterial() {
-        card4.setSuit(Card.Suit.DIAMOND);
-        assertEquals(Card.Suit.DIAMOND, card4.getSuit());
-        card4.setMaterial(Card.Material.GLASS);
-        assertEquals(Card.Material.GLASS, card4.getMaterial());
+        card4.setSuit(Suit.DIAMOND);
+        assertEquals(Suit.DIAMOND, card4.getSuit());
+        card4.setMaterial(Material.GLASS);
+        assertEquals(Material.GLASS, card4.getMaterial());
     }
 
     @Test

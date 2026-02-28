@@ -6,4 +6,6 @@ import component.modifier.Modifier;
 public abstract class Combinator extends Modifier {
     // Used for rendering
 
+    @Override
+    public void reset() {this.setDisabled(false);}
 }
