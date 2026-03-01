@@ -1,0 +1,22 @@
+{
+  "name": "Split and Double to the Next",
+  "width": 5,
+  "height": 5,
+
+  "inputCards": [
+    { "suit": "SPADE", "value": 8, "material": "RUBBER" },
+    { "suit": "SPADE", "value": 8, "material": "RUBBER" }
+  ],
+
+  "outputCards": [
+    { "suit": "SPADE", "value": 6 },
+    { "suit": "SPADE", "value": 6 },
+    { "suit": "SPADE", "value": 6 },
+    { "suit": "SPADE", "value": 6 }
+  ],
+
+  "availableMovers": [
+    { "name": "CONVEYOR", "count": -1 }
+  ]
+}
+
