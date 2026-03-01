@@ -1,7 +1,10 @@
 package component.mover;
 
 import component.card.Card;
+import component.card.Suit;
+import javafx.scene.paint.Color;
 import logic.GameLevel;
+import ui.tooltip.Tooltip;
 import util.Direction;
 
 public class RedBlackFilter extends Mover {
@@ -19,7 +22,7 @@ public class RedBlackFilter extends Mover {
         Card toMove = GameLevel.getInstance().getTile(getGridPos()).getCard();
 
         if (toMove == null) return Direction.STAY;
-        else if (toMove.getSuit() == Card.Suit.HEART || toMove.getSuit() == Card.Suit.DIAMOND) return getRotation();
+        else if (toMove.getSuit() == Suit.HEART || toMove.getSuit() == Suit.DIAMOND) return getRotation();
         else return getRotation().prev();
     }
 
@@ -33,4 +36,26 @@ public class RedBlackFilter extends Mover {
         return new Direction[]{getRotation(), getRotation().prev()};
     }
 
+    @Override
+    public Tooltip getTooltip() {
+        return new Tooltip(
+            "RedBlackFilter",
+            Color.INDIANRED, // racist
+            "A ",
+            Tooltip.ref(Mover.getMoverTooltip()),
+            " that filters cards based on the color of the suit.",
+            " It will move the card ",
+            Tooltip.ref(getRotation()),
+            " if it is a ",
+            Tooltip.ref(Suit.HEART),
+            " or ",
+            Tooltip.ref(Suit.DIAMOND),
+            " otherwise it will move the card ",
+            Tooltip.ref(getRotation().prev()),
+            " if it is a ",
+            Tooltip.ref(Suit.SPADE),
+            " or ",
+            Tooltip.ref(Suit.CLUB)
+        );
+    }
 }

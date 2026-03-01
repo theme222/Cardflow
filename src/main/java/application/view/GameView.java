@@ -8,6 +8,7 @@ import javafx.util.Duration;
 import logic.GameLevel;
 import logic.PlayerInventory;
 import logic.event.end.GameWinEvent;
+import registry.render.RenderLayer;
 import registry.render.RendererRegistry;
 import ui.button.BackButton;
 import ui.game.GameRenderStack;
@@ -17,6 +18,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import ui.tooltip.TooltipLayer;
 import util.Direction;
 import util.GridPos;
 import event.EventBus;
@@ -28,6 +30,7 @@ public class GameView extends View {
     private final LevelInfoPane levelInfoPane;
     private final GameWinOverlay gameWinOverlay;
     private final GameRenderStack gameGrid;
+    private final TooltipLayer tooltipLayer;
     private Runnable unregisterUpdatePoints;
     private Runnable unregisterShowWinOverlay;
 
@@ -47,18 +50,15 @@ public class GameView extends View {
     public GameView(GameLevel level) {
         super();
         setInstance(this);
-        
+
         GameLevel.setInstance(level); // Most components will rely on this
         PlayerInventory.setInstance(new PlayerInventory(level));
 
-        gameGrid = new GameRenderStack(level);
-
-        VBox infoPane = new VBox();
-        infoPane.setPadding(new Insets(10));
-
-        levelInfoPane = new LevelInfoPane();
-
+        tooltipLayer = new TooltipLayer();
         gameWinOverlay = new GameWinOverlay();
+        // Forcing dependencies to be passed through during initialization ensures it can't be null :D
+        levelInfoPane = new LevelInfoPane(tooltipLayer);
+        gameGrid = new GameRenderStack(level, tooltipLayer);
 
         HBox mainLayout = new HBox();
         mainLayout.setAlignment(Pos.CENTER);
@@ -66,9 +66,8 @@ public class GameView extends View {
         mainLayout.getChildren().addAll(gameGrid, levelInfoPane);
 
 
-        root.getChildren().addAll(mainLayout, new BackButton());
+        root.getChildren().addAll(mainLayout, new BackButton(), tooltipLayer);
         root.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-
 
         // Register to receive render events and update affected tiles
         unregisterUpdatePoints = EventBus.register(RenderEvent.class, this::updatePoints);
@@ -82,6 +81,7 @@ public class GameView extends View {
         unregisterShowWinOverlay.run();
         unregisterUpdatePoints.run();
         getLevelInfoPane().cleanup();
+        getTooltipLayer().cleanup();
     }
 
     public void updatePoints(RenderEvent ev) {
@@ -125,9 +125,12 @@ public class GameView extends View {
         return levelInfoPane;
     }
 
+    public TooltipLayer getTooltipLayer() {return tooltipLayer; }
+
     public static GameView getInstance() {
         return instance;
     }
+
 
     public static void setInstance(GameView view) {
         instance = view;

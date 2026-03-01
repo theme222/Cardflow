@@ -1,5 +1,6 @@
 package ui.levelinfo;
 
+import application.view.GameView;
 import engine.event.PausedEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,6 +21,9 @@ import engine.event.MovementEndedEvent;
 import event.EventBus;
 import ui.card.CardInputListPane;
 import ui.card.CardOutputListPane;
+import ui.tooltip.Tooltip;
+import ui.tooltip.TooltipLayer;
+import util.Direction;
 
 public class LevelInfoPane extends VBox { // thx chatgpt
 
@@ -41,7 +45,7 @@ public class LevelInfoPane extends VBox { // thx chatgpt
     private Runnable unregisterAfterModify;
     private Runnable unregisterAfterPause;
 
-    public LevelInfoPane() {
+    public LevelInfoPane(TooltipLayer tooltipLayer) {
         inventory = PlayerInventory.getInstance();
 
         setPadding(new Insets(12));
@@ -64,9 +68,9 @@ public class LevelInfoPane extends VBox { // thx chatgpt
 
         moversList = new VBox(6);
 
-        cardInputListPane = new CardInputListPane("Input Cards", GameLevel.getInstance().INPUT_CARDS);
+        cardInputListPane = new CardInputListPane("Input Cards", GameLevel.getInstance().INPUT_CARDS, tooltipLayer);
 
-        cardOutputListPane = new CardOutputListPane("Output Cards", GameLevel.getInstance().OUTPUT_CARDS);
+        cardOutputListPane = new CardOutputListPane("Output Cards", GameLevel.getInstance().OUTPUT_CARDS, tooltipLayer);
 
         getChildren().addAll(
                 titleText,
@@ -77,7 +81,7 @@ public class LevelInfoPane extends VBox { // thx chatgpt
                 moversList
         );
 
-        buildMoverRows();
+        buildMoverRows(tooltipLayer);
         buildControlPanel();
         updateInventoryUI();
 
@@ -127,7 +131,7 @@ public class LevelInfoPane extends VBox { // thx chatgpt
     }
 
     // Build static UI once
-    private void buildMoverRows() {
+    private void buildMoverRows(TooltipLayer tooltipLayer) {
         moversList.getChildren().clear();
         moverButtons.clear();
         moverCountTexts.clear();
@@ -143,6 +147,10 @@ public class LevelInfoPane extends VBox { // thx chatgpt
                 inventory.setCurrentSelection(name);
                 updateInventoryUI();
             });
+
+            tooltipLayer.bind(button,
+                Tooltip.getContainerFor(PlayerInventory.getMoverObjectByName(name, PlayerInventory.getInstance().getCurrentRotation()))
+            );
 
             // --- count text ---
             Text countText = new Text();

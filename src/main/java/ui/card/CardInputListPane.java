@@ -4,6 +4,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import ui.tooltip.Tooltip;
+import ui.tooltip.TooltipLayer;
 import util.CardCount;
 import util.GridPos;
 
@@ -14,7 +16,7 @@ public class CardInputListPane extends VBox {
     private final Label title;
     private final HBox cardList;
 
-    public CardInputListPane(String name, List<CardCount> cardCounts) {
+    public CardInputListPane(String name, List<CardCount> cardCounts, TooltipLayer tooltipLayer) {
         title = new Label(name);
         title.setPadding(new Insets(5));
         title.getStyleClass().add("text-subheading");
@@ -26,6 +28,7 @@ public class CardInputListPane extends VBox {
         for (CardCount cardCount : cardCounts) {
             for (int i = 0; i < cardCount.getCount(); i++) {
                 CardPaneListItem cardPane = new CardPaneListItem(cardCount.getCard());
+                tooltipLayer.bind(cardPane, Tooltip.getContainerFor(cardCount.getCard()));
                 cardList.getChildren().add(cardPane);
             }
         }

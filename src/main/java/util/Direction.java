@@ -1,7 +1,11 @@
 package util;
 // Quitintessential Utility for Directions
 
-public enum Direction {
+import javafx.scene.paint.Color;
+import ui.tooltip.Tippable;
+import ui.tooltip.Tooltip;
+
+public enum Direction implements Tippable {
     UP, RIGHT, DOWN, LEFT, STAY;
 
     private static final Direction[] CARDINALS = {
@@ -51,6 +55,18 @@ public enum Direction {
         };
     }
 
+    @Override
+    public String toString() {
+        return Util.capitalize(name());
+    }
+
+    @Override
+    public Tooltip getTooltip() {
+        return new Tooltip(
+            toString(),
+            Color.CADETBLUE
+        );
+    }
 
 }
 

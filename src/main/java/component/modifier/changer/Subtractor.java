@@ -1,7 +1,9 @@
 package component.modifier.changer;
 
 import component.card.Card;
+import javafx.scene.paint.Color;
 import logic.GameLevel;
+import ui.tooltip.Tooltip;
 
 public class Subtractor extends Arithmetic { // Generic type argument can't be primitive. This works basically the same way tho.
 
@@ -18,5 +20,17 @@ public class Subtractor extends Arithmetic { // Generic type argument can't be p
     @Override
     public void change(Card toModify) {
         if (toModify != null) toModify.setValue(toModify.getValue() - changeValue);
+    }
+
+    @Override
+    public Tooltip getTooltip() {
+        return new Tooltip(
+                "Subtractor",
+                Color.RED,
+                "A ",
+                super.getTooltip(),
+                " that subtracts the value of the card by ",
+                Tooltip.ref(getChange())
+        );
     }
 }

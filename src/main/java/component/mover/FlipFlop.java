@@ -1,6 +1,8 @@
 package component.mover;
 
+import javafx.scene.paint.Color;
 import logic.GameLevel;
+import ui.tooltip.Tooltip;
 import util.Direction;
 
 public class FlipFlop extends Mover {
@@ -40,4 +42,17 @@ public class FlipFlop extends Mover {
 
     @Override
     public void reset() {setActive(true);}
+
+    @Override
+    public Tooltip getTooltip() {
+        return new Tooltip(
+                "FlipFlop",
+                Color.INDIANRED, // racist
+                "A ",
+                Tooltip.ref(Mover.getMoverTooltip()),
+                " that switches direction every time a card enters. ",
+                "It will currently move the card ",
+                Tooltip.ref(getDirectionStateless())
+        );
+    }
 }

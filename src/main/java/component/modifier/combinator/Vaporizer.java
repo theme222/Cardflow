@@ -2,7 +2,9 @@ package component.modifier.combinator;
 
 import component.card.Card;
 import component.modifier.Modifier;
+import javafx.scene.paint.Color;
 import logic.GameLevel;
+import ui.tooltip.Tooltip;
 
 public class Vaporizer extends Combinator {
     public Vaporizer() {}
@@ -21,4 +23,15 @@ public class Vaporizer extends Combinator {
 
     @Override
     public void reset() {}
+
+    @Override
+    public Tooltip getTooltip() {
+        return new Tooltip(
+                "Vaporizer",
+                Color.DEEPPINK,
+                "A ",
+                super.getTooltip(), // combinator
+                " that will destroy the card that comes in"
+        );
+    }
 }

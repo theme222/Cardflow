@@ -9,7 +9,7 @@ import ui.render.RenderState;
 import ui.render.Renderer;
 import util.Config;
 import util.GridPos;
-import util.Helper;
+import util.Util;
 
 public class SetterRenderer extends Renderer<Setter<?>> {
 
@@ -22,7 +22,7 @@ public class SetterRenderer extends Renderer<Setter<?>> {
         RenderState state = SetterRenderResolver.resolve(setter, pos, Config.MODIFIER_ALPHA);
         draw(node, state);
         if (setter instanceof ValueSetter valueSetter)
-            textWithCanvas(node, Helper.getValueAsString(valueSetter.getChange()).toUpperCase(), state, (Canvas)node.getChildren().getFirst());
+            textWithCanvas(node, Util.getValueAsString(valueSetter.getChange()).toUpperCase(), state, (Canvas)node.getChildren().getFirst());
 
     }
 

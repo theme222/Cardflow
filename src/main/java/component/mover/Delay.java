@@ -1,7 +1,9 @@
 package component.mover;
 
 import component.card.Card;
+import javafx.scene.paint.Color;
 import logic.GameLevel;
+import ui.tooltip.Tooltip;
 import util.Direction;
 
 public class Delay extends Mover {
@@ -30,4 +32,17 @@ public class Delay extends Mover {
         return new Direction[]{getRotation()};
     }
 
+    @Override
+    public Tooltip getTooltip() {
+        return new Tooltip(
+                "Delay",
+                Color.INDIANRED, // racist
+                "A ",
+                Tooltip.ref(Mover.getMoverTooltip()),
+                " that takes ",
+                Tooltip.ref(2),
+                " ticks to move the card ",
+                Tooltip.ref(getDirectionStateless())
+        );
+    }
 }

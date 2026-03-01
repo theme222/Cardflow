@@ -2,7 +2,9 @@ package component.modifier.combinator;
 
 import component.card.Card;
 import component.modifier.Modifier;
+import javafx.scene.paint.Color;
 import logic.GameLevel;
+import ui.tooltip.Tooltip;
 
 public class Splitter extends Combinator {
 
@@ -33,4 +35,16 @@ public class Splitter extends Combinator {
 
     @Override
     public void reset() { cardToSpawn = null; }
+
+    @Override
+    public Tooltip getTooltip() {
+        return new Tooltip(
+                "Splitter",
+                Color.DEEPPINK,
+                "A ",
+                super.getTooltip(), // combinator
+                " that will halve the value of the card ",
+                "and spawn the second half afterwords"
+        );
+    }
 }

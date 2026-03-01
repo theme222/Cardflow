@@ -1,10 +1,13 @@
 package component.mover;
 
+import javafx.scene.paint.Color;
+import ui.tooltip.Tippable;
+import ui.tooltip.Tooltip;
 import util.GridIndexable;
 import logic.GameLevel;
 import util.*;
 
-abstract public class Mover implements GridIndexable {
+abstract public class Mover implements GridIndexable, Tippable {
 
 
     public static GridPos getTranslationFromDirection(Direction direction) {
@@ -60,4 +63,16 @@ abstract public class Mover implements GridIndexable {
     public boolean isBlocking() {return false;}
 
     public void reset() { }
+
+    @Override
+    public Tooltip getTooltip() {
+        return getMoverTooltip();
+    }
+
+    public static Tooltip getMoverTooltip() {
+        return new Tooltip("Mover",
+                Color.OLIVEDRAB, // Genuinely tho what is this color???
+                "Facilitates the transportation of cards"
+        );
+    }
 }

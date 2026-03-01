@@ -3,10 +3,17 @@ package component;
 import component.card.Card;
 import component.modifier.Modifier;
 import component.mover.Mover;
+import javafx.scene.paint.Color;
+import logic.GameLevel;
+import ui.tooltip.Tippable;
+import ui.tooltip.Tooltip;
 import util.GridIndexable;
 import util.GridPos;
 
-public class GameTile {
+import java.util.ArrayList;
+import java.util.function.Supplier;
+
+public class GameTile implements Tippable {
 
     private Card card;
     private Modifier modifier;
@@ -59,5 +66,16 @@ public class GameTile {
     @Override
     public String toString() {
         return "{" + card + ", " + modifier + ", " + mover + '}';
+    }
+
+    @Override
+    public Tooltip getTooltip() {
+        return new Tooltip(
+            null,
+            Color.BLACK,
+            Tooltip.ref(getCard()),
+            Tooltip.ref(getModifier()),
+            Tooltip.ref(getMover())
+        );
     }
 }

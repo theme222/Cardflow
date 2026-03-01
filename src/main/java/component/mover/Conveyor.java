@@ -1,5 +1,8 @@
 package component.mover;
 
+import component.modifier.Modifier;
+import javafx.scene.paint.Color;
+import ui.tooltip.Tooltip;
 import util.*;
 
 public class Conveyor extends Mover {
@@ -22,5 +25,17 @@ public class Conveyor extends Mover {
     }
 
     // getDirection already defined
+
+    @Override
+    public Tooltip getTooltip() {
+        return new Tooltip(
+            "Conveyor",
+            Color.INDIANRED, // racist
+            "A ",
+            Tooltip.ref(Mover.getMoverTooltip()),
+            " that will send the card ",
+            Tooltip.ref(getDirectionStateless())
+        );
+    }
 
 }

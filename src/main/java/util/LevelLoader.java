@@ -1,6 +1,8 @@
 package util;
 
 import component.card.Card;
+import component.card.Material;
+import component.card.Suit;
 import component.modifier.changer.*;
 import component.modifier.combinator.*;
 import logic.GameLevel;
@@ -24,33 +26,33 @@ public class LevelLoader {
 
     public static final int TOTAL_LEVELS = 20;
 
-    private static Card.Suit parseSuit(String suitString) {
+    private static Suit parseSuit(String suitString) {
         return switch (suitString.toUpperCase()) {
-            case "HEART", "H" -> Card.Suit.HEART;
-            case "CLUB", "C" -> Card.Suit.CLUB;
-            case "DIAMOND", "D" -> Card.Suit.DIAMOND;
-            case "SPADE", "S" -> Card.Suit.SPADE;
+            case "HEART", "H" -> Suit.HEART;
+            case "CLUB", "C" -> Suit.CLUB;
+            case "DIAMOND", "D" -> Suit.DIAMOND;
+            case "SPADE", "S" -> Suit.SPADE;
             default -> throw new IllegalArgumentException("Invalid suit");
         };
     }
 
-    private static Card.Material parseMaterial(String materialString) {
+    private static Material parseMaterial(String materialString) {
         return switch (materialString.toUpperCase()) {
-            case "PLASTIC", "P" -> Card.Material.PLASTIC;
-            case "STONE", "S" ->  Card.Material.STONE;
-            case "GLASS", "G" ->  Card.Material.GLASS;
-            case "METAL", "M" ->  Card.Material.METAL;
-            case "CORRUPTED", "C" -> Card.Material.CORRUPTED;
-            case "RUBBER", "R" -> Card.Material.RUBBER;
+            case "PLASTIC", "P" -> Material.PLASTIC;
+            case "STONE", "S" ->  Material.STONE;
+            case "GLASS", "G" ->  Material.GLASS;
+            case "METAL", "M" ->  Material.METAL;
+            case "CORRUPTED", "C" -> Material.CORRUPTED;
+            case "RUBBER", "R" -> Material.RUBBER;
             default -> throw new IllegalArgumentException("Invalid material");
         };
 
     }
 
     private static CardCount parseCardInfo(JsonObject cardJson) {
-        Card.Suit suit = parseSuit(cardJson.getString("suit"));
+        Suit suit = parseSuit(cardJson.getString("suit"));
         int value = cardJson.getInt("value");
-        Card.Material material = cardJson.containsKey("material") ? parseMaterial(cardJson.getString("material")) : Card.Material.PLASTIC;
+        Material material = cardJson.containsKey("material") ? parseMaterial(cardJson.getString("material")) : Material.PLASTIC;
         int count = cardJson.containsKey("count") ? cardJson.getInt("count") : 1;
 
         return new CardCount(new Card(suit, value, material), count);

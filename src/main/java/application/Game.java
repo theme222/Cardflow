@@ -7,18 +7,16 @@ import application.view.GameView;
 import application.view.LevelSelectorView;
 import application.view.MainMenuView;
 import component.GameTile;
+import event.Event;
 import javafx.application.Platform;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import logic.GameLevel;
-import engine.TickEngine;
-import placement.PlacementController;
+import logic.PlayerInventory;
 import util.GridPos;
 import util.LevelLoader;
 
 public final class Game {
-
-    private static final PlacementController controller = new PlacementController();
 
     public static void init(Stage primaryStage) {
         GameBootstrap.init(); // initialize the registries and events
@@ -63,7 +61,24 @@ public final class Game {
             boolean shift,
             boolean ctrl
     ) {
-        return controller.handleTileClick(tile, button, shift, ctrl);
+        // replacing most of this to calls to PlayerInventory to allow for dynamic selection.
+        if (button == MouseButton.PRIMARY) {
+            if (tile.getMover() == null)
+                PlayerInventory.getInstance().placeToGrid(tile.getGridPos());
+            else
+                PlayerInventory.getInstance().removeFromGrid(tile.getGridPos());
+        }
+
+        if (button == MouseButton.SECONDARY) {
+            if (tile.getMover() != null)
+                tile.getMover().rotate();
+            else
+                PlayerInventory.getInstance().cycleRotation();
+        }
+
+        GameView.getInstance().getLevelInfoPane().updateInventoryUI(); // Not sure if this is the best place to put it
+        GameView.getInstance().getTooltipLayer().updateTooltipInfo(new Event() { });
+        return Set.of(tile.getGridPos());
     }
 
 	public static void onSceneClick(
@@ -71,6 +86,9 @@ public final class Game {
             boolean shift,
             boolean ctrl
     ) {
-        controller.handleSceneClick(button, shift, ctrl);
+        if (button == MouseButton.SECONDARY) {
+            PlayerInventory.getInstance().cycleRotation();
+            GameView.getInstance().getLevelInfoPane().updateInventoryUI();
+        }
     }
 }

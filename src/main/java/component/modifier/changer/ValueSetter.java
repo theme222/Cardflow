@@ -1,6 +1,8 @@
 package component.modifier.changer;
 
 import component.card.Card;
+import javafx.scene.paint.Color;
+import ui.tooltip.Tooltip;
 
 public class ValueSetter extends Setter<Integer> {
 
@@ -17,5 +19,17 @@ public class ValueSetter extends Setter<Integer> {
     @Override
     public void setChange(Integer change) {
         this.changeValue = Math.clamp(change, 1, 13);
+    }
+
+    @Override
+    public Tooltip getTooltip() {
+        return new Tooltip(
+                "Value Setter",
+                Color.DARKGRAY,
+                "A ",
+                super.getTooltip(), // changer
+                " that changes the value of the card to ",
+                Tooltip.ref(getChange())
+        );
     }
 }

@@ -1,11 +1,15 @@
 package component.modifier;
 
 import component.card.Card;
+import component.card.Material;
+import javafx.scene.paint.Color;
+import ui.tooltip.Tippable;
+import ui.tooltip.Tooltip;
 import util.GridIndexable;
 import logic.GameLevel;
 import util.GridPos;
 
-abstract public class Modifier implements GridIndexable {
+abstract public class Modifier implements GridIndexable, Tippable {
     private boolean isDisabled;
     protected GridPos gridPos;
 
@@ -19,15 +23,16 @@ abstract public class Modifier implements GridIndexable {
         setGridPos(gridPos);
     }
 
+
     // GETTERS & SETTERS //
     public boolean isDisabled() { return isDisabled; }
     public void setDisabled(boolean disabled) { isDisabled = disabled; }
 
     public boolean checkSetDisable(Card card) {
         if (card == null) return isDisabled();
-        if (card.getMaterial() == Card.Material.CORRUPTED) {
+        if (card.getMaterial() == Material.CORRUPTED) {
             setDisabled(true);
-            card.setMaterial(Card.Material.PLASTIC);
+            card.setMaterial(Material.PLASTIC);
         }
         return isDisabled();
     }
@@ -60,4 +65,13 @@ abstract public class Modifier implements GridIndexable {
     // isBlocking needs to be set on inherit.
     public abstract void modify(Card toModify);
     public abstract void reset();
+
+    @Override
+    public Tooltip getTooltip() {
+        return getModifierTooltip();
+    }
+
+    public static Tooltip getModifierTooltip() { // abstract class so we can't really call getTooltip
+        return new Tooltip("Modifier", Color.BLACK, "A special machine that can modify a card that occupies the same tile as it");
+    }
 }

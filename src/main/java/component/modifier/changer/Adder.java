@@ -1,7 +1,9 @@
 package component.modifier.changer;
 
 import component.card.Card;
+import javafx.scene.paint.Color;
 import logic.GameLevel;
+import ui.tooltip.Tooltip;
 
 public class Adder extends Arithmetic { // Generic type argument can't be primitive. This works basically the same way tho.
 
@@ -18,5 +20,18 @@ public class Adder extends Arithmetic { // Generic type argument can't be primit
     @Override
     public void change(Card toModify) {
         if (toModify != null) toModify.setValue(toModify.getValue() + changeValue);
+    }
+
+    @Override
+    public Tooltip getTooltip() {
+        return new Tooltip(
+            "Adder",
+            Color.MAGENTA,
+            "A ",
+            super.getTooltip(), // changer
+            " that adds ",
+            Tooltip.ref(getChange()),
+            " to the value of the card"
+        );
     }
 }

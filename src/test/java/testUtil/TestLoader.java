@@ -3,6 +3,8 @@ package testUtil;
 import static org.junit.jupiter.api.Assertions.*;
 
 import component.card.Card;
+import component.card.Material;
+import component.card.Suit;
 import component.modifier.Modifier;
 import component.modifier.changer.Adder;
 import component.modifier.changer.SuitSetter;
@@ -47,11 +49,11 @@ public class TestLoader {
         Method parseSuit = LevelLoader.class.getDeclaredMethod("parseSuit", String.class);
         parseSuit.setAccessible(true);
 
-        assertEquals(Card.Suit.HEART, parseSuit.invoke(null, "HEART"));
-        assertEquals(Card.Suit.HEART, parseSuit.invoke(null, "h"));
-        assertEquals(Card.Suit.SPADE, parseSuit.invoke(null, "S"));
-        assertEquals(Card.Suit.CLUB, parseSuit.invoke(null, "CLUB"));
-        assertEquals(Card.Suit.DIAMOND, parseSuit.invoke(null, "d"));
+        assertEquals(Suit.HEART, parseSuit.invoke(null, "HEART"));
+        assertEquals(Suit.HEART, parseSuit.invoke(null, "h"));
+        assertEquals(Suit.SPADE, parseSuit.invoke(null, "S"));
+        assertEquals(Suit.CLUB, parseSuit.invoke(null, "CLUB"));
+        assertEquals(Suit.DIAMOND, parseSuit.invoke(null, "d"));
 
         InvocationTargetException ex = assertThrows(InvocationTargetException.class, () -> parseSuit.invoke(null, "INVALID"));
         assertInstanceOf(IllegalArgumentException.class, ex.getCause());
@@ -62,10 +64,10 @@ public class TestLoader {
         Method parseMaterial = LevelLoader.class.getDeclaredMethod("parseMaterial", String.class);
         parseMaterial.setAccessible(true);
 
-        assertEquals(Card.Material.PLASTIC, parseMaterial.invoke(null, "PLASTIC"));
-        assertEquals(Card.Material.PLASTIC, parseMaterial.invoke(null, "p"));
-        assertEquals(Card.Material.GLASS, parseMaterial.invoke(null, "G"));
-        assertEquals(Card.Material.CORRUPTED, parseMaterial.invoke(null, "c"));
+        assertEquals(Material.PLASTIC, parseMaterial.invoke(null, "PLASTIC"));
+        assertEquals(Material.PLASTIC, parseMaterial.invoke(null, "p"));
+        assertEquals(Material.GLASS, parseMaterial.invoke(null, "G"));
+        assertEquals(Material.CORRUPTED, parseMaterial.invoke(null, "c"));
 
         InvocationTargetException ex = assertThrows(InvocationTargetException.class, () -> parseMaterial.invoke(null, "WOOD"));
         assertInstanceOf(IllegalArgumentException.class, ex.getCause());
