@@ -12,7 +12,7 @@ public class Adder extends Arithmetic { // Generic type argument can't be primit
 
     public Adder(int changeValue) {
         this.changeType = ChangeType.NUMBER;
-        this.changeValue = changeValue;
+        setChange(changeValue);
     }
 
     @Override

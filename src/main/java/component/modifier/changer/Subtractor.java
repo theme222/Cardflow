@@ -12,7 +12,7 @@ public class Subtractor extends Arithmetic { // Generic type argument can't be p
 
     public Subtractor(int changeValue) {
         this.changeType = ChangeType.NUMBER;
-        this.changeValue = changeValue;
+        setChange(changeValue);
     }
 
     @Override

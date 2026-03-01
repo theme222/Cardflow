@@ -12,7 +12,7 @@ public class Divider extends Arithmetic { // Generic type argument can't be prim
 
     public Divider(int changeValue) {
         this.changeType = ChangeType.NUMBER;
-        this.changeValue = changeValue;
+        setChange(changeValue);
     }
 
     @Override
