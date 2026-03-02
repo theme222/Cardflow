@@ -135,7 +135,8 @@ public class ViewManager { // Switching views instead of switching scenes to all
 
         this.viewStack = new Stack<>();
         this.viewTransition = new ViewTransition();
-        sceneRoot.getChildren().addAll(AudioManager.INSTANCE.mediaView, initialView.getRoot());
+        initialView.startup();
+        sceneRoot.getChildren().add(initialView.getRoot());
         viewStack.push(initialView);
 
         stage.setScene(scene);
@@ -144,6 +145,7 @@ public class ViewManager { // Switching views instead of switching scenes to all
 
     public void switchView(View newView, TransitionType transitionType) {
         getCurrentView().cleanup();
+        newView.startup();
         viewTransition.transitionView(getCurrentView(), newView, transitionType);
         viewStack.push(newView);
     }
@@ -151,15 +153,21 @@ public class ViewManager { // Switching views instead of switching scenes to all
     public void switchViewReplace(View newView, TransitionType transitionType) {
         // Replace the top most view with this view. (Example: Next level button)
         getCurrentView().cleanup();
+        newView.startup();
         viewTransition.transitionView(getCurrentView(), newView, transitionType);
         if (!viewStack.isEmpty()) viewStack.pop();
         viewStack.push(newView);
     }
 
     public boolean switchToPreviousView(TransitionType transitionType) {
-        getCurrentView().cleanup();
         if (viewStack.size() <= 1) return false; // Can't really go back if theres nothing to go back to
-        viewTransition.transitionView(viewStack.pop(), viewStack.peek(), transitionType);
+
+        View oldView = viewStack.pop();
+        View newView = viewStack.peek();
+        oldView.cleanup();
+        newView.startup();
+
+        viewTransition.transitionView(oldView, newView, transitionType);
         return true;
     }
 

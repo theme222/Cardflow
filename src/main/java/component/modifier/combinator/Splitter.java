@@ -22,10 +22,13 @@ public class Splitter extends Combinator {
             cardToSpawn = new Card(toModify.getSuit(),
                     (int)Math.ceil((double)initialValue / 2),
                     toModify.getMaterial());
+            onSuccess();
         }
         else {
-            if (GameLevel.getInstance().addCard(cardToSpawn, getGridPos()))
+            if (GameLevel.getInstance().addCard(cardToSpawn, getGridPos())) {
                 cardToSpawn = null; // Added success
+                onSuccess();
+            }
         }
     }
 

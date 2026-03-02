@@ -34,7 +34,8 @@ public class Exit extends Pathway {
             GameLevel.getInstance().exitedCardsList.add(toRemove);
             EventBus.emit(new CardExitEvent(getGridPos(), toRemove, countCorrectExits, countTotalExits));
             currentIndex++;
-            
+
+            onSuccess();
         }
     }
 

@@ -14,7 +14,10 @@ public class Vaporizer extends Combinator {
     public void modify(Card toModify) {
         if (checkSetDisable(toModify)) return;
         if (checkStone(toModify)) return;
-        if (toModify != null) GameLevel.getInstance().removeCard(toModify);
+        if (toModify != null) {
+            GameLevel.getInstance().removeCard(toModify);
+            onSuccess();
+        }
     }
 
     @Override

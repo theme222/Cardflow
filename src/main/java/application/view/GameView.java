@@ -1,6 +1,7 @@
 package application.view;
 
 import application.ViewManager;
+import audio.AudioManager;
 import engine.TickEngine;
 import javafx.animation.Interpolator;
 import javafx.animation.TranslateTransition;
@@ -72,7 +73,12 @@ public class GameView extends View {
         // Register to receive render events and update affected tiles
         unregisterUpdatePoints = EventBus.register(RenderEvent.class, this::updatePoints);
         unregisterShowWinOverlay = EventBus.register(GameWinEvent.class, this::showGameWinOverlay);
+    }
+
+    @Override
+    public void startup() {
         TickEngine.reset();
+        AudioManager.playMusic("music-game");
     }
 
     @Override
@@ -119,6 +125,7 @@ public class GameView extends View {
         drop.play();
         root.getChildren().remove(gameWinOverlay);
         root.getChildren().add(gameWinOverlay); // honestly idk
+        AudioManager.playMusic("music-win");
     }
 
     public LevelInfoPane getLevelInfoPane() {

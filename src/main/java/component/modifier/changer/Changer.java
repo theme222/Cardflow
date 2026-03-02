@@ -48,6 +48,7 @@ abstract public class Changer<T> extends Modifier { // I'm not sorry haha
         if (toModify == null) return;
         if (toModify.getMaterial() == Material.RUBBER) change(toModify);
         change(toModify);
+        onSuccess();
     }
 
     @Override

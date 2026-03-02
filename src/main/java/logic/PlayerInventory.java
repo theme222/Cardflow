@@ -50,26 +50,30 @@ public class PlayerInventory {
         this.currentSelection = name;
     }
 
-    public void placeToGrid(GridPos position) {
+    public boolean placeToGrid(GridPos position) { // returns success
         // TODO: Maybe also do a check with the current game state?
-        if (position == null) return;
-        if (Objects.isNull(currentSelection)) return;
-        if (currentAvailableMovers.get(currentSelection) == 0) return;
+        if (position == null) return false;
+        if (Objects.isNull(currentSelection)) return false;
+        if (currentAvailableMovers.get(currentSelection) == 0) return false;
         if (gameLevel.addMover(getMoverObjectByName(currentSelection, currentRotation), position)) {
             // Successfully added so we decrement the selection
             modifyAvailableMovers(currentSelection, -1);
+            return true;
         }
+        return false;
     }
 
-    public void removeFromGrid(GridPos position) {
+    public boolean removeFromGrid(GridPos position) {
         // TODO: Maybe also do a check with the current game state?
-        if (position == null) return;
+        if (position == null) return false;
         GameLevel game = GameLevel.getInstance();
         Mover toRemove = game.getTile(position).getMover();
         if (gameLevel.removeMover(gameLevel.getTile(position).getMover())) {
             // Successfully removed so we increment the selection
             modifyAvailableMovers(toRemove.getClass().getSimpleName().toUpperCase(), 1); // this is peak java idk what you are talking about
+            return true;
         }
+        return false;
     }
 
     public String getCurrentSelection() { return currentSelection; }

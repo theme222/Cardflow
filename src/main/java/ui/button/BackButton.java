@@ -4,6 +4,7 @@ import application.TransitionType;
 import application.ViewManager;
 import application.view.GameView;
 import application.view.View;
+import audio.AudioManager;
 import engine.TickEngine;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -19,6 +20,7 @@ public class BackButton extends VBox {
         backButton.getStyleClass().add("round");
         backButton.setFocusTraversable(false);
         backButton.setOnAction(e -> {
+            AudioManager.playSoundEffect("button-click");
             ViewManager manager = ViewManager.getInstance();
             if (!manager.switchToPreviousView(TransitionType.FADE)) Platform.exit(); // if go back is fail just leave the game.
         });

@@ -26,6 +26,7 @@ public class Entrance extends Pathway { // Entrance and exit lives on the same l
         if (GameLevel.getInstance().addCard(toAdd, getGridPos())) {
             EventBus.emit(new CardEnterEvent(getGridPos(), toAdd));
             currentIndex++;
+            onSuccess();
         }
     }
 

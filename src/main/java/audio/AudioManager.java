@@ -1,5 +1,11 @@
 package audio;
 
+import component.modifier.Modifier;
+import component.modifier.changer.Arithmetic;
+import component.modifier.changer.Setter;
+import component.modifier.combinator.Combinator;
+import component.modifier.pathway.Entrance;
+import component.modifier.pathway.Exit;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -10,12 +16,14 @@ import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 
 public class AudioManager {
 
-    public static final AudioManager INSTANCE = new AudioManager();
-    public final MediaView mediaView;
+    private static MediaPlayer currentMusicPlayer;
+    private static String currentMusic;
 
     private static class SoundEffectFiles {
         private static final String RESOURCE_DIR = "/asset/audio/sfx/";
@@ -26,6 +34,7 @@ public class AudioManager {
                 "card-effect-3",
                 "card-move",
                 "card-spawn",
+                "card-destroy",
                 "game-error",
                 "game-win",
                 "mover-place",
@@ -55,22 +64,48 @@ public class AudioManager {
         }
    }
 
-    public void playSoundEffect(String name) {
+   public static void playSFXWithModifierSet(HashSet<Modifier> modSet) {
+        HashSet<String> seen = new HashSet<>();
+        for (Modifier mod: modSet) {
+            if (mod instanceof Arithmetic)
+                seen.add("card-effect-1");
+            else if (mod instanceof Setter<?>)
+                seen.add("card-effect-2");
+            else if (mod instanceof Combinator)
+                seen.add("card-effect-3");
+            else if (mod instanceof Entrance)
+                seen.add("card-spawn");
+            else if (mod instanceof Exit)
+                seen.add("card-destroy");
+        }
+        for (String name: seen) playSoundEffect(name);
+   }
+
+    public static void playSoundEffect(String name) {
         AudioClip selectedAudio = SoundEffectFiles.audios.get(name);
         selectedAudio.play();
     }
 
-    public void playMusic(String name) {
+    public static void playMusic(String name) {
+        // 1. Stop and clean up the previous song
+        if (Objects.equals(name, currentMusic)) return;
+        if (currentMusicPlayer != null) {
+            currentMusicPlayer.stop();
+            currentMusicPlayer.dispose();
+        }
+
         Media selectedMusic = MusicFiles.medias.get(name);
-        MediaPlayer mediaPlayer = new MediaPlayer(selectedMusic);
+        if (selectedMusic == null) return;
 
-        mediaView.setMediaPlayer(mediaPlayer);
-
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        mediaPlayer.play();
+        // 2. Just create the player and hit play
+        currentMusicPlayer = new MediaPlayer(selectedMusic);
+        currentMusicPlayer.setVolume(0.7);
+        currentMusicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        currentMusicPlayer.play();
+        currentMusic = name;
     }
 
-    private void musicFadeIn(MediaPlayer player, double seconds, double targetVolume) {
+    private static void musicFadeIn(MediaPlayer player, double seconds, double targetVolume) {
         player.setVolume(0); // Start at silence
         player.play();       // Start playing
 
@@ -82,7 +117,7 @@ public class AudioManager {
         fade.play();
     }
 
-    private void musicFadeOut(MediaPlayer player, double seconds) {
+    private static void musicFadeOut(MediaPlayer player, double seconds) {
         Timeline fade = new Timeline(
                 new KeyFrame(Duration.seconds(seconds),
                         new KeyValue(player.volumeProperty(), 0) // Target volume: 0
@@ -92,10 +127,6 @@ public class AudioManager {
         // Optional: Stop the player once the fade finishes
         fade.setOnFinished(e -> player.stop());
         fade.play();
-    }
-
-    private AudioManager() {
-        mediaView = new MediaView();
     }
 
 }

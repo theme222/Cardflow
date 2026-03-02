@@ -29,12 +29,13 @@ public class MainMenuView extends View {
         Button playButton = new Button("Play ▶");
         playButton.getStyleClass().add("button-primary");
         playButton.setOnAction(event -> {
-            AudioManager.INSTANCE.playSoundEffect("button-click");
+            AudioManager.playSoundEffect("button-click");
             ViewManager.getInstance().switchView(new LevelSelectorView(), TransitionType.ZOOM);
         });
 
         Button exitButton =  new Button("Exit");
         exitButton.setOnAction(event -> {
+            AudioManager.playSoundEffect("button-click");
             Platform.exit();
         });
 
@@ -52,6 +53,11 @@ public class MainMenuView extends View {
 
         root.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         root.getChildren().add(layout);
+    }
+
+    @Override
+    public void startup() {
+        AudioManager.playMusic("music-menu");
     }
 
     @Override
