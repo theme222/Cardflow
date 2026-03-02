@@ -1,22 +1,25 @@
 {
-  "name": "Split and Double to the Next",
-  "width": 5,
-  "height": 5,
+  "name": "Yeahh!!! SIX SEVEN",
+  "width": 6,
+  "height": 7,
 
   "inputCards": [
-    { "suit": "SPADE", "value": 8, "material": "RUBBER" },
     { "suit": "SPADE", "value": 8, "material": "RUBBER" }
   ],
 
   "outputCards": [
     { "suit": "SPADE", "value": 6 },
+    { "suit": "SPADE", "value": 7 },
     { "suit": "SPADE", "value": 6 },
+    { "suit": "SPADE", "value": 7 },
     { "suit": "SPADE", "value": 6 },
-    { "suit": "SPADE", "value": 6 }
+    { "suit": "SPADE", "value": 7 }
   ],
 
   "availableMovers": [
-    { "name": "CONVEYOR", "count": -1 }
+    { "name": "CONVEYOR", "count": -1 },
+    { "name": "PARITYFILTER", "count": 1},
+    { "name" :  "FLIPFLOP", "count": 1}
   ]
 }
 

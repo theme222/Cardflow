@@ -1,5 +1,7 @@
-ENTER	.	SPLIT	.	.
-.	.	.	.	.
-.	.	ADD:1	.	.
-.	.	.	.	.
-.	.	.	.	EXIT
+ENTER	SPLIT	.	.	.	.
+.	.	.	.	.	.
+.	.	.	SETMAT:p	.	.
+.	.	MUL:2	ADD:1	.	.
+.	.	.	.	.	.
+.	.	.	ADD:1	.	.
+.	.	.	.	.	EXIT
