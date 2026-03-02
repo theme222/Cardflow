@@ -26,11 +26,12 @@ public class Divider extends Arithmetic { // Generic type argument can't be prim
     public Tooltip getTooltip() {
         return new Tooltip(
             "Divider",
-            Color.MAGENTA,
+            Color.DARKTURQUOISE,
             "A ",
             super.getTooltip(), // changer
             " that performs integer division to the value of the card. It currently devides by ",
-            Tooltip.ref(getChange())
+            isDisabled() ? "This is currently ": null,
+            isDisabled() ? getDisabledTooltip(): null
         );
     }
 }

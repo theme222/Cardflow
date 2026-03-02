@@ -1,7 +1,7 @@
 {
   "name": "SANDBOX",
-  "width": 10,
-  "height": 10,
+  "width": 9,
+  "height": 9,
 
   "inputCards": [
     { "suit": "HEART", "value": 1, "material": "PLASTIC", "count":  -1}
@@ -13,7 +13,7 @@
 
   "availableMovers": [
     { "name": "CONVEYOR", "count":  -1},
-    { "name":  "FLIPFLOP", "count":  -1},
+    { "name": "FLIPFLOP", "count":  -1},
     { "name": "REDBLACKFILTER", "count":  -1},
     { "name": "PARITYFILTER", "count":  -1},
     { "name": "DELAY", "count":  -1}

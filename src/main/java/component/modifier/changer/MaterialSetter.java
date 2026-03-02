@@ -3,7 +3,6 @@ package component.modifier.changer;
 import component.card.Card;
 import component.card.Material;
 import javafx.scene.paint.Color;
-import logic.GameLevel;
 import ui.tooltip.Tooltip;
 
 public class MaterialSetter extends Setter<Material> {
@@ -22,12 +21,14 @@ public class MaterialSetter extends Setter<Material> {
     @Override
     public Tooltip getTooltip() {
         return new Tooltip(
-                "Material Setter",
-                Color.DARKGRAY,
-                "A ",
-                super.getTooltip(), // changer
-                " that changes the card's material to ",
-                Tooltip.ref(getChange())
+            "Material Setter",
+            Color.DARKCYAN,
+            "A ",
+            super.getTooltip(), // changer
+            " that changes the card's material to ",
+            Tooltip.ref(getChange()),
+            isDisabled() ? "This is currently ": null,
+            isDisabled() ? getDisabledTooltip(): null
         );
     }
 }

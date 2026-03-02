@@ -3,6 +3,7 @@ package engine;
 import engine.event.ModifyEndedEvent;
 import engine.event.MovementEndedEvent;
 import engine.event.PausedEvent;
+import engine.event.ResetEvent;
 import event.EventBus;
 import event.RenderEvent;
 import logic.GameLevel;
@@ -50,6 +51,7 @@ public class TickEngine {
         pause();
         GameLevel.getInstance().resetLevel();
         EventBus.emit(new RenderEvent(GameLevel.getInstance().changedPoints));
+        EventBus.emit(new ResetEvent());
     }
 
     private static void startTimer() {

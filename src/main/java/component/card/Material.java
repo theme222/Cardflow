@@ -42,7 +42,7 @@ public enum Material implements Tippable {
             case METAL -> new Tooltip(
                     "Metal",
                     Color.BROWN,
-                    "This material will be unaffected by ",
+                    "This material will be unaffected by arithmetic ",
                     Tooltip.ref(Changer.getModifierTooltip()),
                     "s"
             );

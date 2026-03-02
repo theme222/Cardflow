@@ -1,8 +1,6 @@
 package component.modifier.combinator;
 
 import component.card.Card;
-import component.card.Material;
-import component.modifier.Modifier;
 import javafx.scene.paint.Color;
 import logic.GameLevel;
 import ui.tooltip.Tooltip;
@@ -35,7 +33,10 @@ public class Merger extends Combinator {
     }
 
     @Override
-    public void reset() { previousCard = null; }
+    public void reset() {
+        super.reset();
+        previousCard = null;
+    }
 
     @Override
     public Tooltip getTooltip() {
@@ -43,12 +44,14 @@ public class Merger extends Combinator {
             "Merger",
             Color.DEEPPINK,
             "A ",
-            super.getTooltip(), // combinator
+            getCombinatorTooltip(), // combinator
             " that will destroy the first card that comes in and then ",
             "add the destroyed card's value onto the next card. ",
             (previousCard != null) ? "It will add ": null,
             (previousCard != null) ? Tooltip.ref(previousCard.getValue()): null,
-            (previousCard != null) ? " to the next card": null
+            (previousCard != null) ? " to the next card": null,
+            isDisabled() ? "This is currently ": null,
+            isDisabled() ? getDisabledTooltip(): null
         );
     }
 }

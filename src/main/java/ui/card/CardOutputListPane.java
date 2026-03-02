@@ -2,6 +2,8 @@ package ui.card;
 
 import component.card.Card;
 import component.modifier.pathway.event.CardExitEvent;
+import engine.event.ResetEvent;
+import event.Event;
 import event.EventBus;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -18,6 +20,9 @@ public class CardOutputListPane extends VBox {
 
     private final Label title;
     private final HBox cardList;
+    private Runnable unregisterCardExit;
+    private Runnable unregisterReset;
+
 
     public CardOutputListPane(String name, List<CardCount> cardCounts, TooltipLayer tooltipLayer) {
         title = new Label(name);
@@ -39,15 +44,28 @@ public class CardOutputListPane extends VBox {
         getChildren().addAll(title, cardList);
         setBorder(Border.stroke(Color.BLACK));
 
-        EventBus.register(CardExitEvent.class, this::updateUI); // I'm pretty sure if you reallllllly tried this could cause a memory leak but honestly idc its easier than rerouting everything or creating an on free
+        unregisterCardExit = EventBus.register(CardExitEvent.class, this::updateUI);
+        unregisterReset = EventBus.register(ResetEvent.class, this::updateUI);
     }
 
-    public void updateUI(CardExitEvent cardExitEvent) {
+    public void cleanup() {
+        unregisterCardExit.run();
+        unregisterReset.run();
+    }
+
+    public void updateUI(Event e) {
         List<Card> exitedCardList = GameLevel.getInstance().exitedCardsList;
-        for (int index = 0; index < exitedCardList.size(); index++) {
+        int index;
+        for (index = 0; index < exitedCardList.size(); index++) {
             if (cardList.getChildren().size() <= index) continue; // Any extra input is ignored ?
             ((CardPaneListItem)cardList.getChildren().get(index)).setBorderColorByComparison(exitedCardList.get(index));
         }
+
+        // Force set the others to warning
+        for (; index < cardList.getChildren().size(); index++) {
+            ((CardPaneListItem)cardList.getChildren().get(index)).setBorderColor("border-warning");
+        }
+
     }
 
 

@@ -23,16 +23,15 @@ public class Vaporizer extends Combinator {
     }
 
     @Override
-    public void reset() {}
-
-    @Override
     public Tooltip getTooltip() {
         return new Tooltip(
                 "Vaporizer",
                 Color.DEEPPINK,
                 "A ",
                 super.getTooltip(), // combinator
-                " that will destroy the card that comes in"
+                " that will destroy the card that comes in",
+                isDisabled() ? "This is currently ": null,
+                isDisabled() ? getDisabledTooltip(): null
         );
     }
 }

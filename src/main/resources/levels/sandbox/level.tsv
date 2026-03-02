@@ -1,10 +1,9 @@
-EXIT	EXIT	EXIT	EXIT	EXIT	EXIT	EXIT	EXIT	EXIT	EXIT
-.	.	.	.	.	.	.	.	.	.
-.	.	.	.	.	.	.	.	.	.
-.	.	.	.	.	.	.	.	.	.
-.	.	.	.	.	.	.	.	.	.
-.	.	.	.	.	.	.	.	.	.
-.	.	.	.	.	.	.	.	.	.
-.	.	.	.	.	.	.	.	.	.
-SETSUT:d	.	.	.	.	.	.	.	.	.
-ENTER	ENTER	ENTER	ENTER	ENTER	ENTER	ENTER	ENTER	ENTER	ENTER
+EXIT	EXIT	EXIT	EXIT	EXIT	EXIT	EXIT	EXIT	EXIT
+.	.	.	.	.	.	.	.	.
+.	.	.	.	.	SETVAL:10	SETVAL:11	SETVAL:12	SETVAL:13
+ADD:1	SUB:1	MUL:2	DIV:2	.	.	.	.	.
+.	.	.	.	.	MERGE	DUP	ABS	SPLIT
+SETMAT:r	SETMAT:m	SETMAT:c	SETMAT:s	.	.	.	.	.
+.	.	.	.	.	SETSUT:h	SETSUT:d	SETSUT:c	SETSUT:s
+.	.	.	.	.	.	.	.	.
+ENTER	ENTER	ENTER	ENTER	ENTER	ENTER	ENTER	ENTER	ENTER

@@ -20,7 +20,7 @@ public abstract class Combinator extends Modifier {
     public static Tooltip getCombinatorTooltip() {
         return new Tooltip(
                 "Combinator",
-                Color.DARKGOLDENROD,
+                Color.DARKORCHID,
                 "A type of modifier that changes the total amount of cards in play."
         );
     }

@@ -1,8 +1,6 @@
 package component.modifier.combinator;
 
 import component.card.Card;
-import component.card.Material;
-import component.modifier.Modifier;
 import javafx.scene.paint.Color;
 import logic.GameLevel;
 import ui.tooltip.Tooltip;
@@ -35,7 +33,10 @@ public class Absorber extends Combinator {
     }
 
     @Override
-    public void reset() { previousCard = null; }
+    public void reset() {
+        super.reset();
+        previousCard = null;
+    }
 
 
     @Override
@@ -44,11 +45,13 @@ public class Absorber extends Combinator {
             "Absorber",
             Color.DEEPPINK,
             "A ",
-            super.getTooltip(), // combinator
+            getCombinatorTooltip(), // combinator
             " that will destroy the first card that comes in and then ",
             "sets the destroyed card's value onto the next card. ",
             (previousCard != null) ? "It has absorbed the ": null,
-            (previousCard != null) ? Tooltip.ref(previousCard): null
+            (previousCard != null) ? Tooltip.ref(previousCard): null,
+            isDisabled() ? "This is currently ": null,
+            isDisabled() ? getDisabledTooltip(): null
         );
     }
 }

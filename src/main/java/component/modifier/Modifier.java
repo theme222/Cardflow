@@ -30,6 +30,7 @@ abstract public class Modifier implements GridIndexable, Tippable {
 
     public boolean checkSetDisable(Card card) {
         if (card == null) return isDisabled();
+        if (isDisabled()) return true;
         if (card.getMaterial() == Material.CORRUPTED) {
             setDisabled(true);
             card.setMaterial(Material.PLASTIC);
@@ -72,6 +73,16 @@ abstract public class Modifier implements GridIndexable, Tippable {
     }
 
     public static Tooltip getModifierTooltip() { // abstract class so we can't really call getTooltip
-        return new Tooltip("Modifier", Color.BLACK, "A special machine that can modify a card that occupies the same tile as it");
+        return new Tooltip("Modifier", Color.FORESTGREEN, "A special machine that can modify a card that occupies the same tile as it");
+    }
+
+    public Tooltip getDisabledTooltip() { // what a name btw
+        return isDisabled() ?
+            new Tooltip(
+            "Disabled", // Extra spaces so you can put it at the end of the tt
+            Color.RED,
+            "This modifier will not work anymore."
+            )
+        : null;
     }
 }

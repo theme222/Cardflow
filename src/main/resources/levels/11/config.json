@@ -1,0 +1,27 @@
+{
+  "name": "Fusion Dance",
+  "width": 3,
+  "height": 7,
+
+  "inputCards": [
+    { "suit": "SPADE", "value": 7, "material": "RUBBER" },
+    { "suit": "SPADE", "value": 7, "material": "RUBBER" },
+    { "suit": "SPADE", "value": 7, "material": "RUBBER" },
+    { "suit": "SPADE", "value": 7, "material": "RUBBER" },
+    { "suit": "SPADE", "value": 7, "material": "RUBBER" },
+    { "suit": "SPADE", "value": 7, "material": "RUBBER" }
+  ],
+
+  "outputCards": [
+    { "suit": "SPADE", "value": 11 },
+    { "suit": "SPADE", "value": 11 },
+    { "suit": "SPADE", "value": 11 }
+  ],
+
+  "availableMovers": [
+    { "name": "CONVEYOR", "count": -1 },
+    { "name": "DELAY", "count": -1 },
+    { "name": "FLIPFLOP", "count": 3 }
+  ]
+}
+

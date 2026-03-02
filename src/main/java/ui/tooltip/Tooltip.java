@@ -7,8 +7,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import util.Config;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Tooltip {
     private String title; // also can be null
@@ -51,13 +50,13 @@ public class Tooltip {
     }
 
     public List<Tooltip> getRefs() {
-        List<Tooltip> refs = new ArrayList<>();
+        Set<Tooltip> refs = new HashSet<>();
 
         for (Object o: description)
             if (o instanceof Tooltip tt && tt.description.length > 0) // Only ref the ones with a description
                 refs.add(tt);
 
-        return refs;
+        return refs.stream().toList();
     }
 
     public Tooltip(String title, Color color, Object... description) {
@@ -85,5 +84,36 @@ public class Tooltip {
             return new Tooltip(null, Color.BLACK, tooltips);
         };
     }
+
+    @Override
+    public boolean equals(Object o) {
+        // 1. Check if they are the exact same instance in memory
+        if (this == o) return true;
+
+        // 2. Check for null or if they are from different classes
+        if (o == null || getClass() != o.getClass()) return false;
+
+        // 3. Cast to Tooltip
+        Tooltip tooltip = (Tooltip) o;
+
+        // 4. Compare fields (Objects.equals safely handles nulls)
+        return Objects.equals(title, tooltip.title) &&
+                Objects.equals(textColor, tooltip.textColor) &&
+                // Use deepEquals because description is an Object array that can hold other Tooltips
+                Arrays.deepEquals(description, tooltip.description);
+    }
+
+    @Override
+    public int hashCode() {
+        // Hash the standard fields first
+        int result = Objects.hash(title, textColor);
+
+        // Combine with the deep hash of the description array
+        // (Multiplied by 31 is the standard Java convention for mixing hashes)
+        result = 31 * result + Arrays.deepHashCode(description);
+
+        return result;
+    }
+
 
 }

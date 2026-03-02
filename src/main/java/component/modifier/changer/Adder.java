@@ -26,12 +26,14 @@ public class Adder extends Arithmetic { // Generic type argument can't be primit
     public Tooltip getTooltip() {
         return new Tooltip(
             "Adder",
-            Color.MAGENTA,
+            Color.DARKTURQUOISE,
             "A ",
             super.getTooltip(), // changer
             " that adds ",
             Tooltip.ref(getChange()),
-            " to the value of the card"
+            " to the value of the card",
+            isDisabled() ? "This is currently ": null,
+            isDisabled() ? getDisabledTooltip(): null
         );
     }
 }

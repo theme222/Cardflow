@@ -14,7 +14,7 @@ public final class SetterRenderResolver extends RenderResolver {
 
     private static class SetterImage {
         private static final String[] SUIT_FILENAMES = {"modify-club", "modify-diamond", "modify-heart", "modify-spade"};
-        private static final String[] MATERIAL_FILENAMES = {"modify-plastic", "modify-metal", "modify-glass", "modify-stone", "modify-rubber"};
+        private static final String[] MATERIAL_FILENAMES = {"modify-plastic", "modify-metal", "modify-glass", "modify-stone", "modify-rubber", "modify-corrupted"};
 
         public static final Map<String, Image> images = new HashMap<>();
 

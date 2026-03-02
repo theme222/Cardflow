@@ -98,6 +98,7 @@ public class LevelInfoPane extends VBox { // thx chatgpt
         unregisterAfterMovement.run();
         unregisterAfterModify.run();
         unregisterAfterPause.run();
+        cardOutputListPane.cleanup();
     }
 
     private void afterMovement(MovementEndedEvent event){

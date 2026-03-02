@@ -23,13 +23,16 @@ public class ValueSetter extends Setter<Integer> {
 
     @Override
     public Tooltip getTooltip() {
+        Object[] arr = {"a", "b"};
         return new Tooltip(
-                "Value Setter",
-                Color.DARKGRAY,
-                "A ",
-                super.getTooltip(), // changer
-                " that changes the value of the card to ",
-                Tooltip.ref(getChange())
+            "Value Setter",
+            Color.DARKCYAN,
+            "A ",
+            super.getTooltip(), // changer
+            " that changes the value of the card to ",
+            Tooltip.ref(getChange()),
+            isDisabled() ? "This is currently ": null,
+            isDisabled() ? getDisabledTooltip(): null
         );
     }
 }

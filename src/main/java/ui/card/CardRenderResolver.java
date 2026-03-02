@@ -16,7 +16,7 @@ public final class CardRenderResolver extends RenderResolver {
     private static class MaterialImage {
 
         private static final String RESOURCE_DIR = "/asset/card/material/";
-        private static final String[] FILENAMES = {"glass", "metal", "plastic", "rubber", "stone"};
+        private static final String[] FILENAMES = {"glass", "metal", "plastic", "rubber", "stone", "corrupted"};
         private static final Map<String, Image> images = new HashMap<>();
 
         static {

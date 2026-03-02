@@ -63,7 +63,9 @@ abstract public class Changer<T> extends Modifier { // I'm not sorry haha
         return new Tooltip(
                 "Changer",
                 Color.BLUEVIOLET,
-                "A modifier that changes a property of a card."
+                "A ",
+                getModifierTooltip(),
+                " that changes a property of a card."
         );
     }
 }
