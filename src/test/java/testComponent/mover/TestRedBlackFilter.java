@@ -1,6 +1,5 @@
 package testComponent.mover;
 
-import component.mover.ParityFilter;
 import component.mover.RedBlackFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
