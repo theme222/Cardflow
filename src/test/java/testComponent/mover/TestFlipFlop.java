@@ -5,6 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.Direction;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestFlipFlop {
@@ -37,10 +40,10 @@ public class TestFlipFlop {
         Direction[] validOutputDirections = flipFlop.getValidOutputDirections();
 
         assertEquals(2, validOutputDirections.length);
-        boolean hasBaseDirections = validOutputDirections[0] == Direction.RIGHT || validOutputDirections[1] == Direction.RIGHT;
-        boolean hasOppositeDirections = validOutputDirections[0] == Direction.LEFT || validOutputDirections[1] == Direction.LEFT;
-        assertTrue(hasBaseDirections);
-        assertTrue(hasOppositeDirections);
+        List<Direction> dirList = Arrays.asList(validOutputDirections);
+
+        assertTrue(dirList.contains(Direction.RIGHT));
+        assertTrue(dirList.contains(Direction.LEFT));
     }
 
     @Test
