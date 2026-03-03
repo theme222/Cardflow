@@ -29,6 +29,7 @@ public class LevelSelectorView extends View {
         GridPane levelSelectGrid = new GridPane();
         levelSelectGrid.getStyleClass().setAll("level-select-grid");
 
+
         for (int i = 0; i < LevelLoader.TOTAL_LEVELS; i++) {
             final int veryEffectivelyFinal = i + 1;
             Button levelSelectButton = new Button();

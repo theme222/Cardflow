@@ -8,6 +8,22 @@
     -fx-font-size: 54px;
     -fx-text-fill: #FBF6F6;
     -fx-font-weight: bold;
+    /* Hovering */
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+    -fx-cursor: hand;
+}
+
+.level-select-button:hover {
+    -fx-background-color: #4dbd8d;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 5);
+}
+
+.level-select-button:pressed {
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
 }
 
 .level-select-grid {
