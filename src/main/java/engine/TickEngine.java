@@ -49,6 +49,7 @@ public class TickEngine {
 
     public static void reset() {
         pause();
+        currentPhase = TickPhase.MODIFY;
         GameLevel.getInstance().resetLevel();
         EventBus.emit(new RenderEvent(GameLevel.getInstance().changedPoints));
         EventBus.emit(new ResetEvent());
@@ -66,7 +67,7 @@ public class TickEngine {
         EventBus.emit(new PausedEvent());
     }
 
-    private static TickPhase currentPhase = TickPhase.MOVEMENT;
+    private static TickPhase currentPhase = TickPhase.MODIFY;
 
     public static void tick() {
         if (GameLevel.getInstance() == null) return;
