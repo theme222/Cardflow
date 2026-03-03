@@ -1,20 +1,26 @@
 .level-select-button {
-    -fx-background-color: lightgreen;
-    -fx-border-color: black;
-    -fx-border-width: 2;
+    -fx-background-color: #37946e;
+    -fx-border-color: #233f10;
+    -fx-border-width: 5;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
+    -fx-alignment: CENTER;
+    -fx-font-size: 54px;
+    -fx-text-fill: #FBF6F6;
+    -fx-font-weight: bold;
 }
 
 .level-select-grid {
     -fx-hgap: 10;
     -fx-vgap: 10;
     -fx-alignment: center;
-    -fx-border-color: gray;
-    -fx-border-width: 2;
+    /*
+    -fx-border-color: #233f10;
+    -fx-border-width: 5;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
-    -fx-background-color: red;
+    -fx-background-color: LIGHTGRAY;
+    */
 }
 
 .game-tile {
@@ -31,6 +37,13 @@
 
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
+}
+
+.level-title {
+    -fx-font-size: 48px;
+    -fx-padding: 16;
+    -fx-font-weight: bold;
+    -fx-text-fill: BLACK;
 }
 
 

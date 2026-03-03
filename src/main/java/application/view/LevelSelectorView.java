@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import ui.button.BackButton;
 import util.LevelLoader;
 
@@ -22,6 +23,8 @@ public class LevelSelectorView extends View {
         setInstance(this);
 
         Label title = new Label("Select a level");
+        title.getStyleClass().add("level-title");
+
 
         GridPane levelSelectGrid = new GridPane();
         levelSelectGrid.getStyleClass().setAll("level-select-grid");
@@ -52,7 +55,7 @@ public class LevelSelectorView extends View {
         layout.getChildren().add(levelSelectGrid);
         layout.setAlignment(Pos.TOP_CENTER);
 
-        layout.setPadding(new Insets(20));
+        layout.setPadding(new Insets(50));
 
         root.getChildren().addAll(layout, new BackButton());
         root.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
