@@ -1,4 +1,4 @@
-package testLogic.PlayerInventory;
+package testLogic.playerInventory;
 
 import component.mover.Conveyor;
 import component.mover.Delay;
