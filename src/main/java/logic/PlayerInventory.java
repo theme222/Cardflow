@@ -4,6 +4,8 @@ import component.mover.*;
 import engine.EngineState;
 import engine.GameState;
 import engine.TickEngine;
+import event.EventBus;
+import logic.event.card.TileSelectChangeEvent;
 import util.*;
 
 import java.util.HashMap;
@@ -24,7 +26,7 @@ public class PlayerInventory {
     public HashMap<String, Integer> getCurrentAvailableMovers() { return currentAvailableMovers; }
     public Direction getCurrentRotation() { return currentRotation; }
     public void setCurrentRotation(Direction currentRotation) { this.currentRotation = currentRotation; }
-    public void cycleRotation() { this.currentRotation = this.currentRotation.next(); }
+    public void cycleRotation() { this.currentRotation = this.currentRotation.next(); raiseSetEvent();}
 
     public static Mover getMoverObjectByName(String name, Direction rotation) {
         return switch (name) {
@@ -53,6 +55,12 @@ public class PlayerInventory {
             if (currentAvailableMovers.get(name) == 0) name = null;
         }
         this.currentSelection = name;
+
+        raiseSetEvent();
+    }
+
+    private void raiseSetEvent(){
+        EventBus.emit(new TileSelectChangeEvent(this.currentSelection,this.currentRotation,PlayerInventory::getMoverObjectByName));
     }
 
     public boolean placeToGrid(GridPos position) { // returns success
@@ -95,6 +103,7 @@ public class PlayerInventory {
         if (currentAvailableMovers.isEmpty()) throw new IllegalStateException("No available movers");
         currentRotation = Direction.UP;
         currentSelection = currentAvailableMovers.keySet().iterator().next(); // Just get the "first one" and put it as selection
+        raiseSetEvent();
     }
 
 }

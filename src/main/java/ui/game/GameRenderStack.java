@@ -43,6 +43,7 @@ public class GameRenderStack extends StackPane {
                 pane = new Pane();
                 pane.setPrefSize(Config.TILE_SIZE * level.WIDTH, Config.TILE_SIZE * level.HEIGHT);
                 pane.setMouseTransparent(true);
+                pane.setPickOnBounds(false);
                 FloatingLayerRegistry.INSTANCE.registerEntry(layer, pane);
             }
             else {

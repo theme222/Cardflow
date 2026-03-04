@@ -12,6 +12,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import registry.render.RenderLayer;
 import registry.render.RendererRegistry;
+import ui.overlay.SelectedTileOverlayRenderer;
 import ui.render.Renderer;
 import util.GridPos;
 
@@ -30,6 +31,7 @@ public class GameTilePane extends Pane {
         setPrefSize(85, 85);
         setMaxSize(85, 85);
         setFocusTraversable(false);
+        
 
         if(layer == RenderLayer.BASE) {
             getStyleClass().add("game-tile");
@@ -74,6 +76,12 @@ public class GameTilePane extends Pane {
             case RenderLayer.MODIFIER:
                 if(tile.getModifier() != null)
                     render(RenderLayer.MODIFIER, tile.getModifier());
+                break;
+
+            case RenderLayer.MOUSE_OVERLAY:
+                    // Custom Renderer
+                    //System.out.println("Mouse Overlay");
+                    SelectedTileOverlayRenderer.INSTANCE.render(this,pos);
                 break;
             
             default:

@@ -8,4 +8,6 @@ public enum RenderLayer {
     CARDANIM,
     OVERLAY,
     EFFECTS,
+    MOUSE_OVERLAY,
+    MOUSE_EVENTS
 }

@@ -55,9 +55,9 @@ public class TooltipLayer extends Pane {
     }
 
     public void bind(Node node, Tippable tooltipTarget) {
-        node.setOnMouseEntered((e) -> { showTooltip(e, tooltipTarget); });
-        node.setOnMouseMoved(this::setTooltipPosition);
-        node.setOnMouseExited(this::hideTooltip);
+        node.addEventHandler(MouseEvent.MOUSE_ENTERED,(e) -> { showTooltip(e, tooltipTarget); });
+        node.addEventHandler(MouseEvent.MOUSE_MOVED,this::setTooltipPosition);
+        node.addEventHandler(MouseEvent.MOUSE_EXITED,this::hideTooltip);
     }
 
     // Maybe use bind instead.

@@ -76,9 +76,9 @@ public final class Game {
             }
         }
         if (button == MouseButton.SECONDARY) {
-            if (TickEngine.getGameState() == GameState.PLACING && tile.getMover() != null) tile.getMover().rotate();
-            else PlayerInventory.getInstance().cycleRotation();
-            AudioManager.playSoundEffect("mover-rotate");
+            //if (TickEngine.getGameState() == GameState.PLACING && tile.getMover() != null) tile.getMover().rotate();
+            //else PlayerInventory.getInstance().cycleRotation();
+            //AudioManager.playSoundEffect("mover-rotate");
         }
 
         GameView.getInstance().getLevelInfoPane().updateInventoryUI(); // Not sure if this is the best place to put it
