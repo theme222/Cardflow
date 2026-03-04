@@ -22,6 +22,7 @@ public class EffectManager {
 
     public static void createEffect(Color c, GridPos pos) {
         Pane target = FloatingLayerRegistry.INSTANCE.getPane(RenderLayer.EFFECTS);
+        if (target == null) return;
 
         CircleEffect effect = new CircleEffect(c, pos);
 
