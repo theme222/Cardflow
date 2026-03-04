@@ -26,8 +26,7 @@ public class PlayerInventory {
     public HashMap<String, Integer> getCurrentAvailableMovers() { return currentAvailableMovers; }
     public Direction getCurrentRotation() { return currentRotation; }
     public void setCurrentRotation(Direction currentRotation) { this.currentRotation = currentRotation; }
-    public void cycleRotation() { this.currentRotation = this.currentRotation.next(); raiseSetEvent();}
-
+    
     public static Mover getMoverObjectByName(String name, Direction rotation) {
         return switch (name) {
             case "CONVEYOR" -> new Conveyor(rotation);
@@ -103,7 +102,6 @@ public class PlayerInventory {
         if (currentAvailableMovers.isEmpty()) throw new IllegalStateException("No available movers");
         currentRotation = Direction.UP;
         currentSelection = currentAvailableMovers.keySet().iterator().next(); // Just get the "first one" and put it as selection
-        raiseSetEvent();
     }
 
 }

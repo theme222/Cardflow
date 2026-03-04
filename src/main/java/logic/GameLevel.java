@@ -78,9 +78,13 @@ public class GameLevel {
     }
 
     public GameTile getTile(GridPos p) { // I know I'm gonna accidentally switch y and x one of these days
-        if (!p.inRange(0, WIDTH-1, 0, HEIGHT-1))
+        if (!isInBounds(p))
             throw new IllegalArgumentException("Invalid position");
         return grid[p.getY()][p.getX()];
+    }
+
+    public boolean isInBounds(GridPos p){
+        return p.inRange(0, WIDTH-1, 0, HEIGHT-1);
     }
 
     public GameTile[] getAdjacentTiles(GridPos p) { // hehe more helpers for meeeeeeeee

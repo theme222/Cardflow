@@ -51,35 +51,39 @@ public class GameGrid extends GridPane {
 
                 int row = i;
                 int col = j;
-                GridPos position =  new GridPos(col, row);
+                GridPos position = new GridPos(col, row);
 
                 if (layer == RenderLayer.MOUSE_EVENTS) {
-                    tilePane.setMouseTransparent(false);
-                    tilePane.setPickOnBounds(true);
-                    tilePane.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                        Set<GridPos> dirty = Game.onTileClick(
-                                level.getTile(position),
-                                e.getButton(),
-                                e.isShiftDown(),
-                                e.isControlDown());
-                        System.out.println("Dirty tiles: " + dirty);
-                        dirty.forEach(GameView.getInstance()::updateTileAndAdjacent);
-                    });
-
-                    tilePane.addEventHandler(MouseEvent.MOUSE_MOVED,e -> {
-                        // replace with event system :)
-                        SelectedTileOverlayRenderer.INSTANCE.handleOnMouseEnter(new GridPos(col, row));
-                    });
-                    
-
-                    tilePane.addEventHandler(MouseEvent.MOUSE_EXITED,e -> {
-                        // replace with event system :)
-                        SelectedTileOverlayRenderer.INSTANCE.handleOnMouseExit(new GridPos(col, row));
-                    });
-
-                    tooltipLayer.bind(tilePane, tile);
+                    tooltipLayer.bind(this, tile);
                 }
             }
+
+        }
+
+        if (layer == RenderLayer.MOUSE_EVENTS) {
+            this.setMouseTransparent(false);
+            this.setPickOnBounds(true);
+
+            this.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+                GridPos pos = getGridPosFromMouse(e);
+                application.controller.PlacementController.INSTANCE.handleMousePressed(e, pos);
+            });
+            this.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
+                GridPos pos = getGridPosFromMouse(e);
+                application.controller.PlacementController.INSTANCE.handleMouseDragged(e, pos);
+            });
+            this.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
+                GridPos pos = getGridPosFromMouse(e);
+                application.controller.PlacementController.INSTANCE.handleMouseReleased(e, pos);
+            });
+            this.addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
+                GridPos pos = getGridPosFromMouse(e);
+                application.controller.PlacementController.INSTANCE.handleOnMouseMove(pos);
+            });
+            this.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+                GridPos pos = getGridPosFromMouse(e);
+                application.controller.PlacementController.INSTANCE.handleOnMouseExit(pos);
+            });
 
         }
 
@@ -100,5 +104,21 @@ public class GameGrid extends GridPane {
             row.setVgrow(Priority.NEVER);
             this.getRowConstraints().add(row);
         }
+    }
+
+    private GridPos getGridPosFromMouse(MouseEvent e) {
+
+        double x = e.getX();
+        double y = e.getY();
+
+        int col = (int) (x / Config.TILE_SIZE);
+        int row = (int) (y / Config.TILE_SIZE);
+
+        if (row < 0 || row >= gameGridTilePanes.length)
+            return null;
+        if (col < 0 || col >= gameGridTilePanes[0].length)
+            return null;
+
+        return new GridPos(col, row);
     }
 }

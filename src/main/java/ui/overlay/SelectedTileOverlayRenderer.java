@@ -1,7 +1,10 @@
 package ui.overlay;
 
+import java.util.ArrayList;
 import java.util.function.BiFunction;
 
+import application.controller.PlacementController;
+import application.controller.PlacementController.PlacementNode;
 import application.view.GameView;
 import component.GameTile;
 import component.mover.Mover;
@@ -16,85 +19,97 @@ import util.GridPos;
 
 public class SelectedTileOverlayRenderer {
 
-    public static final SelectedTileOverlayRenderer INSTANCE = 
-        new SelectedTileOverlayRenderer();
+    public static final SelectedTileOverlayRenderer INSTANCE = new SelectedTileOverlayRenderer();
 
     // Selected tile data
-    private String tile;
     private BiFunction<String, Direction, Mover> moverFactory;
     private String moverName;
-    private Direction rotation;
 
-    private GridPos startPosition;
-    private GridPos lastPosition;
-    private GridPos endPosition;
+    private ArrayList<PlacementNode> placementListArrayList = new ArrayList<>();
+    private ArrayList<PlacementNode> previousPlacementList = new ArrayList<>();
 
     // Ghost node (reuse instead of recreating)
 
-    private SelectedTileOverlayRenderer() {}
+    private SelectedTileOverlayRenderer() {
+    }
 
-    /* ===============================
-       Event Handlers
-       =============================== */
+    /*
+     * ===============================
+     * Methods for PlacementController
+     * ===============================
+     */
 
-    public void handleOnMouseEnter(GridPos pos) {
-        setEndPosition(pos);
-        if(!pos.equals(lastPosition)){
-            GameView.getInstance().updateTileAndAdjacent(pos);
-            if(lastPosition != null)
-                GameView.getInstance().updateTileAndAdjacent(lastPosition);
-            lastPosition = pos;
+    public void setMoverDetails(BiFunction<String, Direction, Mover> moverFactory, String moverName) {
+        this.moverFactory = moverFactory;
+        this.moverName = moverName;
+    }
+
+    public void updatePlacementList(ArrayList<PlacementNode> newList) {
+
+        // Save old reference
+        previousPlacementList = new ArrayList<>(placementListArrayList);
+
+        // Replace current list
+        placementListArrayList = new ArrayList<>(newList);
+
+        runDiffAndUpdate();
+    }
+
+    private void runDiffAndUpdate() {
+
+        if (previousPlacementList == null)
+            previousPlacementList = new ArrayList<>();
+
+        // Convert to position sets
+        var oldSet = previousPlacementList.stream()
+                .map(n -> n.pos)
+                .collect(java.util.stream.Collectors.toSet());
+
+        var newSet = placementListArrayList.stream()
+                .map(n -> n.pos)
+                .collect(java.util.stream.Collectors.toSet());
+
+        // Tiles that disappeared
+        for (GridPos pos : oldSet) {
+            if (!newSet.contains(pos)) {
+                GameView.getInstance().updateTileAndAdjacent(pos);
+            }
         }
 
-        
-    }
-
-    public void handleOnMouseExit(GridPos pos) {
-        if(endPosition.equals(pos)){
-            setEndPosition(new GridPos(-1,-1)); // shove it into oob :)
-            GameView.getInstance().updateTileAndAdjacent(pos);
+        // Tiles that appeared
+        for (GridPos pos : newSet) {
+            if (!oldSet.contains(pos)) {
+                GameView.getInstance().updateTileAndAdjacent(pos);
+            }
         }
     }
 
-    public void handleOnCardChange(TileSelectChangeEvent e) {
-        this.moverFactory = e.getFactory();
-        this.moverName = e.getMovements();
-        this.rotation = e.getRotation();
-        GameView.getInstance().updateTileAndAdjacent(endPosition);
-    }
+    /*
+     * ===============================
+     * Rendering
+     * ===============================
+     */
 
-    /* ===============================
-       Rendering
-       =============================== */
-
-    public void render(Pane overlayPane,GridPos pos) {
+    public void render(Pane overlayPane, GridPos pos) {
 
         if (moverFactory == null || moverName == null) {
             return; // nothing selected
         }
 
-        // Lazy create ghost tile
-        if (endPosition != null && endPosition.equals(pos)) {
-            Mover mover = moverFactory.apply(moverName, rotation);
-            Renderer<Mover> renderer = RendererRegistry.INSTANCE.getRenderer(mover);
-            if(GameLevel.getInstance().getTile(pos).getMover() != null){
+        for (PlacementNode node : placementListArrayList) {
+            if (!node.pos.equals(pos))
+                continue;
+
+            if (node.delete) {
                 DeleteOverlay.INSTANCE.render(overlayPane);
-            }else{
-                renderer.render(mover, overlayPane, pos);
-                overlayPane.setOpacity(0.5); // 50% transparent
+                break;
             }
+
+            Mover mover = moverFactory.apply(moverName, node.dir);
+            Renderer<Mover> renderer = RendererRegistry.INSTANCE.getRenderer(mover);
+            renderer.render(mover, overlayPane, pos);
+            overlayPane.setOpacity(0.5); // 50% transparent
+            break;
         }
-    }
-
-    /* ===============================
-       Position Helpers
-       =============================== */
-
-    public void setStartPosition(GridPos pos) {
-        startPosition = pos;
-    }
-
-    public void setEndPosition(GridPos pos) {
-        endPosition = pos;
     }
 }

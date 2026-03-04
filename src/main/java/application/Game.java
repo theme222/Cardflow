@@ -3,6 +3,7 @@ package application;
 import java.io.IOException;
 import java.util.Set;
 
+import application.controller.PlacementController;
 import application.view.GameView;
 import application.view.LevelSelectorView;
 import application.view.MainMenuView;
@@ -58,41 +59,13 @@ public final class Game {
         primaryStage.show();
     }
 
-    public static Set<GridPos> onTileClick(
-            GameTile tile,
-            MouseButton button,
-            boolean shift,
-            boolean ctrl
-    ) {
-        // replacing most of this to calls to PlayerInventory to allow for dynamic selection.
-        if (button == MouseButton.PRIMARY) {
-            if (tile.getMover() == null) {
-                if (PlayerInventory.getInstance().placeToGrid(tile.getGridPos())) AudioManager.playSoundEffect("mover-place");
-                else AudioManager.playSoundEffect("game-error");
-            }
-            else {
-                if (PlayerInventory.getInstance().removeFromGrid(tile.getGridPos())) AudioManager.playSoundEffect("mover-pickup");
-                else AudioManager.playSoundEffect("game-error");
-            }
-        }
-        if (button == MouseButton.SECONDARY) {
-            //if (TickEngine.getGameState() == GameState.PLACING && tile.getMover() != null) tile.getMover().rotate();
-            //else PlayerInventory.getInstance().cycleRotation();
-            //AudioManager.playSoundEffect("mover-rotate");
-        }
-
-        GameView.getInstance().getLevelInfoPane().updateInventoryUI(); // Not sure if this is the best place to put it
-        GameView.getInstance().getTooltipLayer().updateTooltipInfo(new Event() { });
-        return Set.of(tile.getGridPos());
-    }
-
-	public static void onSceneClick(
+    public static void onSceneClick(
             MouseButton button,
             boolean shift,
             boolean ctrl
     ) {
         if (button == MouseButton.SECONDARY) {
-            PlayerInventory.getInstance().cycleRotation();
+            PlacementController.INSTANCE.handleRightClick();
             GameView.getInstance().getLevelInfoPane().updateInventoryUI();
             AudioManager.playSoundEffect("mover-rotate");
         }

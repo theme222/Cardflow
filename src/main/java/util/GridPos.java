@@ -10,11 +10,12 @@ public class GridPos implements Cloneable {
     private int y;
 
     public GridPos() {
-        this(0,0);
+        this(0, 0);
     }
 
     public GridPos(GridPos other) {
-        if (other == null) other = new GridPos();
+        if (other == null)
+            other = new GridPos();
         this.x = other.x;
         this.y = other.y;
     }
@@ -24,20 +25,44 @@ public class GridPos implements Cloneable {
         this.y = y;
     }
 
-    public int getX() { return x; }
+    public int getX() {
+        return x;
+    }
 
-    public void setX(int x) { this.x = x; }
+    public void setX(int x) {
+        this.x = x;
+    }
 
-    public int getY() { return y; }
+    public int getY() {
+        return y;
+    }
 
-    public void setY(int y) { this.y = y; }
+    public void setY(int y) {
+        this.y = y;
+    }
 
     public GridPos add(GridPos other) {
-        if (other == null) other = new GridPos();
+        if (other == null)
+            other = new GridPos();
         return new GridPos(
                 this.x + other.x,
-                this.y + other.y
-        );
+                this.y + other.y);
+    }
+
+    public Direction directionTo(GridPos other) {
+        if (other == null)
+            return null;
+
+        int dx = other.x - this.x;
+        int dy = other.y - this.y;
+
+        for (Direction dir : Direction.values()) {
+            if (dir.dx() == dx && dir.dy() == dy) {
+                return dir;
+            }
+        }
+
+        return null; // Not adjacent
     }
 
     public GridPos add(int x, int y) {
@@ -56,8 +81,10 @@ public class GridPos implements Cloneable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof GridPos)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof GridPos))
+            return false;
         GridPos gridPos = (GridPos) o;
         return x == gridPos.x && y == gridPos.y;
     }

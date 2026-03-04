@@ -59,7 +59,6 @@ public class GameBootstrap {
     public static void registerEvents() {
         EventBus.register(AfterMovementEvent.class, CardRenderer.INSTANCE.movementListener);
         EventBus.register(CardExitEvent.class, GameEndCondition.INSTANCE::checkWinCondition);
-        EventBus.register(TileSelectChangeEvent.class, SelectedTileOverlayRenderer.INSTANCE::handleOnCardChange);
     }
 
     public static void registerLayers() {
