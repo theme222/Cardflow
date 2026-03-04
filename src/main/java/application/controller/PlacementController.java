@@ -173,6 +173,19 @@ public class PlacementController {
                         weight = 1000;
                 }
 
+                // 🔥 Perpendicular bias
+                if (!deleteMode) {
+
+                    if (dir == rotation) {
+                        weight += 3; // discourage early forward growth
+                    } else if (dir == rotation.opposite()) {
+                        weight += 6; // strongly discourage going backwards
+                    } else {
+                        // perpendicular directions → cheapest
+                        weight += 0;
+                    }
+                }
+
                 int newCost = cur.cost + weight;
 
                 if (!dist.containsKey(next) || newCost < dist.get(next)) {
