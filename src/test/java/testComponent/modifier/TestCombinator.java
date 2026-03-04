@@ -14,6 +14,7 @@ import component.modifier.combinator.*;
 import logic.GameLevel;
 import util.CardCount;
 import util.GridPos;
+import util.TestLevel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,30 +24,10 @@ import java.util.List;
 public class TestCombinator {
 
     private GameLevel level;
-    private List<CardCount> inputCards;
-    private List<CardCount> outputCards;
-    private HashMap<String, Integer> availableMovers;
-    private GameTile[][] grid;
-    private HashSet<Modifier> modifierSet;
 
     @BeforeEach
     void setUp() {
-        inputCards = new ArrayList<>();
-        outputCards = new ArrayList<>();
-        availableMovers = new HashMap<>();
-        modifierSet = new HashSet<>();
-
-        int width = 5;
-        int height = 5;
-        grid = new GameTile[width][height];
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                grid[x][y] = new GameTile(null, x, y);
-            }
-        }
-        //initialize level
-        level = new GameLevel("test", "test", width, height, inputCards, outputCards, availableMovers, grid, modifierSet);
-        GameLevel.setInstance(level);
+        level = TestLevel.initGlobalGameLevel();
     }
 
     @Test

@@ -1,11 +1,14 @@
 package testComponent.modifier;
 
+import component.GameTile;
 import component.card.Card;
 import component.card.Material;
 import component.card.Suit;
 import component.modifier.changer.*;
+import logic.GameLevel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import util.TestLevel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,12 +21,15 @@ public class TestChanger {
     private Card plasticCard;
     private Card metalCard;
     private Card rubberCard;
+    private GameLevel level;
 
     @BeforeEach
     void setUp() {
         plasticCard = new Card(Suit.SPADE, 5, Material.PLASTIC);
         metalCard = new Card(Suit.HEART, 5, Material.METAL);
         rubberCard = new Card(Suit.CLUB, 5, Material.RUBBER);
+
+        TestLevel.initGlobalGameLevel();
     }
 
     @Test
