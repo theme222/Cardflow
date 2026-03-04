@@ -49,8 +49,10 @@ public class PlayerInventory {
     public void setCurrentSelection(String name) {
         if (name != null) {
             name = name.toUpperCase();
-            if (!currentAvailableMovers.containsKey(name)) name = null;
-            if (currentAvailableMovers.get(name) == 0) name = null;
+            // Fix NPE: Combined conditions to prevent unboxing null if the key doesn't exist
+            if (!currentAvailableMovers.containsKey(name) || currentAvailableMovers.get(name) == 0) {
+                name = null;
+            }
         }
         this.currentSelection = name;
     }
