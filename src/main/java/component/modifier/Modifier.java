@@ -63,6 +63,8 @@ abstract public class Modifier implements GridIndexable, Tippable {
 
     // GETTERS & SETTERS //
 
+    public void onSuccess() { GameLevel.getInstance().successfullyModified.add(this); }
+
     // isBlocking needs to be set on inherit.
     public abstract void modify(Card toModify);
     public abstract void reset();

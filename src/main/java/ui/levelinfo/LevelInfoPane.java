@@ -1,6 +1,7 @@
 package ui.levelinfo;
 
 import application.view.GameView;
+import audio.AudioManager;
 import engine.event.PausedEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -123,10 +124,22 @@ public class LevelInfoPane extends VBox { // thx chatgpt
         Button resetButton = new Button("Reset ☕");
         resetButton.getStyleClass().add("button-error");
 
-        playButton.setOnAction(e -> TickEngine.play());
-        pauseButton.setOnAction(e -> TickEngine.pause());
-        stepButton.setOnAction(e -> TickEngine.step());
-        resetButton.setOnAction(e -> TickEngine.reset());
+        playButton.setOnAction(e -> {
+            AudioManager.playSoundEffect("button-click");
+            TickEngine.play();
+        });
+        pauseButton.setOnAction(e -> {
+            AudioManager.playSoundEffect("button-click");
+            TickEngine.pause();
+        });
+        stepButton.setOnAction(e -> {
+            AudioManager.playSoundEffect("button-click");
+            TickEngine.step();
+        });
+        resetButton.setOnAction(e -> {
+            AudioManager.playSoundEffect("button-click");
+            TickEngine.reset();
+        });
 
         controlPanel.getChildren().addAll(playButton, pauseButton, stepButton, resetButton);
     }
@@ -146,6 +159,7 @@ public class LevelInfoPane extends VBox { // thx chatgpt
 
             button.setOnAction(e -> {
                 inventory.setCurrentSelection(name);
+                AudioManager.playSoundEffect("button-click");
                 updateInventoryUI();
             });
 
@@ -200,17 +214,21 @@ public class LevelInfoPane extends VBox { // thx chatgpt
 
             // ---- style cleanup ----
             button.getStyleClass().removeAll(
-                    "text-strong",
+                    "button-primary",
+                    "button-error",
                     "text-muted"
             );
-            countText.getStyleClass().remove("text-muted");
+            countText.getStyleClass().removeAll(
+                    "text-error",
+                    "text-muted"
+            );
 
             // ---- state styling ----
             if (name.equals(selected)) {
-                button.getStyleClass().add("text-strong");
+                button.getStyleClass().add("button-primary");
             } else if (!available) {
-                button.getStyleClass().add("text-muted");
-                countText.getStyleClass().add("text-muted");
+                button.getStyleClass().addAll("text-muted", "button-error");
+                countText.getStyleClass().addAll("text-muted", "text-error");
             }
         }
     }

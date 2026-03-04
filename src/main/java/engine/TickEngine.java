@@ -13,7 +13,8 @@ import util.Config;
 
 public class TickEngine {
 
-    private static EngineState state = EngineState.PAUSED;
+    private static EngineState engineState = EngineState.PAUSED;
+    private static GameState gameState = GameState.PLACING;
 
     private static long lastTick = 0;
     private static final long TICK_INTERVAL_NS = (long) (Config.TICK_DURATION_MS * 1e6);
@@ -21,7 +22,7 @@ public class TickEngine {
     private static final AnimationTimer timer = new AnimationTimer() {
         @Override
         public void handle(long now) {
-            if (state != EngineState.RUNNING) return;
+            if (engineState != EngineState.RUNNING) return;
 
             if (now - lastTick >= TICK_INTERVAL_NS) {
                 tick();
@@ -31,24 +32,28 @@ public class TickEngine {
     };
 
     public static void play() {
-        state = EngineState.RUNNING;
+        gameState = GameState.SIMULATING;
+        engineState = EngineState.RUNNING;
         startTimer();
         System.out.println("Game started");
     }
 
     public static void pause() {
-        state = EngineState.PAUSED;
+        engineState = EngineState.PAUSED;
         stopTimer();
     }
 
     public static void step() {
-        if (state == EngineState.PAUSED) {
+        gameState = GameState.SIMULATING;
+        if (engineState == EngineState.PAUSED) {
             tick();
         }
     }
 
     public static void reset() {
         pause();
+        currentPhase = TickPhase.MODIFY;
+        gameState = GameState.PLACING;
         GameLevel.getInstance().resetLevel();
         EventBus.emit(new RenderEvent(GameLevel.getInstance().changedPoints));
         EventBus.emit(new ResetEvent());
@@ -66,7 +71,7 @@ public class TickEngine {
         EventBus.emit(new PausedEvent());
     }
 
-    private static TickPhase currentPhase = TickPhase.MOVEMENT;
+    private static TickPhase currentPhase = TickPhase.MODIFY;
 
     public static void tick() {
         if (GameLevel.getInstance() == null) return;
@@ -89,5 +94,13 @@ public class TickEngine {
         EventBus.emit(new RenderEvent(GameLevel.getInstance().changedPoints));
 
         currentPhase = currentPhase.next();
+    }
+
+    public static EngineState getEngineState() {
+        return engineState;
+    }
+
+    public static GameState getGameState() {
+        return gameState;
     }
 }

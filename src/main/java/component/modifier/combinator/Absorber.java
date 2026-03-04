@@ -25,6 +25,8 @@ public class Absorber extends Combinator {
             previousCard = toModify;
             GameLevel.getInstance().removeCard(toModify);
         }
+
+        onSuccess();
     }
 
     @Override

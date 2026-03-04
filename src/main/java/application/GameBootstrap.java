@@ -14,7 +14,6 @@ import component.mover.*;
 import event.EventBus;
 import logic.GameEndCondition;
 import logic.event.AfterMovementEvent;
-import logic.event.end.GameWinEvent;
 import registry.render.FloatingLayerRegistry;
 import registry.render.RenderLayer;
 import registry.render.RendererRegistry;
@@ -23,8 +22,6 @@ import ui.card.CardRenderer;
 import ui.modifier.changer.ArithmeticRenderer;
 import ui.modifier.changer.SetterRenderer;
 import ui.modifier.combinator.CombinatorRenderer;
-import ui.modifier.pathway.EntranceEffect;
-import ui.modifier.pathway.ExitEffect;
 import ui.modifier.pathway.PathwayRenderer;
 import ui.mover.*;
 
@@ -59,9 +56,6 @@ public class GameBootstrap {
 
     public static void registerEvents() {
         EventBus.register(AfterMovementEvent.class, CardRenderer.INSTANCE.movementListener);
-        EventBus.register(CardEnterEvent.class, EntranceEffect.INSTANCE::applyEffect);
-        EventBus.register(CardExitEvent.class, ExitEffect.INSTANCE::applyEffect);
-
         EventBus.register(CardExitEvent.class, GameEndCondition.INSTANCE::checkWinCondition);
     }
 

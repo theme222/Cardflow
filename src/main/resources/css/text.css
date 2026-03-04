@@ -52,6 +52,11 @@
     -fx-text-fill: #27ae60;
 }
 
+.text-info {
+    -fx-fill : #138496;
+    -fx-text-fill : #138496;
+}
+
 .text-white {
     -fx-fill: white;
     -fx-text-fill: white;

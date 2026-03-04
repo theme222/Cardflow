@@ -3,6 +3,7 @@ package ui.game;
 import application.TransitionType;
 import application.ViewManager;
 import application.view.GameView;
+import audio.AudioManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -25,6 +26,7 @@ public class GameWinOverlay extends VBox {
 
         Button goToLevelSelectorButton = new Button("Back ≡");
         goToLevelSelectorButton.setOnAction(event -> {
+            AudioManager.playSoundEffect("button-click");
             ViewManager.getInstance().switchToPreviousView(TransitionType.FADE);
         });
         goToLevelSelectorButton.getStyleClass().add("button-info");
@@ -33,6 +35,7 @@ public class GameWinOverlay extends VBox {
         goToNextLevelButton.getStyleClass().add("button-primary");
         goToNextLevelButton.setOnAction(event -> {
 
+            AudioManager.playSoundEffect("button-click");
             String nextLevel = "sandbox"; // if this next section fails
             try {
                 nextLevel = String.valueOf(Integer.parseInt(GameLevel.getInstance().LEVELID) + 1);

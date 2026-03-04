@@ -33,7 +33,7 @@ public class CardPaneListItem extends StackPane {
         Pane renderPane = new Pane();
         this.renderPane = renderPane;
 
-        CardRenderer.INSTANCE.render(this.cardInfo, this.renderPane, new GridPos(), false, false);
+        CardRenderer.INSTANCE.render(this.cardInfo, this.renderPane, new GridPos(), false, false, false);
 
         getChildren().add(renderPane);
         setAlignment(Pos.CENTER);

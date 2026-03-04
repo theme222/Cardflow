@@ -25,6 +25,8 @@ public class Merger extends Combinator {
             previousCard = toModify;
             GameLevel.getInstance().removeCard(toModify);
         }
+
+        onSuccess();
     }
 
     @Override

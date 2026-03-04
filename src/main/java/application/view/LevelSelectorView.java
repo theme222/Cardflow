@@ -2,6 +2,7 @@ package application.view;
 
 import application.TransitionType;
 import application.ViewManager;
+import audio.AudioManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -34,6 +35,7 @@ public class LevelSelectorView extends View {
             levelSelectButton.setFocusTraversable(false);
             levelSelectButton.getStyleClass().setAll("level-select-button");
             levelSelectButton.setOnAction(actionEvent -> {
+                AudioManager.playSoundEffect("button-click");
                 try {
                     ViewManager.getInstance().switchView(
                             new GameView(LevelLoader.loadLevel(String.valueOf(veryEffectivelyFinal))),
@@ -56,6 +58,11 @@ public class LevelSelectorView extends View {
 
         root.getChildren().addAll(layout, new BackButton());
         root.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+    }
+
+    @Override
+    public void startup() {
+        AudioManager.playMusic("music-menu");
     }
 
     @Override

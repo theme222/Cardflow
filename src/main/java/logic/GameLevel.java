@@ -1,5 +1,8 @@
 package logic;
 
+import audio.AudioManager;
+import javafx.scene.effect.Effect;
+import ui.effect.EffectManager;
 import util.CardCount;
 import util.GridIndexable;
 import component.GameTile;
@@ -43,6 +46,7 @@ public class GameLevel {
     public final HashSet<Modifier> modifierSet;
     public final HashSet<Mover> moverSet;
     public final HashSet<GridPos> changedPoints; // Positions on grid that needs a UI update
+    public final HashSet<Modifier> successfullyModified; // List of modifiers that successfully did their modification
 
     public GameLevel(
             String levelID,
@@ -70,6 +74,7 @@ public class GameLevel {
         this.moverSet = new HashSet<>();
         this.exitedCardsList = new ArrayList<>();
         this.changedPoints = new HashSet<>();
+        this.successfullyModified = new HashSet<>();
     }
 
     public GameTile getTile(GridPos p) { // I know I'm gonna accidentally switch y and x one of these days
@@ -148,6 +153,7 @@ public class GameLevel {
     public void doMovementTick() {
         HashSet<CardMovement> movements = MovementTickResolver.doMovementTick(this, cardSet, changedPoints); // this is what a lobotomy looks like :D
         EventBus.emit(new logic.event.AfterMovementEvent(movements)); // Let the world know we are done with movement tick so we can do modify tick and other things
+        if (!movements.isEmpty()) AudioManager.playSoundEffect("card-move");
     }
 
     public void doModifyTick() {
@@ -155,8 +161,11 @@ public class GameLevel {
         // Round two baby lets do this
         for (Modifier modifier: modifierSet) {
             changedPoints.add(modifier.getGridPos()); // ASSUMPTION: ALL MODIFIERS AFFECT ONLY THEIR OWN SQUARE
-            modifier.modify(getTile(modifier.getGridPos()).getCard());
+            modifier.modify(getTile(modifier.getGridPos()).getCard()); // on success each call should add their class to the hashset
         }
+        AudioManager.playSFXWithModifierSet(successfullyModified);
+        EffectManager.createEffectsWithModifierSet(successfullyModified);
+        successfullyModified.clear();
     }
 
     public void resetLevel() {

@@ -18,10 +18,13 @@ public class Duplicator extends Combinator {
         if (cardToSpawn == null) {
             if (toModify == null) return;
             cardToSpawn = new Card(toModify); // copy over everything
+            onSuccess();
         }
         else {
-            if (GameLevel.getInstance().addCard(cardToSpawn, getGridPos()))
+            if (GameLevel.getInstance().addCard(cardToSpawn, getGridPos())) {
                 cardToSpawn = null; // Added success
+                onSuccess();
+            }
         }
     }
 
