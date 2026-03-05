@@ -39,6 +39,10 @@ public enum Direction implements Tippable {
         return this == other.next();
     }
 
+    public boolean isPerpendicularOf(Direction other){
+        return isLeftOf(other) || isRightOf(other);
+    }
+
     public int dx() {
         return switch (this) {
             case LEFT  -> -1;

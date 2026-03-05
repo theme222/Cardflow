@@ -1,5 +1,6 @@
 package application;
 
+import application.controller.PlacementController;
 import component.GameTile;
 import component.card.Card;
 import component.modifier.changer.Arithmetic;
@@ -14,6 +15,7 @@ import component.mover.*;
 import event.EventBus;
 import logic.GameEndCondition;
 import logic.event.AfterMovementEvent;
+import logic.event.card.TileSelectChangeEvent;
 import registry.render.FloatingLayerRegistry;
 import registry.render.RenderLayer;
 import registry.render.RendererRegistry;
@@ -24,6 +26,7 @@ import ui.modifier.changer.SetterRenderer;
 import ui.modifier.combinator.CombinatorRenderer;
 import ui.modifier.pathway.PathwayRenderer;
 import ui.mover.*;
+import ui.overlay.SelectedTileOverlayRenderer;
 
 public class GameBootstrap {
 
@@ -57,6 +60,8 @@ public class GameBootstrap {
     public static void registerEvents() {
         EventBus.register(AfterMovementEvent.class, CardRenderer.INSTANCE.movementListener);
         EventBus.register(CardExitEvent.class, GameEndCondition.INSTANCE::checkWinCondition);
+
+        EventBus.register(TileSelectChangeEvent.class, PlacementController.INSTANCE::handleTileSelectChange);
     }
 
     public static void registerLayers() {

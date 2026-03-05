@@ -36,6 +36,7 @@ public class GameView extends View {
     private Runnable unregisterShowWinOverlay;
 
     public void updateTileAndAdjacent(GridPos pos) {
+        if(pos == null) return;
         updateIfValid(pos);
 
         updateIfValid(pos.addDirection(Direction.RIGHT)); // right
@@ -45,7 +46,8 @@ public class GameView extends View {
     }
 
     private void updateIfValid(GridPos pos) {
-        gameGrid.updateIfValid(pos);
+        if(gameGrid != null)
+            gameGrid.updateIfValid(pos);
     }
 
     public GameView(GameLevel level) {
