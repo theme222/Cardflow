@@ -1,0 +1,26 @@
+{
+  "name": "Thou shalt not pass",
+  "width": 9,
+  "height": 9,
+
+  "inputCards": [
+    { "suit": "HEART", "value": 10, "material": "CORRUPTED" }
+  ],
+
+  "outputCards": [
+    { "suit": "HEART", "value": 6 },
+    { "suit": "HEART", "value": 6 },
+    { "suit": "HEART", "value": 5 },
+    { "suit": "HEART", "value": 5 },
+    { "suit": "HEART", "value": 9 },
+    { "suit": "HEART", "value": 5 }
+  ],
+
+  "availableMovers": [
+    { "name": "CONVEYOR", "count": -1 },
+    { "name": "DELAY", "count": -1 },
+    { "name": "FLIPFLOP", "count": -1 },
+    { "name" : "PARITYFILTER", "count" : -1}
+  ]
+}
+
