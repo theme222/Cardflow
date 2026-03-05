@@ -69,7 +69,6 @@ public class GameTilePane extends Pane {
                 break;
             case RenderLayer.MOVER:
                 if(tile.getMover() != null){
-                    System.out.println("Rendering mover at " + pos + tile.getMover());
                     render(RenderLayer.MOVER, tile.getMover());
                 }
                 break;

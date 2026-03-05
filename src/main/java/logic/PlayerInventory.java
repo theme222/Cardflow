@@ -97,7 +97,6 @@ public class PlayerInventory {
     public static void setInstance(PlayerInventory instance) { PlayerInventory.instance = instance; }
 
     public PlayerInventory(GameLevel gameLevel) {
-        System.out.println("PI Init");
         this.gameLevel = gameLevel;
         currentAvailableMovers = new HashMap<>(gameLevel.AVAILABLE_MOVERS); // Copy total over
         if (currentAvailableMovers.isEmpty()) throw new IllegalStateException("No available movers");

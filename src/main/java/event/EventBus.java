@@ -29,7 +29,6 @@ public class EventBus {
         List<EventListener<? extends Event>> list = listeners.get(clazz);
         if (list == null) return;
 
-        System.out.println("Removing " + listener.getClass().getSimpleName());
         list.remove(listener);
 
         // Optional cleanup to prevent memory leak

@@ -90,9 +90,6 @@ public abstract class MoverRenderResolver extends RenderResolver {
 
             EnumSet<Direction> moverInputs = EnumSet.noneOf(Direction.class);
 
-            System.out.println("Resolving topology for conveyor at " + pos +
-                    " facing " + forward);
-
             for (int i = 0; i < tiles.length; i++) {
                 GameTile tile = tiles[i];
                 if (tile == null || tile.getMover() == null) continue;

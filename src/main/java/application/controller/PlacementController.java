@@ -47,14 +47,12 @@ public class PlacementController {
         this.selectedTileName = event.getMovements();
         this.moverFactory = event.getFactory();
         this.rotation = event.getRotation();
-        System.out.println(selectedTileName + moverFactory + rotation);
         SelectedTileOverlayRenderer.INSTANCE.setMoverDetails(moverFactory, selectedTileName);
     }
 
     public void handleOnMouseMove(GridPos pos) {
         //if (selectedTileName == null || moverFactory == null)
             //return; // No tile selected
-        System.out.println("Mouse Move");
         currentMousePos = pos;
         dragStartPos = pos;
         updatePlacementList();
@@ -88,7 +86,6 @@ public class PlacementController {
         //if (selectedTileName == null || moverFactory == null)
             //return; // No tile selected
 
-        System.out.println("DRAG ");
         currentMousePos = gridPos;
         updatePlacementList();
     }
@@ -118,7 +115,6 @@ public class PlacementController {
 
     private void updatePlacementList() {
         rebuildPlacementPath();
-        System.out.println(placementList + " " + dragStartPos + " " + currentMousePos);
         SelectedTileOverlayRenderer.INSTANCE.updatePlacementList(placementList);
     }
 

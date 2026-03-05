@@ -13,7 +13,6 @@ public class CardPaneListItem extends StackPane {
 
     public void setBorderColorByComparison(Card other) { // specifically used in CardOutputListPane
 
-        System.out.println("setBorderColorByComparison" + other.toString());
         if (cardInfo.isEquivalent(other)) setBorderColor("border-success");
         else setBorderColor("border-error");
 
