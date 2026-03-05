@@ -1,5 +1,7 @@
 package application.controller;
 
+import application.controller.PlacementController.PlacementNode;
+import application.path.PlacementPathfinder;
 import application.view.GameView;
 import component.mover.Mover;
 import event.EventBus;
@@ -126,172 +128,94 @@ public class PlacementController {
 
         placementList.clear();
 
-        if (dragStartPos == null || currentMousePos == null) {
+        if (dragStartPos == null || currentMousePos == null)
             return;
-        }
 
         GameLevel level = GameLevel.getInstance();
 
-        // ✅ Detect delete mode
         boolean deleteMode = level.getTile(dragStartPos).getMover() != null;
 
-        record Node(GridPos pos, Direction incomingDir, int cost) {
-        }
+        // --- COST FUNCTION ---
+        PlacementPathfinder.CostFunction costFunction = (from, to, incomingDir, moveDir) -> {
 
-        PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(n -> n.cost));
-        Map<GridPos, Integer> dist = new HashMap<>();
-        Map<GridPos, GridPos> prev = new HashMap<>();
+            if (!level.isInBounds(to))
+                return -1; // illegal
 
-        pq.add(new Node(dragStartPos, null, 0));
-        dist.put(dragStartPos, 0);
+            boolean occupied = level.getTile(to).getMover() != null;
 
-        while (!pq.isEmpty()) {
-            Node cur = pq.poll();
+            // Delete mode: only allow deleting occupied tiles
+            if (deleteMode) {
+                if (!occupied)
+                    return -1;
+            } else {
+                if (occupied)
+                    return -1;
+            }
 
-            if (cur.pos.equals(currentMousePos))
-                break;
+            int cost = 1; // base movement
 
-            for (Direction dir : Direction.values()) {
+            // 180° block
+            if (incomingDir != null &&
+                    moveDir == incomingDir.opposite())
+                return -1;
 
-                GridPos next = cur.pos.addDirection(dir);
+            // Turn penalty
+            if (incomingDir != null &&
+                    moveDir != incomingDir)
+                cost += 2;
 
-                // OOB = dead end
-                if (!level.isInBounds(next))
-                    continue;
+            return cost;
+        };
 
-                int weight = 1;
+        // --- HEURISTIC FUNCTION ---
+        PlacementPathfinder.HeuristicFunction heuristic =
+        (from, target, incomingDir, lastDir) -> {
 
-                // 🔥 Turning penalty
-                if (cur.incomingDir != null && dir != cur.incomingDir) {
-                    weight += 2; // penalize turning
+            int dx = target.getX() - from.getX();
+            int dy = target.getY() - from.getY();
+
+            int manhattan = Math.abs(dx) + Math.abs(dy);
+
+            // If still null (no facing info), fallback
+            if (incomingDir == null) {
+                return manhattan;
+            }
+
+            // --- Tactical bias ---
+            boolean inFront = target.isPosInDirection(from, rotation);
+            boolean behind  = target.isPosInDirection(from, rotation.opposite());
+
+            int bias = 0;
+
+            if (inFront) {
+                // Prefer sideways first
+                if (!rotation.isOpposite(incomingDir)) {
+                    bias += manhattan;
                 }
-
-                if (cur.incomingDir != null) {
-                    if (dir == cur.incomingDir.opposite()) {
-                        weight += 1000; // forbid 180° turn
-                    }
-                }
-
-                boolean occupied = level.getTile(next).getMover() != null;
-
-                // Heavy weight if occupied
-                if (deleteMode) {
-                    // In delete mode, only allow walking over occupied tiles
-                    if (!occupied)
-                        continue;
-                } else {
-                    // In placement mode, discourage occupied tiles
-                    if (occupied)
-                        weight = 1000;
-                }
-
-                // 🔥 Perpendicular bias
-                if (!deleteMode) {
-
-                    int dxToTarget = currentMousePos.getX() - cur.pos.getX();
-                    int dyToTarget = currentMousePos.getY() - cur.pos.getY();
-
-                    boolean movingToward = (dir.dx() != 0 && Integer.signum(dir.dx()) == Integer.signum(dxToTarget)) ||
-                            (dir.dy() != 0 && Integer.signum(dir.dy()) == Integer.signum(dyToTarget));
-
-                    boolean movingAway = (dir.dx() != 0 && Integer.signum(dir.dx()) == -Integer.signum(dxToTarget)) ||
-                            (dir.dy() != 0 && Integer.signum(dir.dy()) == -Integer.signum(dyToTarget));
-
-                    if (movingAway) {
-                        weight += 6;
-                    } else if (!movingToward) {
-                        // perpendicular
-                        weight += 0;
-                    } else {
-                        // toward target
-                        weight += 2;
-                    }
-
-                    int absDx = Math.abs(dxToTarget);
-                    int absDy = Math.abs(dyToTarget);
-
-                    boolean isHorizontalMove = dir.dx() != 0;
-                    boolean isVerticalMove = dir.dy() != 0;
-
-                    // Prefer moving along the axis with SMALLER remaining distance
-                    if (!deleteMode) {
-
-                        if (absDx < absDy) {
-                            // X distance smaller → prefer horizontal first
-                            if (isHorizontalMove) {
-                                weight -= 1; // small reward
-                            } else {
-                                weight += 1; // slight penalty
-                            }
-                        } else if (absDy < absDx) {
-                            // Y distance smaller → prefer vertical first
-                            if (isVerticalMove) {
-                                weight -= 1;
-                            } else {
-                                weight += 1;
-                            }
-                        }
-                    }
-                }
-
-                // directionality bias
-
-                int newCost = cur.cost + weight;
-
-                if (!dist.containsKey(next) || newCost < dist.get(next)) {
-                    dist.put(next, newCost);
-                    prev.put(next, cur.pos);
-                    pq.add(new Node(next, dir, newCost));
+            } else if (behind) {
+                // Prefer aligning
+                if (!rotation.isPerpendicularOf(incomingDir)) {
+                    bias += manhattan;
                 }
             }
-        }
 
-        // If unreachable, do nothing
-        if (!prev.containsKey(currentMousePos) && !dragStartPos.equals(currentMousePos)) {
-            return;
-        }
+            return manhattan + bias;
+        };
 
-        // Reconstruct path
-        GridPos step = currentMousePos;
+        var path = PlacementPathfinder.findPath(
+                dragStartPos,
+                currentMousePos,
+                rotation,
+                costFunction,
+                heuristic);
 
-        List<GridPos> reversePath = new ArrayList<>();
-        reversePath.add(step);
-
-        while (!step.equals(dragStartPos)) {
-            step = prev.get(step);
-            reversePath.add(step);
-        }
-
-        Collections.reverse(reversePath);
-
-        // Convert to PlacementNodes
-        for (int i = 0; i < reversePath.size(); i++) {
+        for (var p : path) {
             PlacementNode node = new PlacementNode();
-            node.pos = reversePath.get(i);
-
-            if (i == reversePath.size() - 1)
-                node.dir = rotation;
-            else {
-                Direction dir = node.pos.directionTo(reversePath.get(i + 1));
-                if (dir == null) {
-                    node.dir = rotation;
-                } else {
-                    node.dir = dir;
-                }
-            }
-
+            node.pos = p.pos;
+            node.dir = p.dir;
             node.delete = deleteMode;
             placementList.add(node);
         }
-        // System.out.println("=== PATH DEBUG ===");
-        // System.out.println("Start: " + dragStartPos);
-        // System.out.println("End: " + currentMousePos);
-        // System.out.println("Prev contains end? " +
-        // prev.containsKey(currentMousePos));
-        // System.out.println("Path size: " + reversePath.size());
-        // System.out.println("Path: " + reversePath);
-        // System.out.println("==================");
-        GameLevel.getInstance().getTile(dragStartPos).getMover();
     }
 
 }
