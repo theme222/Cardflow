@@ -1,5 +1,6 @@
 package ui.levelinfo;
 
+import application.controller.PlacementController;
 import application.view.GameView;
 import audio.AudioManager;
 import engine.event.PausedEvent;
@@ -164,7 +165,7 @@ public class LevelInfoPane extends VBox { // thx chatgpt
             });
 
             tooltipLayer.bind(button,
-                Tooltip.getContainerFor(PlayerInventory.getMoverObjectByName(name, PlayerInventory.getInstance().getCurrentRotation()))
+                Tooltip.getContainerFor(PlayerInventory.getMoverObjectByName(name, Direction.UP))
             );
 
             // --- count text ---
@@ -190,7 +191,7 @@ public class LevelInfoPane extends VBox { // thx chatgpt
 
     private void updateRotation() {
         rotationLabel.setText(
-                "Rotation: " + inventory.getCurrentRotation()
+                "Rotation: " + PlacementController.INSTANCE.getRotation()
         );
     }
 

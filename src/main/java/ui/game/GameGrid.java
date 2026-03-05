@@ -84,7 +84,6 @@ public class GameGrid extends GridPane {
                 GridPos pos = getGridPosFromMouse(e);
                 application.controller.PlacementController.INSTANCE.handleOnMouseExit(pos);
             });
-
         }
 
         for (int c = 0; c < level.WIDTH; c++) {
