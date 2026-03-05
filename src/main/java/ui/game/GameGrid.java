@@ -54,7 +54,7 @@ public class GameGrid extends GridPane {
                 GridPos position = new GridPos(col, row);
 
                 if (layer == RenderLayer.MOUSE_EVENTS) {
-                    tooltipLayer.bind(this, tile);
+                    tooltipLayer.bind(tilePane, tile);
                 }
             }
 
