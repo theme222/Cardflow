@@ -1,11 +1,12 @@
 package ui.overlay;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
 import application.controller.PlacementController;
-import application.controller.PlacementController.PlacementNode;
+import application.controller.PlacementPathBuilder.PlacementNode;
 import application.view.GameView;
 import component.GameTile;
 import component.mover.Mover;
@@ -45,7 +46,7 @@ public class SelectedTileOverlayRenderer {
         this.moverName = moverName;
     }
 
-    public void updatePlacementList(ArrayList<PlacementNode> newList) {
+    public void updatePlacementList(List<PlacementNode> newList) {
 
         // Save old reference
         previousPlacementList = new ArrayList<>(placementListArrayList);
@@ -64,12 +65,12 @@ public class SelectedTileOverlayRenderer {
         // Build state maps keyed by position
         Map<GridPos, PlacementNode> oldMap = previousPlacementList.stream()
                 .collect(java.util.stream.Collectors.toMap(
-                        n -> n.pos,
+                        n -> n.getPos(),
                         n -> n));
 
         Map<GridPos, PlacementNode> newMap = placementListArrayList.stream()
                 .collect(java.util.stream.Collectors.toMap(
-                        n -> n.pos,
+                        n -> n.getPos(),
                         n -> n));
 
         // Union of all affected positions
@@ -89,8 +90,8 @@ public class SelectedTileOverlayRenderer {
                 changed = true;
             } else {
                 // Same position — check rotation or delete mode
-                if (oldNode.dir != newNode.dir ||
-                        oldNode.delete != newNode.delete) {
+                if (oldNode.getDir() != newNode.getDir() ||
+                        oldNode.getDel() != newNode.getDel()) {
                     changed = true;
                 }
             }
@@ -110,19 +111,19 @@ public class SelectedTileOverlayRenderer {
     public void render(Pane overlayPane, GridPos pos) {
 
         for (PlacementNode node : placementListArrayList) {
-            if (!node.pos.equals(pos))
+            if (!node.getPos().equals(pos))
                 continue;
 
-            if (node.delete) {
+            if (node.getDel()) {
                 DeleteOverlay.INSTANCE.render(overlayPane);
                 break;
             }
 
-            if (moverFactory == null || moverName == null || node.dir == null) {
+            if (moverFactory == null || moverName == null || node.getDir() == null) {
                 continue; // nothing selected
             }
 
-            Mover mover = moverFactory.apply(moverName, node.dir);
+            Mover mover = moverFactory.apply(moverName, node.getDir());
             Renderer<Mover> renderer = RendererRegistry.INSTANCE.getRenderer(mover);
             renderer.render(mover, overlayPane, pos);
             overlayPane.setOpacity(0.5); // 50% transparent

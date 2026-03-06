@@ -1,5 +1,6 @@
 package application.controller;
 
+import application.controller.PlacementPathBuilder.PlacementNode;
 import application.path.PlacementPathfinder;
 import application.view.GameView;
 import audio.AudioManager;
@@ -16,6 +17,7 @@ import util.Direction;
 import util.GridPos;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiFunction;
 
 public class PlacementController {
@@ -29,13 +31,7 @@ public class PlacementController {
     private GridPos dragStartPos;
     private GridPos currentMousePos;
 
-    public static class PlacementNode {
-        public GridPos pos;
-        public Direction dir;
-        public boolean delete;
-    }
-
-    private ArrayList<PlacementNode> placementList = new ArrayList<>();
+    private List<PlacementNode> placementList = new ArrayList<>();
 
     public void rotateCurrentRotation() {
         rotation = rotation.next();
@@ -51,9 +47,6 @@ public class PlacementController {
     }
 
     public void handleOnMouseMove(GridPos pos) {
-        //if (selectedTileName == null || moverFactory == null)
-            //return; // No tile selected
-        System.out.println("Mouse Move");
         currentMousePos = pos;
         dragStartPos = pos;
         updatePlacementList();
@@ -83,10 +76,7 @@ public class PlacementController {
     public void handleMouseDragged(MouseEvent event, GridPos gridPos) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
-        //if (selectedTileName == null || moverFactory == null)
-            //return; // No tile selected
 
-        System.out.println("DRAG ");
         currentMousePos = gridPos;
         updatePlacementList();
     }
@@ -94,18 +84,16 @@ public class PlacementController {
     public void handleMouseReleased(MouseEvent event, GridPos gridPos) {
         if (event.getButton() != MouseButton.PRIMARY)
             return;
-        //if (selectedTileName == null || moverFactory == null)
-            //return; // No tile selected
 
         for (PlacementNode node : placementList) {
             PlayerInventory.getInstance().setCurrentSelection(selectedTileName);
-            PlayerInventory.getInstance().setCurrentRotation(node.dir);
+            PlayerInventory.getInstance().setCurrentRotation(node.getDir());
 
-            if (node.delete) {
-                if (PlayerInventory.getInstance().removeFromGrid(node.pos)) AudioManager.playSoundEffect("mover-pickup");
+            if (node.getDel()) {
+                if (PlayerInventory.getInstance().removeFromGrid(node.getPos())) AudioManager.playSoundEffect("mover-pickup");
                 else AudioManager.playSoundEffect("game-error");
             } else {
-                if (PlayerInventory.getInstance().placeToGrid(node.pos)) AudioManager.playSoundEffect("mover-place");
+                if (PlayerInventory.getInstance().placeToGrid(node.getPos())) AudioManager.playSoundEffect("mover-place");
                 else AudioManager.playSoundEffect("game-error");
             }
 
@@ -117,105 +105,13 @@ public class PlacementController {
     }
 
     private void updatePlacementList() {
-        rebuildPlacementPath();
-        System.out.println(placementList + " " + dragStartPos + " " + currentMousePos);
-        SelectedTileOverlayRenderer.INSTANCE.updatePlacementList(placementList);
-    }
-
-    private void rebuildPlacementPath() {
-
-        placementList.clear();
-
-        if (dragStartPos == null || currentMousePos == null)
-            return;
-
-        GameLevel level = GameLevel.getInstance();
-
-        boolean deleteMode = level.getTile(dragStartPos).getMover() != null;
-
-        // --- COST FUNCTION ---
-        PlacementPathfinder.CostFunction costFunction = (from, to, incomingDir, moveDir) -> {
-
-            if (!level.isInBounds(to))
-                return -1; // illegal
-
-            boolean occupied = level.getTile(to).getMover() != null;
-
-            // Delete mode: only allow deleting occupied tiles
-            if (deleteMode) {
-                if (!occupied)
-                    return -1;
-            } else {
-                if (occupied)
-                    return -1;
-            }
-
-            int cost = 1; // base movement
-
-            // 180° block
-            if (incomingDir != null &&
-                    moveDir == incomingDir.opposite())
-                return -1;
-
-            // Turn penalty
-            if (incomingDir != null &&
-                    moveDir != incomingDir)
-                cost += 2;
-
-            return cost;
-        };
-
-        // --- HEURISTIC FUNCTION ---
-        PlacementPathfinder.HeuristicFunction heuristic =
-        (from, target, incomingDir, lastDir) -> {
-
-            int dx = target.getX() - from.getX();
-            int dy = target.getY() - from.getY();
-
-            int manhattan = Math.abs(dx) + Math.abs(dy);
-
-            // If still null (no facing info), fallback
-            if (incomingDir == null) {
-                return manhattan;
-            }
-
-            // --- Tactical bias ---
-            boolean inFront = target.isPosInDirection(from, rotation);
-            boolean behind  = target.isPosInDirection(from, rotation.opposite());
-
-            int bias = 0;
-
-            if (inFront) {
-                // Prefer sideways first
-                if (!rotation.isOpposite(incomingDir)) {
-                    bias += manhattan;
-                }
-            } else if (behind) {
-                // Prefer aligning
-                if (!rotation.isPerpendicularOf(incomingDir)) {
-                    bias += manhattan;
-                }
-            }
-
-            return manhattan + bias;
-        };
-
-        var path = PlacementPathfinder.findPath(
+        placementList = PlacementPathBuilder.buildPath(
                 dragStartPos,
                 currentMousePos,
-                rotation,
-                costFunction,
-                heuristic);
+                rotation);
 
-        for (var p : path) {
-            PlacementNode node = new PlacementNode();
-            node.pos = p.pos;
-            node.dir = p.dir;
-            node.delete = deleteMode;
-            placementList.add(node);
-        }
+        SelectedTileOverlayRenderer.INSTANCE.updatePlacementList(placementList);
     }
-
     public Direction getRotation() {
         return rotation;
     }

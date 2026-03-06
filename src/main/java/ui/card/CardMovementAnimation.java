@@ -25,13 +25,8 @@ public class CardMovementAnimation {
     public void animate(Card card, GridPos from, GridPos to) {
         floatingLayer = FloatingLayerRegistry.INSTANCE.getPane(layer);
 
-        //System.out.println("Animating card from " + from + " to " + to);
-
         // 1️⃣ Create temporary node
         Pane animatedNode = new Pane();
-
-        //animatedNode.setStyle("-fx-border-color: red; -fx-border-width: 2;");
-        
         animatedNode.setPrefSize(TILE_SIZE, TILE_SIZE);
 
         // 2️⃣ Render card into it
@@ -42,13 +37,8 @@ public class CardMovementAnimation {
         double startX = from.getX() * TILE_SIZE;
         double startY = from.getY() * TILE_SIZE;
 
-        //System.out.println("Start: " + startX + "," + startY);
-        
-
         double endX = to.getX() * TILE_SIZE;
         double endY = to.getY() * TILE_SIZE;
-
-        //System.out.println("End: " + endX + "," + endY);
 
         animatedNode.setTranslateX(startX);
         animatedNode.setTranslateY(startY);

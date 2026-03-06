@@ -23,7 +23,6 @@ import util.Config;
 import util.GridPos;
 
 public class GameGrid extends GridPane {
-    // gameGrid.getStyleClass().setAll("level-select-grid");
     public final GameTilePane[][] gameGridTilePanes;
 
     public void updateIfValid(GridPos pos) {
@@ -36,55 +35,65 @@ public class GameGrid extends GridPane {
     }
 
     public GameGrid(GameLevel level, RenderLayer layer, TooltipLayer tooltipLayer) {
+
         gameGridTilePanes = new GameTilePane[level.HEIGHT][level.WIDTH];
-        this.setMouseTransparent(layer != RenderLayer.MOUSE_EVENTS);
-        this.setPickOnBounds(layer == RenderLayer.MOUSE_EVENTS);
+
+        configureLayer(layer);
+        buildGrid(level, layer, tooltipLayer);
+        registerMouseHandlers(layer);
+        buildConstraints(level);
+    }
+
+    private void configureLayer(RenderLayer layer) {
+        setMouseTransparent(layer != RenderLayer.MOUSE_EVENTS);
+        setPickOnBounds(layer == RenderLayer.MOUSE_EVENTS);
+    }
+
+    private void buildGrid(GameLevel level, RenderLayer layer, TooltipLayer tooltipLayer) {
 
         for (int i = 0; i < level.HEIGHT; i++) {
             for (int j = 0; j < level.WIDTH; j++) {
 
-                GameTile tile = level.getTile(new GridPos(j, i));
-                GameTilePane tilePane = new GameTilePane(tile, new GridPos(j, i), layer);
+                GridPos pos = new GridPos(j, i);
+                GameTile tile = level.getTile(pos);
+
+                GameTilePane tilePane = new GameTilePane(tile, pos, layer);
                 gameGridTilePanes[i][j] = tilePane;
 
-                this.add(tilePane, j, i);
-
-                int row = i;
-                int col = j;
-                GridPos position = new GridPos(col, row);
+                add(tilePane, j, i);
 
                 if (layer == RenderLayer.MOUSE_EVENTS) {
                     tooltipLayer.bind(tilePane, tile);
                 }
             }
-
         }
+    } 
 
-        if (layer == RenderLayer.MOUSE_EVENTS) {
-            this.setMouseTransparent(false);
-            this.setPickOnBounds(true);
+    private void registerMouseHandlers(RenderLayer layer) {
 
-            this.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
-                GridPos pos = getGridPosFromMouse(e);
-                application.controller.PlacementController.INSTANCE.handleMousePressed(e, pos);
-            });
-            this.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
-                GridPos pos = getGridPosFromMouse(e);
-                application.controller.PlacementController.INSTANCE.handleMouseDragged(e, pos);
-            });
-            this.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
-                GridPos pos = getGridPosFromMouse(e);
-                application.controller.PlacementController.INSTANCE.handleMouseReleased(e, pos);
-            });
-            this.addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
-                GridPos pos = getGridPosFromMouse(e);
-                application.controller.PlacementController.INSTANCE.handleOnMouseMove(pos);
-            });
-            this.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
-                GridPos pos = getGridPosFromMouse(e);
-                application.controller.PlacementController.INSTANCE.handleOnMouseExit(pos);
-            });
-        }
+        if (layer != RenderLayer.MOUSE_EVENTS)
+            return;
+
+        setMouseTransparent(false);
+        setPickOnBounds(true); 
+
+        addEventHandler(MouseEvent.MOUSE_PRESSED, e -> application.controller.PlacementController.INSTANCE
+                .handleMousePressed(e, getGridPosFromMouse(e)));
+
+        addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> application.controller.PlacementController.INSTANCE
+                .handleMouseDragged(e, getGridPosFromMouse(e)));
+
+        addEventHandler(MouseEvent.MOUSE_RELEASED, e -> application.controller.PlacementController.INSTANCE
+                .handleMouseReleased(e, getGridPosFromMouse(e)));
+
+        addEventHandler(MouseEvent.MOUSE_MOVED, e -> application.controller.PlacementController.INSTANCE
+                .handleOnMouseMove(getGridPosFromMouse(e)));
+
+        addEventHandler(MouseEvent.MOUSE_EXITED, e -> application.controller.PlacementController.INSTANCE
+                .handleOnMouseExit(getGridPosFromMouse(e)));
+    }
+
+    private void buildConstraints(GameLevel level) {
 
         for (int c = 0; c < level.WIDTH; c++) {
             ColumnConstraints col = new ColumnConstraints();
@@ -92,7 +101,7 @@ public class GameGrid extends GridPane {
             col.setPrefWidth(Config.TILE_SIZE);
             col.setMaxWidth(Config.TILE_SIZE);
             col.setHgrow(Priority.NEVER);
-            this.getColumnConstraints().add(col);
+            getColumnConstraints().add(col);
         }
 
         for (int r = 0; r < level.HEIGHT; r++) {
@@ -101,7 +110,7 @@ public class GameGrid extends GridPane {
             row.setPrefHeight(Config.TILE_SIZE);
             row.setMaxHeight(Config.TILE_SIZE);
             row.setVgrow(Priority.NEVER);
-            this.getRowConstraints().add(row);
+            getRowConstraints().add(row);
         }
     }
 

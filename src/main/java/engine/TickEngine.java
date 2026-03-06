@@ -35,7 +35,6 @@ public class TickEngine {
         gameState = GameState.SIMULATING;
         engineState = EngineState.RUNNING;
         startTimer();
-        System.out.println("Game started");
     }
 
     public static void pause() {

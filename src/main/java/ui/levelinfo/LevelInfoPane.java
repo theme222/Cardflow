@@ -27,21 +27,35 @@ import ui.tooltip.Tooltip;
 import ui.tooltip.TooltipLayer;
 import util.Direction;
 
-public class LevelInfoPane extends VBox { // thx chatgpt
+public class LevelInfoPane extends VBox {
+
+    private enum GamePhase {
+        MOVING("Current Phase: Moving   "),
+        MODIFYING("Current Phase: Modifying"),
+        PAUSED("Current Phase: Paused   ");
+
+        private final String displayText;
+
+        GamePhase(String displayText) {
+            this.displayText = displayText;
+        }
+
+        public String getDisplayText() {
+            return displayText;
+        }
+    }
 
     private final PlayerInventory inventory;
 
-    private final Text titleText;
-    private final Label rotationLabel;
-    private final VBox moversList;
-    private final HBox controlPanel;
-    private final Label phaseLabel;
-    private final CardInputListPane cardInputListPane;
-    private final CardOutputListPane cardOutputListPane;
+    private Text titleText;
+    private Label rotationLabel;
+    private VBox moversList;
+    private HBox controlPanel;
+    private Label phaseLabel;
+    private CardInputListPane cardInputListPane;
+    private CardOutputListPane cardOutputListPane;
 
-    // Per-mover UI references
-    private final Map<String, Button> moverButtons = new HashMap<>();
-    private final Map<String, Text> moverCountTexts = new HashMap<>();
+    private final Map<String, MoverRowUI> moverRows = new HashMap<>();
 
     private Runnable unregisterAfterMovement;
     private Runnable unregisterAfterModify;
@@ -50,30 +64,46 @@ public class LevelInfoPane extends VBox { // thx chatgpt
     public LevelInfoPane(TooltipLayer tooltipLayer) {
         inventory = PlayerInventory.getInstance();
 
+        initializeStyle();
+        initializeComponents(tooltipLayer);
+        buildLayout(tooltipLayer);
+        initializeContent(tooltipLayer);
+    }
+
+    private void initializeStyle() {
         setPadding(new Insets(12));
         setSpacing(10);
         setAlignment(Pos.CENTER);
+    }
 
-        titleText = new Text(GameLevel.getInstance().LEVELNAME);
-        titleText.getStyleClass().add("text-heading");
-
+    private void initializeComponents(TooltipLayer tooltipLayer) {
+        titleText = createTitleText();
+        rotationLabel = createRotationLabel();
+        phaseLabel = createPhaseLabel();
         controlPanel = new HBox(10);
-
-        phaseLabel = new Label("Current Phase: Paused   ");
-
-        rotationLabel = new Label();
-        rotationLabel.getStyleClass().add("text-body");
-
-        HBox statusContainer = new HBox(10);
-        statusContainer.setAlignment(Pos.CENTER);
-        statusContainer.getChildren().addAll(phaseLabel, rotationLabel);
-
         moversList = new VBox(6);
-
         cardInputListPane = new CardInputListPane("Input Cards", GameLevel.getInstance().INPUT_CARDS, tooltipLayer);
-
         cardOutputListPane = new CardOutputListPane("Output Cards", GameLevel.getInstance().OUTPUT_CARDS, tooltipLayer);
+    }
 
+    private Text createTitleText() {
+        Text text = new Text(GameLevel.getInstance().LEVELNAME);
+        text.getStyleClass().add("text-heading");
+        return text;
+    }
+
+    private Label createRotationLabel() {
+        Label label = new Label();
+        label.getStyleClass().add("text-body");
+        return label;
+    }
+
+    private Label createPhaseLabel() {
+        return new Label(GamePhase.PAUSED.getDisplayText());
+    }
+
+    private void buildLayout(TooltipLayer tooltipLayer) {
+        HBox statusContainer = createStatusContainer();
         getChildren().addAll(
                 titleText,
                 cardInputListPane,
@@ -82,18 +112,30 @@ public class LevelInfoPane extends VBox { // thx chatgpt
                 controlPanel,
                 moversList
         );
+    }
 
+    private void initializeContent(TooltipLayer tooltipLayer) {
         buildMoverRows(tooltipLayer);
         buildControlPanel();
         updateInventoryUI();
-
-        registerPhaseLabel();
+        registerEventHandlers();
     }
 
-    private void registerPhaseLabel(){
-        unregisterAfterMovement = EventBus.register(MovementEndedEvent.class, this::afterMovement);
-        unregisterAfterModify = EventBus.register(ModifyEndedEvent.class, this::afterModifying);
-        unregisterAfterPause = EventBus.register(PausedEvent.class, this::afterPaused);
+    private HBox createStatusContainer() {
+        HBox statusContainer = new HBox(10);
+        statusContainer.setAlignment(Pos.CENTER);
+        statusContainer.getChildren().addAll(phaseLabel, rotationLabel);
+        return statusContainer;
+    }
+
+    private void registerEventHandlers() {
+        unregisterAfterMovement = EventBus.register(MovementEndedEvent.class, e -> updatePhase(GamePhase.MOVING));
+        unregisterAfterModify = EventBus.register(ModifyEndedEvent.class, e -> updatePhase(GamePhase.MODIFYING));
+        unregisterAfterPause = EventBus.register(PausedEvent.class, e -> updatePhase(GamePhase.PAUSED));
+    }
+
+    private void updatePhase(GamePhase phase) {
+        phaseLabel.setText(phase.getDisplayText());
     }
 
     public void cleanup() {
@@ -103,87 +145,59 @@ public class LevelInfoPane extends VBox { // thx chatgpt
         cardOutputListPane.cleanup();
     }
 
-    private void afterMovement(MovementEndedEvent event){
-        phaseLabel.setText("Current Phase: Moving   ");
-    }
-
-    private void afterModifying(ModifyEndedEvent event){
-        phaseLabel.setText("Current Phase: Modifying"); // do whatever changes here
-    }
-
-    private void afterPaused(PausedEvent event){
-        phaseLabel.setText("Current Phase: Paused   "); // do whatever changes here
-    }
-
     private void buildControlPanel() {
-        Button playButton = new Button("Play ▶");
-        playButton.getStyleClass().add("button-success");
-        Button pauseButton = new Button("Pause ǁ");
-        pauseButton.getStyleClass().add("button-warning");
-        Button stepButton = new Button("Step →");
-        stepButton.getStyleClass().add("button-info");
-        Button resetButton = new Button("Reset ☕");
-        resetButton.getStyleClass().add("button-error");
-
-        playButton.setOnAction(e -> {
-            AudioManager.playSoundEffect("button-click");
-            TickEngine.play();
-        });
-        pauseButton.setOnAction(e -> {
-            AudioManager.playSoundEffect("button-click");
-            TickEngine.pause();
-        });
-        stepButton.setOnAction(e -> {
-            AudioManager.playSoundEffect("button-click");
-            TickEngine.step();
-        });
-        resetButton.setOnAction(e -> {
-            AudioManager.playSoundEffect("button-click");
-            TickEngine.reset();
-        });
-
-        controlPanel.getChildren().addAll(playButton, pauseButton, stepButton, resetButton);
+        controlPanel.getChildren().addAll(
+                createButton("Play ▶", "button-success", TickEngine::play),
+                createButton("Pause ǁ", "button-warning", TickEngine::pause),
+                createButton("Step →", "button-info", TickEngine::step),
+                createButton("Reset ☕", "button-error", TickEngine::reset)
+        );
     }
 
-    // Build static UI once
+    private Button createButton(String text, String styleClass, Runnable action) {
+        Button button = new Button(text);
+        button.getStyleClass().add(styleClass);
+        button.setOnAction(e -> {
+            AudioManager.playSoundEffect("button-click");
+            action.run();
+        });
+        return button;
+    }
+
     private void buildMoverRows(TooltipLayer tooltipLayer) {
         moversList.getChildren().clear();
-        moverButtons.clear();
-        moverCountTexts.clear();
+        moverRows.clear();
 
         for (String name : inventory.getCurrentAvailableMovers().keySet()) {
+            MoverRowUI rowUI = createMoverRow(name, tooltipLayer);
+            moverRows.put(name, rowUI);
+            moversList.getChildren().add(rowUI.getContainer());
+        }
+    }
 
-            // --- button ---
-            Button button = new Button(name);
-            button.setFocusTraversable(false);
-            button.getStyleClass().add("text-body");
-
-            button.setOnAction(e -> {
-                inventory.setCurrentSelection(name);
-                AudioManager.playSoundEffect("button-click");
-                updateInventoryUI();
-            });
+    private MoverRowUI createMoverRow(String name, TooltipLayer tooltipLayer) {
+        Button button = new Button(name);
+        button.setFocusTraversable(false);
+        button.getStyleClass().add("text-body");
+        button.setOnAction(e -> {
+            inventory.setCurrentSelection(name);
+            AudioManager.playSoundEffect("button-click");
+            updateInventoryUI();
+        });
 
             tooltipLayer.bind(button,
                 Tooltip.getContainerFor(PlayerInventory.getMoverObjectByName(name, Direction.UP))
             );
 
-            // --- count text ---
-            Text countText = new Text();
-            countText.getStyleClass().add("text-body");
+        Text countText = new Text();
+        countText.getStyleClass().add("text-body");
 
-            // --- row ---
-            HBox row = new HBox(8, button, countText);
-            row.setAlignment(Pos.CENTER_LEFT);
+        HBox row = new HBox(8, button, countText);
+        row.setAlignment(Pos.CENTER_LEFT);
 
-            moverButtons.put(name, button);
-            moverCountTexts.put(name, countText);
-
-            moversList.getChildren().add(row);
-        }
+        return new MoverRowUI(button, countText, row);
     }
 
-    // Refresh all dynamic state
     public void updateInventoryUI() {
         updateRotation();
         updateMovers();
@@ -202,35 +216,53 @@ public class LevelInfoPane extends VBox { // thx chatgpt
             String name = entry.getKey();
             int count = entry.getValue();
 
-            Button button = moverButtons.get(name);
-            Text countText = moverCountTexts.get(name);
+            MoverRowUI rowUI = moverRows.get(name);
+            if (rowUI != null) {
+                rowUI.updateCount(count);
+                rowUI.updateAvailability(count != 0);
+                rowUI.updateSelection(name.equals(selected));
+            }
+        }
+    }
 
-            // ---- count display ----
+    private static class MoverRowUI {
+        private final Button button;
+        private final Text countText;
+        private final HBox container;
+
+        MoverRowUI(Button button, Text countText, HBox container) {
+            this.button = button;
+            this.countText = countText;
+            this.container = container;
+        }
+
+        HBox getContainer() {
+            return container;
+        }
+
+        void updateCount(int count) {
             String countStr = (count == -1) ? "∞" : String.valueOf(count);
             countText.setText("x " + countStr);
+        }
 
-            // ---- enable / disable ----
-            boolean available = (count != 0);
+        void updateAvailability(boolean available) {
             button.setDisable(!available);
+        }
 
-            // ---- style cleanup ----
-            button.getStyleClass().removeAll(
-                    "button-primary",
-                    "button-error",
-                    "text-muted"
-            );
-            countText.getStyleClass().removeAll(
-                    "text-error",
-                    "text-muted"
-            );
+        void updateSelection(boolean isSelected) {
+            clearStyles();
 
-            // ---- state styling ----
-            if (name.equals(selected)) {
+            if (isSelected) {
                 button.getStyleClass().add("button-primary");
-            } else if (!available) {
+            } else if (button.isDisabled()) {
                 button.getStyleClass().addAll("text-muted", "button-error");
                 countText.getStyleClass().addAll("text-muted", "text-error");
             }
+        }
+
+        private void clearStyles() {
+            button.getStyleClass().removeAll("button-primary", "button-error", "text-muted");
+            countText.getStyleClass().removeAll("text-error", "text-muted");
         }
     }
 }

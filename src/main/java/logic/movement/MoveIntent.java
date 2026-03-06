@@ -72,7 +72,6 @@ class MoveIntent {
     public static void resolveIntent(List<MoveIntent> intentList, HashSet<GridPos> seen) { // linear recursive function
                                                                                            // (we hate recursion)
                                                                                            // just use stack bro
-        System.out.println("RESOLVING: " + intentList + " WITH SEEN: " + seen);
         // intentList is a variable that should contain intents that have the same
         // result position.
         if (intentList.isEmpty() || intentList.size() > 4)
@@ -86,7 +85,6 @@ class MoveIntent {
         // Get the priority intent (Top -> Left -> Right -> Bottom)
         MoveIntent priorityIntent = null;
         ArrayList<GridPos> surroundPos = getSurroundingPoints(resultPos);
-        System.out.println(surroundPos);
 
         for (GridPos p : surroundPos) {
             if (priorityIntent != null)

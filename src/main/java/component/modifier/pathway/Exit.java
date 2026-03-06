@@ -20,14 +20,11 @@ public class Exit extends Pathway {
     public void modify(Card toRemove) {
         if (GameLevel.getInstance().removeCard(toRemove)) {
             Card expectedCard = getCurrentCard(GameLevel.getInstance().OUTPUT_CARDS);
-            System.out.println("Got card " + toRemove + " expected " + expectedCard);
             
             
             if(toRemove.isEquivalent(expectedCard)) {
-                System.out.println("Correct card exited!");
                 countCorrectExits++;
             } else {
-                System.out.println("Incorrect card exited!");
             }
             countTotalExits++;
 

@@ -18,51 +18,92 @@ import java.io.IOException;
 public class GameWinOverlay extends VBox {
 
     private final Label gameWinText;
-    private final HBox buttonControls; // Go Back, Go Next
+    private final HBox buttonControls;
 
     public GameWinOverlay() {
-        gameWinText = new Label("You completed the level!");
-        gameWinText.getStyleClass().addAll("text-title", "text-white");
+        gameWinText = createTitle();
+        buttonControls = createButtonControls();
 
-        Button goToLevelSelectorButton = new Button("Back ≡");
-        goToLevelSelectorButton.setOnAction(event -> {
+        buildLayout();
+        applyBackground();
+    }
+
+    private Label createTitle() {
+        Label label = new Label("You completed the level!");
+        label.getStyleClass().addAll("text-title", "text-white");
+        return label;
+    }
+
+    private HBox createButtonControls() {
+
+        Button backButton = createBackButton();
+        Button nextButton = createNextButton();
+
+        HBox box = new HBox(backButton, nextButton);
+        box.setSpacing(10);
+        box.setAlignment(Pos.CENTER);
+
+        return box;
+    }
+
+    private Button createBackButton() {
+        Button button = new Button("Back ≡");
+
+        button.getStyleClass().add("button-info");
+
+        button.setOnAction(event -> {
             AudioManager.playSoundEffect("button-click");
             ViewManager.getInstance().switchToPreviousView(TransitionType.FADE);
         });
-        goToLevelSelectorButton.getStyleClass().add("button-info");
 
-        Button goToNextLevelButton = new Button("Next ‼");
-        goToNextLevelButton.getStyleClass().add("button-primary");
-        goToNextLevelButton.setOnAction(event -> {
+        return button;
+    }
 
-            AudioManager.playSoundEffect("button-click");
-            String nextLevel = "sandbox"; // if this next section fails
-            try {
-                nextLevel = String.valueOf(Integer.parseInt(GameLevel.getInstance().LEVELID) + 1);
-            } catch (NumberFormatException _) { }
+    private Button createNextButton() {
 
-            try {
-                ViewManager.getInstance().switchViewReplace(
-                        new GameView(LevelLoader.loadLevel(nextLevel)),
-                        TransitionType.FADE);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        Button button = new Button("Next ‼");
+        button.getStyleClass().add("button-primary");
 
+        button.setOnAction(event -> handleNextLevel());
 
-        buttonControls = new HBox();
-        buttonControls.setSpacing(10);
-        buttonControls.setAlignment(Pos.CENTER);
-        buttonControls.getChildren().addAll(goToLevelSelectorButton, goToNextLevelButton);
+        return button;
+    }
 
+    private void handleNextLevel() {
+
+        AudioManager.playSoundEffect("button-click");
+
+        String nextLevel = getNextLevelId();
+
+        try {
+            ViewManager.getInstance().switchViewReplace(
+                    new GameView(LevelLoader.loadLevel(nextLevel)),
+                    TransitionType.FADE);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String getNextLevelId() {
+        try {
+            return String.valueOf(Integer.parseInt(GameLevel.getInstance().LEVELID) + 1);
+        } catch (NumberFormatException e) {
+            return "sandbox";
+        }
+    }
+
+    private void buildLayout() {
         getChildren().addAll(gameWinText, buttonControls);
-        setBackground(new Background(new BackgroundFill(
-                Color.rgb(0, 0, 0, 0.6),  // black with 60% opacity
-                CornerRadii.EMPTY,
-                Insets.EMPTY
-        )));
         setSpacing(60);
         setAlignment(Pos.CENTER);
+    }
+
+    private void applyBackground() {
+
+        setBackground(new Background(
+                new BackgroundFill(
+                        Color.rgb(0, 0, 0, 0.6),
+                        CornerRadii.EMPTY,
+                        Insets.EMPTY)));
     }
 }

@@ -55,13 +55,11 @@ public class GameTilePane extends Pane {
         clearLayers();
 
         GameTile tile = this.tile;
-        //System.out.println("Updating tile at " + pos + ": " + tile + " with card " + tile.getCard() + " and mover " + tile.getMover() + " on layer " + layer);
         switch (layer) {
             case RenderLayer.BASE:
                 render(RenderLayer.BASE, tile);
                 break;
             case RenderLayer.OVERLAY:
-                //render(RenderLayer.OVERLAY, tile);
                 break;
             case RenderLayer.CARD:
                 if(tile.getCard() != null)
@@ -69,7 +67,6 @@ public class GameTilePane extends Pane {
                 break;
             case RenderLayer.MOVER:
                 if(tile.getMover() != null){
-                    System.out.println("Rendering mover at " + pos + tile.getMover());
                     render(RenderLayer.MOVER, tile.getMover());
                 }
                 break;
@@ -80,7 +77,6 @@ public class GameTilePane extends Pane {
 
             case RenderLayer.MOUSE_OVERLAY:
                     // Custom Renderer
-                    //System.out.println("Mouse Overlay");
                     SelectedTileOverlayRenderer.INSTANCE.render(this,pos);
                 break;
             

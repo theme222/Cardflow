@@ -142,7 +142,6 @@ class TooltipHContainer extends HBox {
         setAlignment(Pos.TOP_LEFT); // Or bottom left
         setSpacing(10);
         setOpacity(0); // default invisible first
-//        setBackground(Background.fill(Color.GREEN));
     }
 }
 

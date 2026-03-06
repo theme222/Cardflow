@@ -12,7 +12,6 @@ public abstract class RenderResolver {
         // If you have time probably move imageMap to the first or last position :skull:
         // prefix = directory (usually) suffix = filetype (usually)
         for (String filename : filenames) {
-//            System.out.println("Loading " + prefix + filename + suffix);
             imageMap.put(
                 filename,
                 new Image(

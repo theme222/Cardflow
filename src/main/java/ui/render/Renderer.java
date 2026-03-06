@@ -41,16 +41,12 @@ public abstract class Renderer<T> {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         gc.setImageSmoothing(false);
-        // gc.clearRect(0, 0, w, h);
 
         gc.save();
         gc.setGlobalAlpha(state.alpha());
         gc.translate(w / 2, h / 2);
-
-        // rotate around renderable center
         gc.rotate(state.rotationDeg());
 
-        // mirror
         if (state.mirrorX()) {
             gc.scale(-1, 1);
         }
