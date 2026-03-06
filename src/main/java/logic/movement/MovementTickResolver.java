@@ -9,7 +9,19 @@ import logic.GameLevel;
 import util.Direction;
 import util.GridPos;
 
+/**
+ * Utility class responsible for resolving card movements during a game tick.
+ * It coordinates the process of gathering move intents and resolving conflicts.
+ */
 public class MovementTickResolver {
+    /** 
+     * Executes the movement phase for all active cards in the level.
+     * 
+     * @param gameLevel The current {@link GameLevel}.
+     * @param cardSet The set of all active {@link Card}s.
+     * @param changedPoints A set to be populated with {@link GridPos} that were modified.
+     * @return A {@link HashSet} of {@link CardMovement} objects describing the resolved moves.
+     */
     static public HashSet<CardMovement> doMovementTick(GameLevel gameLevel, HashSet<Card> cardSet, HashSet<GridPos> changedPoints) {
         // If you are reading this I am so sorry on what you are about to witness
         // Also theoretically O(n) but honestly I have no idea if it actually is

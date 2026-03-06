@@ -22,9 +22,19 @@ import ui.tooltip.TooltipLayer;
 import util.Config;
 import util.GridPos;
 
+/**
+ * A GridPane that represents a single layer of the game board.
+ * Manages the layout of {@link GameTilePane}s and handles mouse events for the top-most layer.
+ */
 public class GameGrid extends GridPane {
+    /** The 2D array of tile panes representing this grid layer. */
     public final GameTilePane[][] gameGridTilePanes;
 
+    /** 
+     * Updates the UI for the tile at the specified position if it is within bounds.
+     * 
+     * @param pos The {@link GridPos} to update.
+     */
     public void updateIfValid(GridPos pos) {
         if (pos.getY() < 0 || pos.getY() >= gameGridTilePanes.length)
             return;
@@ -34,6 +44,13 @@ public class GameGrid extends GridPane {
         gameGridTilePanes[pos.getY()][pos.getX()].updateUI();
     }
 
+    /**
+     * Constructs a new GameGrid for a specific level and layer.
+     * 
+     * @param level The {@link GameLevel} to display.
+     * @param layer The {@link RenderLayer} this grid represents.
+     * @param tooltipLayer The {@link TooltipLayer} for tile tooltips.
+     */
     public GameGrid(GameLevel level, RenderLayer layer, TooltipLayer tooltipLayer) {
 
         gameGridTilePanes = new GameTilePane[level.HEIGHT][level.WIDTH];
@@ -44,11 +61,23 @@ public class GameGrid extends GridPane {
         buildConstraints(level);
     }
 
+    /** 
+     * Configures mouse transparency and interaction based on the layer type.
+     * 
+     * @param layer The {@link RenderLayer}.
+     */
     private void configureLayer(RenderLayer layer) {
         setMouseTransparent(layer != RenderLayer.MOUSE_EVENTS);
         setPickOnBounds(layer == RenderLayer.MOUSE_EVENTS);
     }
 
+    /** 
+     * Builds the grid of {@link GameTilePane}s.
+     * 
+     * @param level The level data.
+     * @param layer The layer being built.
+     * @param tooltipLayer The tooltip manager.
+     */
     private void buildGrid(GameLevel level, RenderLayer layer, TooltipLayer tooltipLayer) {
 
         for (int i = 0; i < level.HEIGHT; i++) {
@@ -69,6 +98,11 @@ public class GameGrid extends GridPane {
         }
     } 
 
+    /** 
+     * Registers mouse event handlers if this is the interaction layer.
+     * 
+     * @param layer The layer to register handlers for.
+     */
     private void registerMouseHandlers(RenderLayer layer) {
 
         if (layer != RenderLayer.MOUSE_EVENTS)
@@ -93,6 +127,11 @@ public class GameGrid extends GridPane {
                 .handleOnMouseExit(getGridPosFromMouse(e)));
     }
 
+    /** 
+     * Builds grid constraints based on level dimensions and tile size.
+     * 
+     * @param level The level data.
+     */
     private void buildConstraints(GameLevel level) {
 
         for (int c = 0; c < level.WIDTH; c++) {
@@ -114,6 +153,12 @@ public class GameGrid extends GridPane {
         }
     }
 
+    /** 
+     * Translates a MouseEvent's coordinates into a grid position.
+     * 
+     * @param e The {@link MouseEvent}.
+     * @return The corresponding {@link GridPos}, or {@code null} if out of bounds.
+     */
     private GridPos getGridPosFromMouse(MouseEvent e) {
 
         double x = e.getX();

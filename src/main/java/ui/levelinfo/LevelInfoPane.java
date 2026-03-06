@@ -27,11 +27,24 @@ import ui.tooltip.Tooltip;
 import ui.tooltip.TooltipLayer;
 import util.Direction;
 
+/**
+ * The {@code LevelInfoPane} is the primary sidebar UI component that displays 
+ * level metadata, player inventory, and game controls.
+ * <p>
+ * It provides a real-time view of the game phase, allows the player to select 
+ * movers from their inventory, and hosts the playback controls (Play, Pause, Step, Reset).
+ */
 public class LevelInfoPane extends VBox {
 
+    /**
+     * Represents the different logical phases the game can be in.
+     */
     private enum GamePhase {
+        /** The engine is currently moving cards. */
         MOVING("Current Phase: Moving   "),
+        /** The engine is currently applying tile modifications. */
         MODIFYING("Current Phase: Modifying"),
+        /** The engine is paused. */
         PAUSED("Current Phase: Paused   ");
 
         private final String displayText;
@@ -61,6 +74,10 @@ public class LevelInfoPane extends VBox {
     private Runnable unregisterAfterModify;
     private Runnable unregisterAfterPause;
 
+    /**
+     * Constructs a {@code LevelInfoPane} and initializes its sub-components.
+     * @param tooltipLayer The layer used to display tooltips for UI elements.
+     */
     public LevelInfoPane(TooltipLayer tooltipLayer) {
         inventory = PlayerInventory.getInstance();
 
@@ -70,12 +87,17 @@ public class LevelInfoPane extends VBox {
         initializeContent(tooltipLayer);
     }
 
+    /** Sets up the general CSS styling and layout for the pane. */
     private void initializeStyle() {
         setPadding(new Insets(12));
         setSpacing(10);
         setAlignment(Pos.CENTER);
     }
 
+    /** 
+     * Creates the individual UI nodes like labels and sub-panes.
+     * @param tooltipLayer The tooltip layer.
+     */
     private void initializeComponents(TooltipLayer tooltipLayer) {
         titleText = createTitleText();
         rotationLabel = createRotationLabel();
@@ -86,22 +108,29 @@ public class LevelInfoPane extends VBox {
         cardOutputListPane = new CardOutputListPane("Output Cards", GameLevel.getInstance().OUTPUT_CARDS, tooltipLayer);
     }
 
+    /** @return A styled text node for the level name. */
     private Text createTitleText() {
         Text text = new Text(GameLevel.getInstance().LEVELNAME);
         text.getStyleClass().add("text-heading");
         return text;
     }
 
+    /** @return A label for displaying the current placement rotation. */
     private Label createRotationLabel() {
         Label label = new Label();
         label.getStyleClass().add("text-body");
         return label;
     }
 
+    /** @return A label for displaying the active {@link GamePhase}. */
     private Label createPhaseLabel() {
         return new Label(GamePhase.PAUSED.getDisplayText());
     }
 
+    /** 
+     * Orchestrates the final layout of the pane.
+     * @param tooltipLayer The tooltip layer.
+     */
     private void buildLayout(TooltipLayer tooltipLayer) {
         HBox statusContainer = createStatusContainer();
         getChildren().addAll(
@@ -114,6 +143,10 @@ public class LevelInfoPane extends VBox {
         );
     }
 
+    /** 
+     * Populates the pane with initial data and attaches listeners.
+     * @param tooltipLayer The tooltip layer.
+     */
     private void initializeContent(TooltipLayer tooltipLayer) {
         buildMoverRows(tooltipLayer);
         buildControlPanel();
@@ -121,6 +154,7 @@ public class LevelInfoPane extends VBox {
         registerEventHandlers();
     }
 
+    /** @return A container for status-related labels. */
     private HBox createStatusContainer() {
         HBox statusContainer = new HBox(10);
         statusContainer.setAlignment(Pos.CENTER);
@@ -128,16 +162,24 @@ public class LevelInfoPane extends VBox {
         return statusContainer;
     }
 
+    /** Attaches listeners to the global event bus to update the phase label. */
     private void registerEventHandlers() {
         unregisterAfterMovement = EventBus.register(MovementEndedEvent.class, e -> updatePhase(GamePhase.MOVING));
         unregisterAfterModify = EventBus.register(ModifyEndedEvent.class, e -> updatePhase(GamePhase.MODIFYING));
         unregisterAfterPause = EventBus.register(PausedEvent.class, e -> updatePhase(GamePhase.PAUSED));
     }
 
+    /** 
+     * Updates the text of the phase label.
+     * @param phase The new phase to display.
+     */
     private void updatePhase(GamePhase phase) {
         phaseLabel.setText(phase.getDisplayText());
     }
 
+    /**
+     * Unregisters all event listeners to prevent memory leaks.
+     */
     public void cleanup() {
         unregisterAfterMovement.run();
         unregisterAfterModify.run();
@@ -145,6 +187,7 @@ public class LevelInfoPane extends VBox {
         cardOutputListPane.cleanup();
     }
 
+    /** Populates the control panel with playback buttons. */
     private void buildControlPanel() {
         controlPanel.getChildren().addAll(
                 createButton("Play ▶", "button-success", TickEngine::play),
@@ -154,6 +197,13 @@ public class LevelInfoPane extends VBox {
         );
     }
 
+    /** 
+     * Utility to create a styled button with a click sound and action.
+     * @param text The button label.
+     * @param styleClass The CSS class to apply.
+     * @param action The runnable to execute on click.
+     * @return A configured {@link Button}.
+     */
     private Button createButton(String text, String styleClass, Runnable action) {
         Button button = new Button(text);
         button.getStyleClass().add(styleClass);
@@ -164,6 +214,10 @@ public class LevelInfoPane extends VBox {
         return button;
     }
 
+    /** 
+     * Generates the list of interactive mover buttons from the player's inventory.
+     * @param tooltipLayer The tooltip layer.
+     */
     private void buildMoverRows(TooltipLayer tooltipLayer) {
         moversList.getChildren().clear();
         moverRows.clear();
@@ -175,6 +229,12 @@ public class LevelInfoPane extends VBox {
         }
     }
 
+    /** 
+     * Creates an individual row for a mover in the sidebar.
+     * @param name The internal ID of the mover.
+     * @param tooltipLayer The tooltip layer.
+     * @return A {@code MoverRowUI} container.
+     */
     private MoverRowUI createMoverRow(String name, TooltipLayer tooltipLayer) {
         Button button = new Button(name);
         button.setFocusTraversable(false);
@@ -198,17 +258,22 @@ public class LevelInfoPane extends VBox {
         return new MoverRowUI(button, countText, row);
     }
 
+    /**
+     * Refreshes the entire sidebar UI based on the current inventory state.
+     */
     public void updateInventoryUI() {
         updateRotation();
         updateMovers();
     }
 
+    /** Syncs the rotation label with the placement controller. */
     private void updateRotation() {
         rotationLabel.setText(
                 "Rotation: " + PlacementController.INSTANCE.getRotation()
         );
     }
 
+    /** Syncs the counts and selection status of all mover rows. */
     private void updateMovers() {
         String selected = inventory.getCurrentSelection();
 
@@ -225,6 +290,9 @@ public class LevelInfoPane extends VBox {
         }
     }
 
+    /**
+     * Inner helper class for managing the UI state of a single mover row.
+     */
     private static class MoverRowUI {
         private final Button button;
         private final Text countText;

@@ -10,8 +10,15 @@ import util.GridPos;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Resolves the visual state of a {@link Setter} modifier.
+ * Handles loading and mapping images for suit setters, material setters, and value setters.
+ */
 public final class SetterRenderResolver extends RenderResolver {
 
+    /**
+     * Inner class for loading setter images.
+     */
     private static class SetterImage {
         private static final String[] SUIT_FILENAMES = {"modify-club", "modify-diamond", "modify-heart", "modify-spade"};
         private static final String[] MATERIAL_FILENAMES = {"modify-plastic", "modify-metal", "modify-glass", "modify-stone", "modify-rubber", "modify-corrupted"};
@@ -31,8 +38,19 @@ public final class SetterRenderResolver extends RenderResolver {
     }
 
 
+    /**
+     * Private constructor to prevent instantiation.
+     */
     private SetterRenderResolver() {}
 
+    /** 
+     * Resolves the render state for a setter.
+     * 
+     * @param setter The setter instance.
+     * @param pos The grid position.
+     * @param alpha The transparency level.
+     * @return A {@link RenderState} for the setter.
+     */
     public static RenderState resolve(
             Setter<?> setter,
             GridPos pos,

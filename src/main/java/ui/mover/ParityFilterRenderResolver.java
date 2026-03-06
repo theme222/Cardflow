@@ -10,8 +10,14 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Resolves the visual state of a {@link ParityFilter} mover.
+ */
 public final class ParityFilterRenderResolver extends MoverRenderResolver {
 
+    /**
+     * Inner class for loading parity filter images.
+     */
     private static class ParityFilterImage {
         private static final String RESOURCE_DIR = "/asset/tiles/mover/parityfilter/";
         private static final String[] FILENAMES = {"-base", "-merge-a", "-merge-b", "-merge-c"};
@@ -22,8 +28,19 @@ public final class ParityFilterRenderResolver extends MoverRenderResolver {
         }
     }
 
+    /**
+     * Private constructor to prevent instantiation.
+     */
     private ParityFilterRenderResolver() {}
 
+    /** 
+     * Resolves the render state for a parity filter.
+     * 
+     * @param parityFilter The filter instance.
+     * @param pos The grid position.
+     * @param alpha The transparency level.
+     * @return A {@link RenderState} for the filter.
+     */
     public static RenderState resolve(
             ParityFilter parityFilter,
             GridPos pos,

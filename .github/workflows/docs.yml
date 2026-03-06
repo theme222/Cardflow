@@ -1,0 +1,43 @@
+name: Generate Javadoc
+
+on:
+  push:
+    branches: [ main ] # Change this if your main branch is named 'master'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21' # Use the version matching your project
+          distribution: 'temurin'
+
+      - name: Generate Javadoc
+        run: |
+          # If using Maven:
+          mvn javadoc:javadoc
+          # OR if using your manual command (ensure dependencies are available):
+          # javadoc -d javadoc -sourcepath src/main/java -subpackages ...
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'target/site/apidocs' # Maven default. Change to 'javadoc' for your manual path
+
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

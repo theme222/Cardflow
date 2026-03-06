@@ -70,13 +70,9 @@ Players manipulate the board using two types of components:
 
 ---
 
-## 🚀 Installation & Setup
 
-- add
-
-
-
----
+## Javadocs
+Javadocs source is put at /javadoc you can view it there or host it as static page
 
 
 ## 👥 Team Members

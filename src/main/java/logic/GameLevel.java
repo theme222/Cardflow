@@ -19,35 +19,100 @@ import java.util.*;
 
 import util.*;
 
-
+/**
+ * Represents a game level, including its dimensions, grid, components, and game state.
+ * Manages the placement and interaction of cards, movers, and modifiers on the grid.
+ */
 public class GameLevel {
+    /**
+     * The singleton instance of the current GameLevel.
+     */
     private static GameLevel instance;
 
+    /**
+     * The maximum allowed width for a level.
+     */
     public static final int MAX_WIDTH = 9;
+    /**
+     * The maximum allowed height for a level.
+     */
     public static final int MAX_HEIGHT = 9;
 
     // Constant throughout level //
+    /**
+     * The width of this level.
+     */
     public final int WIDTH;
+    /**
+     * The height of this level.
+     */
     public final int HEIGHT;
+    /**
+     * The display name of the level.
+     */
     public final String LEVELNAME;
+    /**
+     * The unique identifier for the level.
+     */
     public final String LEVELID;
 
+    /**
+     * The list of cards provided as input for this level.
+     */
     public final List<CardCount> INPUT_CARDS;
+    /**
+     * The list of cards required for output to complete the level.
+     */
     public final List<CardCount> OUTPUT_CARDS;
 
+    /**
+     * The initial counts of movers available for the player to place.
+     */
     public final HashMap<String, Integer> AVAILABLE_MOVERS;
     // Constant throughout level //
 
-    // A Card must exist in the set and in the level tile at the same time.
-    // We are doing redundancy to improve speed (RAM is cheap anyways)
+    /**
+     * The 2D array of tiles representing the game grid.
+     */
     private GameTile[][] grid;
+    /**
+     * List of cards that have successfully exited the level.
+     */
     public final ArrayList<Card> exitedCardsList;
+    /**
+     * Set of all active cards currently on the grid.
+     */
     public final HashSet<Card> cardSet;
+    /**
+     * Set of all modifiers present in the level.
+     */
     public final HashSet<Modifier> modifierSet;
+    /**
+     * Set of all movers currently placed on the grid.
+     */
     public final HashSet<Mover> moverSet;
-    public final HashSet<GridPos> changedPoints; // Positions on grid that needs a UI update
-    public final HashSet<Modifier> successfullyModified; // List of modifiers that successfully did their modification
+    /**
+     * Set of grid positions that have changed during a tick and need UI updates.
+     */
+    public final HashSet<GridPos> changedPoints;
+    /**
+     * Set of modifiers that have successfully performed an action in the current tick.
+     */
+    public final HashSet<Modifier> successfullyModified;
 
+    /**
+     * Constructs a new GameLevel with the specified properties.
+     * 
+     * @param levelID Unique ID of the level.
+     * @param levelName Name of the level.
+     * @param width Width of the grid.
+     * @param height Height of the grid.
+     * @param inputCards Input card counts.
+     * @param outputCards Target output card counts.
+     * @param availableMovers Available movers for placement.
+     * @param grid The initial grid setup.
+     * @param modifierSet Set of modifiers initially on the grid.
+     */
     public GameLevel(
             String levelID,
             String levelName,
@@ -77,16 +142,35 @@ public class GameLevel {
         this.successfullyModified = new HashSet<>();
     }
 
+    /** 
+     * Retrieves the tile at a specific grid position.
+     * 
+     * @param p The {@link GridPos} to look up.
+     * @return The {@link GameTile} at that position.
+     * @throws IllegalArgumentException if the position is out of bounds.
+     */
     public GameTile getTile(GridPos p) { // I know I'm gonna accidentally switch y and x one of these days
         if (!isInBounds(p))
             throw new IllegalArgumentException("Invalid position");
         return grid[p.getY()][p.getX()];
     }
 
+    /** 
+     * Checks if a grid position is within the level boundaries.
+     * 
+     * @param p The {@link GridPos} to check.
+     * @return {@code true} if within bounds, {@code false} otherwise.
+     */
     public boolean isInBounds(GridPos p){
         return p.inRange(0, WIDTH-1, 0, HEIGHT-1);
     }
 
+    /** 
+     * Gets the tiles adjacent to a given position.
+     * 
+     * @param p The {@link GridPos} to find neighbors for.
+     * @return An array of 4 {@link GameTile} objects (some may be null).
+     */
     public GameTile[] getAdjacentTiles(GridPos p) { // hehe more helpers for meeeeeeeee
         GameTile[] adjacent = new GameTile[4];
         int x = p.getX();
@@ -99,12 +183,26 @@ public class GameLevel {
     }
 
 
-    // Returns success / failure
+    /** 
+     * Sets an indexable component's position on the grid.
+     * 
+     * @param gridIndexable The component to place.
+     * @param newPoint The new {@link GridPos}.
+     * @return {@code true} if successful.
+     */
     public boolean setPositionOnGrid(GridIndexable gridIndexable, GridPos newPoint) {
         // DOES NOT REMOVE OLD POSITION AND DOES NOT ADD TO SET
         return setPositionOnGrid(gridIndexable, newPoint, false);
     }
 
+    /** 
+     * Sets an indexable component's position on the grid, optionally forcing the update.
+     * 
+     * @param gridIndexable The component to place.
+     * @param newPoint The new {@link GridPos}.
+     * @param force Whether to overwrite an existing component of the same type.
+     * @return {@code true} if successful.
+     */
     public boolean setPositionOnGrid(GridIndexable gridIndexable, GridPos newPoint, boolean force) {
         if (!force && getTile(newPoint).getSameClassOnTile(gridIndexable) != null) return false;
         getTile(newPoint).setSameClassOnTile(gridIndexable);
@@ -112,6 +210,13 @@ public class GameLevel {
         return true;
     }
 
+    /** 
+     * Adds a mover to the grid at a specified position.
+     * 
+     * @param mover The {@link Mover} to add.
+     * @param newPoint The {@link GridPos} where it should be placed.
+     * @return {@code true} if addition was successful, {@code false} otherwise.
+     */
     public boolean addMover(Mover mover, GridPos newPoint) {
         // Do nothing if position is occupied or cardSet contains the card already
         if (moverSet.contains(mover)) return false;
@@ -123,6 +228,12 @@ public class GameLevel {
         return true;
     }
 
+    /** 
+     * Removes a mover from the grid.
+     * 
+     * @param mover The {@link Mover} to remove.
+     * @return {@code true} if removal was successful.
+     */
     public boolean removeMover(Mover mover) {
         // Do nothing if it can't find the old mover
         if (!moverSet.contains(mover)) return false;
@@ -133,6 +244,13 @@ public class GameLevel {
         return true;
     }
 
+    /** 
+     * Adds a card to the grid at a specified position.
+     * 
+     * @param card The {@link Card} to add.
+     * @param newPoint The {@link GridPos} where it should be placed.
+     * @return {@code true} if addition was successful.
+     */
     public boolean addCard(Card card, GridPos newPoint) {
         // Do nothing if position is occupied or cardSet contains the card already
         if (cardSet.contains(card)) return false;
@@ -144,6 +262,12 @@ public class GameLevel {
         return true;
     }
 
+    /** 
+     * Removes a card from the grid.
+     * 
+     * @param card The {@link Card} to remove.
+     * @return {@code true} if removal was successful.
+     */
     public boolean removeCard(Card card) {
         // Do nothing if it can't find the old card
         if (!cardSet.contains(card)) return false;
@@ -154,12 +278,20 @@ public class GameLevel {
         return true;
     }
 
+    /**
+     * Executes the movement phase of a game tick.
+     * Resolves all card movements and emits an {@link AfterMovementEvent}.
+     */
     public void doMovementTick() {
         HashSet<CardMovement> movements = MovementTickResolver.doMovementTick(this, cardSet, changedPoints); // this is what a lobotomy looks like :D
         EventBus.emit(new logic.event.AfterMovementEvent(movements)); // Let the world know we are done with movement tick so we can do modify tick and other things
         if (!movements.isEmpty()) AudioManager.playSoundEffect("card-move");
     }
 
+    /**
+     * Executes the modification phase of a game tick.
+     * Invokes all modifiers on the grid and triggers associated effects and sounds.
+     */
     public void doModifyTick() {
         changedPoints.clear();
         // Round two baby lets do this
@@ -172,6 +304,9 @@ public class GameLevel {
         successfullyModified.clear();
     }
 
+    /**
+     * Resets the level to its initial state, removing all cards and resetting movers and modifiers.
+     */
     public void resetLevel() {
 
         Card[] arr = cardSet.toArray(new Card[0]); // doing it like this because god knows whats gonna happen if I iterate through the actual set
@@ -193,18 +328,43 @@ public class GameLevel {
         exitedCardsList.clear();
     }
 
-    // GETTERS & SETTERS //
-
+    /** 
+     * Gets the singleton instance of {@link GameLevel}.
+     * 
+     * @return The active {@link GameLevel} instance.
+     * @throws IllegalStateException if the instance has not been initialized.
+     */
     public static GameLevel getInstance() {
         if (instance == null) throw new IllegalStateException("GameLevel has not been initialized");
         return instance;
     }
+
+    /**
+     * Sets the singleton instance of {@link GameLevel}.
+     * 
+     * @param instance The instance to set.
+     */
     public static void setInstance(GameLevel instance) { GameLevel.instance = instance; }
+
+    /**
+     * Gets the 2D grid of tiles.
+     * 
+     * @return A 2D array of {@link GameTile}.
+     */
     public GameTile[][] getGrid() { return grid; }
+
+    /**
+     * Sets the grid of tiles.
+     * 
+     * @param grid A 2D array of {@link GameTile}.
+     */
     public void setGrid(GameTile[][] grid) { this.grid = grid; }
 
-    // GETTERS & SETTERS //
-
+    /** 
+     * Returns a string representation of the level's basic info.
+     * 
+     * @return A descriptive string.
+     */
     @Override
     public String toString() {
         return  "Level: " + LEVELNAME

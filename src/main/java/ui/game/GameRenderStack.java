@@ -21,10 +21,20 @@ import util.Config;
 import util.Direction;
 import util.GridPos;
 
+/**
+ * A StackPane that manages all rendering layers of the game grid.
+ * It coordinates updates across different layers like background, movers, cards, and overlays.
+ */
 public class GameRenderStack extends StackPane {
 
+    /** Maps each {@link RenderLayer} to its corresponding Pane. */
     private final EnumMap<RenderLayer, Pane> layers = new EnumMap<>(RenderLayer.class);
 
+    /** 
+     * Triggers an update for a specific grid position across all layers.
+     * 
+     * @param pos The {@link GridPos} to update.
+     */
     public void updateIfValid(GridPos pos) {
         for (Pane pane : layers.values()) {
             if (pane instanceof GameGrid) {
@@ -33,6 +43,12 @@ public class GameRenderStack extends StackPane {
         }
     }
 
+    /**
+     * Constructs a new GameRenderStack.
+     * 
+     * @param level The current {@link GameLevel}.
+     * @param tooltipLayer The {@link TooltipLayer} for binding tooltips to grid elements.
+     */
     public GameRenderStack(GameLevel level, TooltipLayer tooltipLayer) {
         super();
 
