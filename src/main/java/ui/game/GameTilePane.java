@@ -16,12 +16,25 @@ import ui.overlay.SelectedTileOverlayRenderer;
 import ui.render.Renderer;
 import util.GridPos;
 
+/**
+ * A specialized JavaFX Pane that represents a single tile on the game grid for a specific render layer.
+ */
 public class GameTilePane extends Pane {
 
+    /** The logic tile associated with this pane. */
     private GameTile tile;
+    /** The grid position of this tile. */
     private GridPos pos;
+    /** The render layer this pane belongs to. */
     private RenderLayer layer;
 
+    /**
+     * Constructs a new GameTilePane.
+     * 
+     * @param tile The {@link GameTile} data.
+     * @param pos The {@link GridPos} on the grid.
+     * @param layer The {@link RenderLayer} this pane renders.
+     */
     public GameTilePane(GameTile tile, GridPos pos, RenderLayer layer) {
         this.tile = tile;
         this.pos = pos;
@@ -47,10 +60,16 @@ public class GameTilePane extends Pane {
         //this.getChildren().add(debugText);
     }
 
+    /**
+     * Triggers a UI update for this tile and its adjacent neighbors.
+     */
     public void updateUIAdjacent() {
         GameView.getInstance().updateTileAndAdjacent(tile.getGridPos());
     }
 
+    /**
+     * Updates the content of this pane based on the current state of the associated tile and the render layer.
+     */
     public void updateUI() {
         clearLayers();
 
@@ -85,10 +104,19 @@ public class GameTilePane extends Pane {
         }
     }
 
+    /**
+     * Clears all child nodes from this pane.
+     */
     private void clearLayers() {
         getChildren().clear();
     }
 
+    /** 
+     * Renders a specific object using the appropriate renderer from the registry.
+     * 
+     * @param layer The layer to render.
+     * @param obj The object to be rendered.
+     */
     private void render(RenderLayer layer, Object obj) {
         Renderer<Object> renderer = RendererRegistry.INSTANCE.getRenderer(obj);
 
@@ -98,10 +126,20 @@ public class GameTilePane extends Pane {
         renderer.render(obj, this, pos);
     }
 
+    /** 
+     * Gets the associated game tile info.
+     * 
+     * @return The {@link GameTile}.
+     */
     public GameTile getGameTileInfo() {
         return tile;
     }
 
+    /** 
+     * Sets the associated game tile info.
+     * 
+     * @param gameTileInfo The new {@link GameTile}.
+     */
     public void setGameTileInfo(GameTile gameTileInfo) {
         this.tile = gameTileInfo;
     }

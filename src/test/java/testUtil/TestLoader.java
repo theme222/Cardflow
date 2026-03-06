@@ -44,6 +44,9 @@ public class TestLoader {
         assertThrows(IllegalArgumentException.class, () -> LevelLoader.loadLevel(String.valueOf(LevelLoader.TOTAL_LEVELS + 1)));
     }
 
+    /** 
+     * @throws Exception
+     */
     @Test
     void testParseSuit() throws Exception {
         Method parseSuit = LevelLoader.class.getDeclaredMethod("parseSuit", String.class);
@@ -59,6 +62,9 @@ public class TestLoader {
         assertInstanceOf(IllegalArgumentException.class, ex.getCause());
     }
 
+    /** 
+     * @throws Exception
+     */
     @Test
     void testParseMaterial() throws Exception {
         Method parseMaterial = LevelLoader.class.getDeclaredMethod("parseMaterial", String.class);
@@ -73,6 +79,9 @@ public class TestLoader {
         assertInstanceOf(IllegalArgumentException.class, ex.getCause());
     }
 
+    /** 
+     * @throws Exception
+     */
     @Test
     void testParseModifierInfo() throws Exception {
         Method parseMod = LevelLoader.class.getDeclaredMethod("parseModifierInfo", String.class);

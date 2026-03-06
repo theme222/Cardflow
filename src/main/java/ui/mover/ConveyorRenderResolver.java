@@ -13,8 +13,14 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Resolves the visual state of a {@link Conveyor} mover.
+ */
 public final class ConveyorRenderResolver extends MoverRenderResolver {
 
+    /**
+     * Inner class for loading conveyor images.
+     */
     private static class ConveyorImage {
         private static final String RESOURCE_DIR = "/asset/tiles/mover/conveyor/";
         private static final String[] FILENAMES = {"-base", "-turn", "-merge-a", "-merge-b", "-merge-c"};
@@ -26,8 +32,19 @@ public final class ConveyorRenderResolver extends MoverRenderResolver {
     }
 
 
+    /**
+     * Private constructor to prevent instantiation.
+     */
     private ConveyorRenderResolver() {}
 
+    /** 
+     * Resolves the render state for a conveyor.
+     * 
+     * @param conveyor The conveyor instance.
+     * @param pos The grid position.
+     * @param alpha The transparency level.
+     * @return A {@link RenderState} for the conveyor.
+     */
     public static RenderState resolve(
             Conveyor conveyor,
             GridPos pos,

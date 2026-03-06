@@ -18,8 +18,20 @@ import util.GridPos;
 
 import java.util.Set;
 
+/**
+ * The {@code EffectManager} class centralizes the creation and management 
+ * of visual effects within the game world.
+ * <p>
+ * It interacts with the {@link FloatingLayerRegistry} to place effects on 
+ * the appropriate render layer and handles their lifecycle.
+ */
 public class EffectManager {
 
+    /** 
+     * Creates a circular pulse effect at a specific grid position.
+     * @param c The color of the effect.
+     * @param pos The grid position to spawn the effect at.
+     */
     public static void createEffect(Color c, GridPos pos) {
         Pane target = FloatingLayerRegistry.INSTANCE.getPane(RenderLayer.EFFECTS);
         if (target == null) return;
@@ -32,6 +44,13 @@ public class EffectManager {
         transition.play();
     }
 
+    /** 
+     * Spawns multiple effects based on a set of active modifiers.
+     * <p>
+     * The color of each effect is determined by the type of the modifier 
+     * (e.g., Green for Entrance, Red for Exit).
+     * @param modifiers The set of {@link Modifier} objects to generate effects for.
+     */
     public static void createEffectsWithModifierSet(Set<Modifier> modifiers) {
         for (Modifier modifier : modifiers) {
             Color selectedColor;

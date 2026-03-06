@@ -12,8 +12,15 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+/**
+ * Resolves the visual state of a {@link FlipFlop} mover.
+ * Handles both the base floor image and the state-dependent overlays (red/blue).
+ */
 public final class FlipFlopRenderResolver extends MoverRenderResolver {
 
+    /**
+     * Inner class for loading flip-flop specific images.
+     */
     private static class FlipFlopImage {
         private static final String RESOURCE_DIR = "/asset/tiles/mover/flipflop/";
         private static final String[] FILENAMES = {"-base", "-merge-a", "-merge-c"};
@@ -28,8 +35,19 @@ public final class FlipFlopRenderResolver extends MoverRenderResolver {
         }
     }
 
+    /**
+     * Private constructor to prevent instantiation.
+     */
     private FlipFlopRenderResolver() {}
 
+    /** 
+     * Resolves the floor layer for a flip-flop.
+     * 
+     * @param flipFlop The {@link FlipFlop} instance.
+     * @param pos The grid position.
+     * @param alpha The transparency level.
+     * @return A {@link RenderState} for the floor.
+     */
     public static RenderState resolveFloor(
             FlipFlop flipFlop,
             GridPos pos,
@@ -54,6 +72,14 @@ public final class FlipFlopRenderResolver extends MoverRenderResolver {
         );
     }
 
+    /** 
+     * Resolves the overlay layer for a flip-flop based on its active state.
+     * 
+     * @param flipFlop The {@link FlipFlop} instance.
+     * @param pos The grid position.
+     * @param alpha The transparency level.
+     * @return A {@link RenderState} for the overlay.
+     */
     public static RenderState resolveOverlay(
             FlipFlop flipFlop,
             GridPos pos,

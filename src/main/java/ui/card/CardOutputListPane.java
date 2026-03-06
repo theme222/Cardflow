@@ -16,14 +16,29 @@ import util.CardCount;
 
 import java.util.List;
 
+/**
+ * A UI pane that displays a list of cards required for output to complete a level.
+ * It updates dynamically as cards exit the level, highlighting correct or incorrect matches.
+ */
 public class CardOutputListPane extends VBox {
 
+    /** The title label for the output list. */
     private final Label title;
+    /** Container for the card items. */
     private final HBox cardList;
+    /** Runnable to unregister the card exit listener. */
     private Runnable unregisterCardExit;
+    /** Runnable to unregister the reset event listener. */
     private Runnable unregisterReset;
 
 
+    /**
+     * Constructs a new CardOutputListPane.
+     * 
+     * @param name The display name (title) for the list.
+     * @param cardCounts The target card counts.
+     * @param tooltipLayer The tooltip manager for binding tooltips to cards.
+     */
     public CardOutputListPane(String name, List<CardCount> cardCounts, TooltipLayer tooltipLayer) {
         title = new Label(name);
         title.setPadding(new Insets(5));
@@ -48,11 +63,19 @@ public class CardOutputListPane extends VBox {
         unregisterReset = EventBus.register(ResetEvent.class, this::updateUI);
     }
 
+    /**
+     * Unregisters event listeners to prevent memory leaks.
+     */
     public void cleanup() {
         unregisterCardExit.run();
         unregisterReset.run();
     }
 
+    /** 
+     * Updates the UI based on the current set of exited cards in the game level.
+     * 
+     * @param e The event that triggered the update (CardExitEvent or ResetEvent).
+     */
     public void updateUI(Event e) {
         List<Card> exitedCardList = GameLevel.getInstance().exitedCardsList;
         int index;

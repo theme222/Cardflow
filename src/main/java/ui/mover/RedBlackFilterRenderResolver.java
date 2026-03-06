@@ -10,8 +10,14 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Resolves the visual state of a {@link RedBlackFilter} mover.
+ */
 public final class RedBlackFilterRenderResolver extends MoverRenderResolver {
 
+    /**
+     * Inner class for loading red-black filter images.
+     */
     private static class RedBlackFilterImage {
         private static final String RESOURCE_DIR = "/asset/tiles/mover/redblackfilter/";
         private static final String[] FILENAMES = {"-base", "-merge-a", "-merge-b", "-merge-c"};
@@ -22,8 +28,19 @@ public final class RedBlackFilterRenderResolver extends MoverRenderResolver {
         }
     }
 
+    /**
+     * Private constructor to prevent instantiation.
+     */
     private RedBlackFilterRenderResolver() {}
 
+    /** 
+     * Resolves the render state for a red-black filter.
+     * 
+     * @param redBlackFilter The filter instance.
+     * @param pos The grid position.
+     * @param alpha The transparency level.
+     * @return A {@link RenderState} for the filter.
+     */
     public static RenderState resolve(
             RedBlackFilter redBlackFilter,
             GridPos pos,

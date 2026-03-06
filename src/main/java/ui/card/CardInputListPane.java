@@ -11,11 +11,23 @@ import util.GridPos;
 
 import java.util.List;
 
+/**
+ * A UI pane that displays a list of cards available as input for a level.
+ */
 public class CardInputListPane extends VBox {
 
+    /** The title label for the input list. */
     private final Label title;
+    /** Container for the card items. */
     private final HBox cardList;
 
+    /**
+     * Constructs a new CardInputListPane.
+     * 
+     * @param name The display name (title) for the list.
+     * @param cardCounts The input card counts.
+     * @param tooltipLayer The tooltip manager.
+     */
     public CardInputListPane(String name, List<CardCount> cardCounts, TooltipLayer tooltipLayer) {
         title = new Label(name);
         title.setPadding(new Insets(5));

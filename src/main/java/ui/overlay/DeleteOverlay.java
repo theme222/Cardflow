@@ -6,7 +6,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import util.Config;
 
+/**
+ * The {@code DeleteOverlay} class provides a visual indicator for tiles 
+ * marked for deletion.
+ * <p>
+ * It renders a semi-transparent red rectangle with a thicker red border 
+ * over the target grid cell.
+ */
 public class DeleteOverlay {
+    /** The singleton instance of the overlay. */
     public static final DeleteOverlay INSTANCE = new DeleteOverlay();
 
     private static final double BORDER_WIDTH = 3.0;
@@ -14,6 +22,10 @@ public class DeleteOverlay {
     private static final double BORDER_OPACITY = 0.6;
     private static final double FILL_OPACITY = 0.18;
 
+    /** 
+     * Renders the deletion indicator onto the provided pane.
+     * @param overlayPane The pane representing the grid cell to overlay.
+     */
     public void render(Pane overlayPane) {
 
         double tileSize = Config.TILE_SIZE;

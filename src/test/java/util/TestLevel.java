@@ -10,6 +10,9 @@ import java.util.HashSet;
 import java.util.List;
 
 public class TestLevel {
+    /** 
+     * @return GameLevel
+     */
     public static GameLevel initGlobalGameLevel() {
         int width = 5;
         int height = 5;

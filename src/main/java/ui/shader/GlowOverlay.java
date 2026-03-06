@@ -7,13 +7,21 @@ import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * The {@code GlowOverlay} class provides a visual "glow" effect over the 
+ * entire application screen.
+ * <p>
+ * It uses a {@link RadialGradient} to create a vignette-like effect with 
+ * a bright center and darker edges, enhancing the game's atmosphere.
+ */
 public class GlowOverlay extends Rectangle {
-    // Because my laptop is genuinely too slow to use actual shaders :/
 
+    /**
+     * Constructs a new {@code GlowOverlay} with a fixed size and gradient.
+     */
     public GlowOverlay() {
-
-        Rectangle glowOverlay = new Rectangle(1920, 1080);
-        glowOverlay.setFill(new RadialGradient(
+        super(1920, 1080);
+        this.setFill(new RadialGradient(
                 0,           // focusAngle
                 0,           // focusDistance
                 0.5,         // centerX (0.5 = middle)
@@ -29,9 +37,9 @@ public class GlowOverlay extends Rectangle {
                 new Stop(1, Color.web("#000000", 0.7))
         ));
 
-        glowOverlay.setBlendMode(BlendMode.ADD);
-        glowOverlay.setOpacity(1); // Adjust for "intensity"
-        glowOverlay.setMouseTransparent(true);
+        this.setBlendMode(BlendMode.ADD);
+        this.setOpacity(1); // Adjust for "intensity"
+        this.setMouseTransparent(true);
     }
 }
 
