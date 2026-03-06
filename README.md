@@ -16,6 +16,11 @@ The game focuses on planning, simulation, and emergent behavior through logical 
 
 ---
 
+### [Link Report](https://docs.google.com/document/d/1gC24tA5RU6ZqhgHYP4bdYx1R-tJYspbVh3TwXkdrjw4/edit?usp=sharing)
+### [Link Video Presentation](https://youtu.be/ATaTC08rApY)
+
+---
+
 ## ⚙️ Core Gameplay & Mechanics
 
 The game operates in two distinct phases:
