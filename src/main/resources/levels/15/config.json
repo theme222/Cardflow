@@ -1,0 +1,32 @@
+{
+  "name": "Bogosort",
+  "width": 9,
+  "height": 9,
+
+  "inputCards": [
+    { "suit": "CLUB", "value": 3, "material": "GLASS" },
+    { "suit": "SPADE", "value": 4, "material": "GLASS" },
+    { "suit": "HEART", "value": 1, "material": "GLASS" },
+    { "suit": "DIAMOND", "value": 8, "material": "GLASS" },
+    { "suit": "CLUB", "value": 1, "material": "GLASS" },
+    { "suit": "SPADE", "value": 13, "material": "GLASS" }
+  ],
+
+  "outputCards": [
+    { "suit": "HEART", "value": 1, "material": "GLASS" },
+    { "suit": "CLUB", "value": 1, "material": "GLASS" },
+    { "suit": "CLUB", "value": 3, "material": "GLASS" },
+    { "suit": "SPADE", "value": 4, "material": "GLASS" },
+    { "suit": "DIAMOND", "value": 8, "material": "GLASS" },
+    { "suit": "SPADE", "value": 13, "material": "GLASS" }
+  ],
+
+  "availableMovers": [
+    { "name": "FLIPFLOP", "count": -1 },
+    { "name": "CONVEYOR", "count": -1 },
+    { "name": "REDBLACKFILTER", "count": -1 },
+    { "name": "PARITYFILTER", "count": -1 }
+  ]
+
+}
+

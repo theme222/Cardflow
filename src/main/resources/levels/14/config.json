@@ -1,0 +1,25 @@
+{
+  "name": "Fibonacci",
+  "width": 7,
+  "height": 5,
+
+  "inputCards": [
+    { "suit": "SPADE", "value": 1, "material": "PLASTIC" },
+    { "suit": "SPADE", "value": 1, "material": "PLASTIC" }
+  ],
+
+  "outputCards": [
+    { "suit": "SPADE", "value": 1, "material": "PLASTIC" },
+    { "suit": "SPADE", "value": 2, "material": "PLASTIC" },
+    { "suit": "SPADE", "value": 3, "material": "PLASTIC" },
+    { "suit": "SPADE", "value": 5, "material": "PLASTIC" },
+    { "suit": "SPADE", "value": 8, "material": "PLASTIC" },
+    { "suit": "SPADE", "value": 13, "material": "PLASTIC" }
+  ],
+
+  "availableMovers": [
+    { "name": "CONVEYOR", "count": -1 },
+    { "name": "FLIPFLOP", "count": -1 }
+  ]
+}
+
