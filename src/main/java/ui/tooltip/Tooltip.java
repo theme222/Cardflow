@@ -9,32 +9,34 @@ import util.Config;
 
 import java.util.*;
 
+/**
+ * The {@code Tooltip} class represents the data model for a UI tooltip.
+ * <p>
+ * It supports recursive references, where a tooltip can "contain" or 
+ * "reference" other tooltips within its description. These references 
+ * are resolved by the {@link TooltipLayer} for multi-column display.
+ */
 public class Tooltip {
     private String title; // also can be null
     private Color textColor;
     private Object[] description; // some values can and probably will be null
 
-    /** 
-     * @return String
-     */
-    // This contains the description it will display.
-    // If this tooltip is referenced inside another tooltip then it will create its own tooltip on the side via getRefs()
-    // Unless it doesn't have a description, in which it will simply just be part of that and not incur its own ref
-    // Copying this directly from balatro btw its soo good
-
+    /** @return The title text of this tooltip. */
     public String getTitle() {
         return title;
     }
 
-    /** 
-     * @return Color
-     */
+    /** @return The color used for the tooltip title. */
     public Color getTitleColor() {
         return textColor;
     }
 
     /** 
-     * @return TextFlow
+     * Generates a JavaFX {@link TextFlow} representing the formatted description.
+     * <p>
+     * Tooltip references within the description are rendered with distinct 
+     * colors and underlining.
+     * @return A styled {@link TextFlow}.
      */
     public TextFlow getDescription() {
         TextFlow flow = new TextFlow();
@@ -59,7 +61,8 @@ public class Tooltip {
     }
 
     /** 
-     * @return List<Tooltip>
+     * Extracts all other tooltips referenced in this tooltip's description.
+     * @return A list of unique {@code Tooltip} references.
      */
     public List<Tooltip> getRefs() {
         Set<Tooltip> refs = new HashSet<>();
@@ -71,6 +74,12 @@ public class Tooltip {
         return refs.stream().toList();
     }
 
+    /**
+     * Constructs a new {@code Tooltip}.
+     * @param title The title text.
+     * @param color The title color.
+     * @param description An array of Objects (Strings or Tooltips) for the body.
+     */
     public Tooltip(String title, Color color, Object... description) {
         this.title = title;
         this.textColor = color;
@@ -78,8 +87,9 @@ public class Tooltip {
     }
 
     /** 
-     * @param o
-     * @return Tooltip
+     * Helper to safely get a {@code Tooltip} reference from an object.
+     * @param o The object (Tippable, Tooltip, or String).
+     * @return A {@code Tooltip} instance.
      */
     public static Tooltip ref(Object o) {
         if (o == null) return null;
@@ -89,8 +99,9 @@ public class Tooltip {
     }
 
     /** 
-     * @param ...tipTargets
-     * @return Tippable
+     * Creates a dummy {@link Tippable} that aggregates multiple sources.
+     * @param tipTargets The sources to combine.
+     * @return A combined {@link Tippable}.
      */
     public static Tippable getContainerFor(Tippable ...tipTargets) {
         // Since when displaying tooltips it affectively only cares about the refs of the first tip without caring about the title

@@ -6,17 +6,26 @@ import logic.GameLevel;
 import ui.tooltip.Tooltip;
 import util.Direction;
 
+/**
+ * The {@code ParityFilter} is a specialized {@link Mover} that redirects cards 
+ * based on their numerical parity.
+ * <p>
+ * Even-valued cards are passed through in the mover's primary direction, 
+ * while odd-valued cards are redirected 90 degrees to the left.
+ */
 public class ParityFilter extends Mover {
-    // Checks whether the card is odd / even
-    // If even pass through the current rotation
-    // Otherwise odd goes to the left based on rotation
 
+    /**
+     * Constructs a new {@code ParityFilter} with a specific primary rotation.
+     * @param rotation The primary direction for even cards.
+     */
     public ParityFilter(Direction rotation) {
         super(rotation);
     }
 
     /** 
-     * @return Direction
+     * Determines the output direction based on the current card on the tile.
+     * @return The primary rotation if the card value is even, otherwise the previous direction.
      */
     @Override
     public Direction getDirectionStateless() {
@@ -27,30 +36,23 @@ public class ParityFilter extends Mover {
         else return getRotation().prev();
     }
 
-    /** 
-     * @return Direction
-     */
     @Override
     public Direction getDirection() {
         return getDirectionStateless();
     }
 
-    /** 
-     * @return Direction[]
-     */
+    /** @return An array containing both possible exit directions. */
     @Override
     public Direction[] getValidOutputDirections() {
         return new Direction[]{getRotation(), getRotation().prev()};
     }
 
-    /** 
-     * @return Tooltip
-     */
+    /** @return A specialized {@link Tooltip} for the parity filter. */
     @Override
     public Tooltip getTooltip() {
         return new Tooltip(
                 "ParityFilter",
-                Color.INDIANRED, // racist
+                Color.INDIANRED,
                 "A ",
                 Tooltip.ref(Mover.getMoverTooltip()),
                 " that filters cards based on the parity of the value.",

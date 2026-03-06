@@ -19,8 +19,16 @@ import ui.render.Renderer;
 import util.Direction;
 import util.GridPos;
 
+/**
+ * The {@code SelectedTileOverlayRenderer} is a singleton responsible for 
+ * rendering "ghost" or "preview" versions of tiles being placed by the user.
+ * <p>
+ * It interacts with the {@link PlacementController} to track the current 
+ * mouse-dragged placement path and triggers UI updates only for affected tiles.
+ */
 public class SelectedTileOverlayRenderer {
 
+    /** The singleton instance of the renderer. */
     public static final SelectedTileOverlayRenderer INSTANCE = new SelectedTileOverlayRenderer();
 
     // Selected tile data
@@ -36,22 +44,21 @@ public class SelectedTileOverlayRenderer {
     }
 
     /** 
-     * @param moverFactory
-     * @param moverName
+     * Configures the factory and name for the mover currently being placed.
+     * @param moverFactory A function that creates a {@link Mover} given a name and direction.
+     * @param moverName The internal ID of the mover type.
      */
-    /*
-     * ===============================
-     * Methods for PlacementController
-     * ===============================
-     */
-
     public void setMoverDetails(BiFunction<String, Direction, Mover> moverFactory, String moverName) {
         this.moverFactory = moverFactory;
         this.moverName = moverName;
     }
 
     /** 
-     * @param newList
+     * Updates the internal list of nodes currently scheduled for placement.
+     * <p>
+     * This method calculates the difference between the old and new lists 
+     * and forces a redraw on any grid positions that have changed.
+     * @param newList The new list of {@link PlacementNode} objects.
      */
     public void updatePlacementList(List<PlacementNode> newList) {
 
@@ -64,6 +71,10 @@ public class SelectedTileOverlayRenderer {
         runDiffAndUpdate();
     }
 
+    /** 
+     * Performs a diff between the previous and current placement paths 
+     * and triggers visual updates on the {@link GameView}.
+     */
     private void runDiffAndUpdate() {
 
         if (previousPlacementList == null)
@@ -110,15 +121,13 @@ public class SelectedTileOverlayRenderer {
     }
 
     /** 
-     * @param overlayPane
-     * @param pos
+     * Renders the ghost/preview tile onto the provided pane.
+     * <p>
+     * If the current position is marked for deletion in the placement path, 
+     * a {@link DeleteOverlay} is shown instead of a mover preview.
+     * @param overlayPane The pane where the preview should be rendered.
+     * @param pos The grid position to render the preview for.
      */
-    /*
-     * ===============================
-     * Rendering
-     * ===============================
-     */
-
     public void render(Pane overlayPane, GridPos pos) {
 
         for (PlacementNode node : placementListArrayList) {

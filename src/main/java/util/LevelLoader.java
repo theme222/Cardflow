@@ -22,13 +22,22 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * The {@code LevelLoader} class is responsible for parsing level configuration 
+ * and layout files from the application resources.
+ * <p>
+ * It handles the conversion of JSON and TSV data into {@link GameLevel} objects, 
+ * including card specifications, tile modifiers, and available player inventory.
+ */
 public class LevelLoader {
 
+    /** The total number of playable levels in the game. */
     public static final int TOTAL_LEVELS = 16;
 
     /** 
-     * @param suitString
-     * @return Suit
+     * Parses a string representation of a card suit.
+     * @param suitString The suit name or shorthand (H, C, D, S).
+     * @return The corresponding {@link Suit} enum.
      */
     private static Suit parseSuit(String suitString) {
         return switch (suitString.toUpperCase()) {
@@ -41,8 +50,9 @@ public class LevelLoader {
     }
 
     /** 
-     * @param materialString
-     * @return Material
+     * Parses a string representation of a card material.
+     * @param materialString The material name or shorthand.
+     * @return The corresponding {@link Material} enum.
      */
     private static Material parseMaterial(String materialString) {
         return switch (materialString.toUpperCase()) {
@@ -58,8 +68,9 @@ public class LevelLoader {
     }
 
     /** 
-     * @param cardJson
-     * @return CardCount
+     * Extracts card specifications from a JSON object.
+     * @param cardJson The JSON containing suit, value, material, and count.
+     * @return A {@link CardCount} object representing the card(s).
      */
     private static CardCount parseCardInfo(JsonObject cardJson) {
         Suit suit = parseSuit(cardJson.getString("suit"));
@@ -72,8 +83,11 @@ public class LevelLoader {
     }
 
     /** 
-     * @param modifier
-     * @return Modifier
+     * Creates a modifier instance based on a string descriptor.
+     * <p>
+     * Format is typically "TYPE:VALUE" (e.g., "ADD:5", "SETSUT:H").
+     * @param modifier The string descriptor from the level layout file.
+     * @return A {@link Modifier} instance, or {@code null} if empty (".").
      */
     private static Modifier parseModifierInfo(String modifier) {
         String[] modArray = modifier.split(":");
@@ -107,8 +121,9 @@ public class LevelLoader {
     }
 
     /** 
-     * @param moverJson
-     * @param outMap
+     * Parses information about available mover tools for the player's inventory.
+     * @param moverJson The JSON object defining the mover type and quantity.
+     * @param outMap The map to store the parsed mover counts.
      */
     private static void parseMoverInfo(JsonObject moverJson, HashMap<String, Integer> outMap) {
         String moverClassName = moverJson.getString("name").toUpperCase();
@@ -129,9 +144,10 @@ public class LevelLoader {
     }
 
     /** 
-     * @param level
-     * @return GameLevel
-     * @throws IOException
+     * Loads a level by its identifier (e.g., "1", "sandbox").
+     * @param level The name of the level folder to load.
+     * @return A fully initialized {@link GameLevel} object.
+     * @throws IOException If the configuration or layout files cannot be read.
      */
     public static GameLevel loadLevel(String level) throws IOException {
 
@@ -168,8 +184,9 @@ public class LevelLoader {
     }
 
     /** 
-     * @param json
-     * @return LevelConfig
+     * Parses the general metadata and card/inventory requirements from a level config JSON.
+     * @param json The root JSON object of the config.json file.
+     * @return A {@code LevelConfig} record containing the parsed metadata.
      */
     private static LevelConfig parseConfig(JsonObject json) {
 
@@ -201,10 +218,11 @@ public class LevelLoader {
     }
 
     /** 
-     * @param reader
-     * @param width
-     * @param height
-     * @return LayoutData
+     * Parses the grid layout and pre-placed modifiers from a TSV file.
+     * @param reader The reader for the level.tsv file.
+     * @param width The expected grid width.
+     * @param height The expected grid height.
+     * @return A {@code LayoutData} record containing the grid and modifier set.
      */
     private static LayoutData parseLayout(
             BufferedReader reader,
@@ -242,6 +260,7 @@ public class LevelLoader {
         return new LayoutData(grid, modifiers);
     }
 
+    /** Inner record to hold raw configuration data before level assembly. */
     private record LevelConfig(
             String name,
             int width,
@@ -251,6 +270,7 @@ public class LevelLoader {
             HashMap<String, Integer> availableMovers) {
     }
 
+    /** Inner record to hold grid and modifier data during layout parsing. */
     private record LayoutData(
             GameTile[][] grid,
             HashSet<Modifier> modifiers) {

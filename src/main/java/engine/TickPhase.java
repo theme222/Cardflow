@@ -26,7 +26,7 @@ public enum TickPhase {
      * <p>
      * This creates a continuous loop: 
      * {@code MOVEMENT} &rarr; {@code MODIFY} &rarr; {@code MOVEMENT}...
-     * * @return The succeeding {@code TickPhase}.
+     * @return The succeeding {@code TickPhase}.
      */
     public TickPhase next() {
         return switch (this) {
