@@ -44,15 +44,15 @@ public class CardMovementAnimation {
     public void animate(Card card, GridPos from, GridPos to) {
         floatingLayer = FloatingLayerRegistry.INSTANCE.getPane(layer);
 
-        // 1️⃣ Create temporary node
+        // Create temporary node
         Pane animatedNode = new Pane();
         animatedNode.setPrefSize(TILE_SIZE, TILE_SIZE);
 
-        // 2️⃣ Render card into it
+        // Render card into it
         Renderer<Card> renderer = CardRenderer.INSTANCE;
         renderer.render(card, animatedNode, from, true);
 
-        // 3️⃣ Compute pixel positions
+        // Compute pixel positions
         double startX = from.getX() * TILE_SIZE;
         double startY = from.getY() * TILE_SIZE;
 
@@ -63,10 +63,10 @@ public class CardMovementAnimation {
         animatedNode.setTranslateY(startY);
         
 
-        // 4️⃣ Add to floating layer
+        // Add to floating layer
         floatingLayer.getChildren().add(animatedNode);
 
-        // 5️⃣ Animate
+        // Animate
         TranslateTransition transition =
                 new TranslateTransition(MOVE_DURATION, animatedNode);
 
