@@ -39,9 +39,9 @@ public class LevelLoader {
     private static Material parseMaterial(String materialString) {
         return switch (materialString.toUpperCase()) {
             case "PLASTIC", "P" -> Material.PLASTIC;
-            case "STONE", "S" ->  Material.STONE;
-            case "GLASS", "G" ->  Material.GLASS;
-            case "METAL", "M" ->  Material.METAL;
+            case "STONE", "S" -> Material.STONE;
+            case "GLASS", "G" -> Material.GLASS;
+            case "METAL", "M" -> Material.METAL;
             case "CORRUPTED", "C" -> Material.CORRUPTED;
             case "RUBBER", "R" -> Material.RUBBER;
             default -> throw new IllegalArgumentException("Invalid material");
@@ -52,7 +52,8 @@ public class LevelLoader {
     private static CardCount parseCardInfo(JsonObject cardJson) {
         Suit suit = parseSuit(cardJson.getString("suit"));
         int value = cardJson.getInt("value");
-        Material material = cardJson.containsKey("material") ? parseMaterial(cardJson.getString("material")) : Material.PLASTIC;
+        Material material = cardJson.containsKey("material") ? parseMaterial(cardJson.getString("material"))
+                : Material.PLASTIC;
         int count = cardJson.containsKey("count") ? cardJson.getInt("count") : 1;
 
         return new CardCount(new Card(suit, value, material), count);
@@ -108,99 +109,116 @@ public class LevelLoader {
     }
 
     public static GameLevel loadLevel(String level) throws IOException {
-        // feel free to change this because honestly it's a headache to look at
 
         String basePath = "levels/" + level;
 
-        InputStream configStream = LevelLoader.class
-                .getClassLoader()
-                .getResourceAsStream(basePath + "/config.json");
+        InputStream configStream = LevelLoader.class.getClassLoader().getResourceAsStream(basePath + "/config.json");
 
-        InputStream layoutStream = LevelLoader.class
-                .getClassLoader()
-                .getResourceAsStream(basePath + "/level.tsv");
+        InputStream layoutStream = LevelLoader.class.getClassLoader().getResourceAsStream(basePath + "/level.tsv");
 
-        if (configStream == null || layoutStream == null) {
+        if (configStream == null || layoutStream == null)
             throw new IllegalArgumentException("Failed to load level " + level);
-        }
 
-        try ( // https://www.w3schools.com/java/java_try_catch_resources.asp
-            BufferedReader csvReader = new BufferedReader(
-                    new InputStreamReader(layoutStream, StandardCharsets.UTF_8)
-            );
+        try (
+                BufferedReader layoutReader = new BufferedReader(
+                        new InputStreamReader(layoutStream, StandardCharsets.UTF_8));
 
-            JsonReader jsonReader = Json.createReader(configStream);
-        ) {
+                JsonReader jsonReader = Json.createReader(configStream);) {
 
-            // ---------- JSON parsing ---------- //
+            LevelConfig config = parseConfig(jsonReader.readObject());
 
-            JsonObject jsonObject = jsonReader.readObject();
-
-            String levelName = jsonObject.getString("name");
-            int levelWidth = jsonObject.getInt("width");
-            int levelHeight = jsonObject.getInt("height");
-
-            List<CardCount> inputCards = new ArrayList<>();
-            List<CardCount> outputCards = new ArrayList<>();
-
-            for (JsonValue value : jsonObject.getJsonArray("inputCards"))
-                inputCards.add(parseCardInfo(value.asJsonObject()));
-
-            for (JsonValue value : jsonObject.getJsonArray("outputCards"))
-                outputCards.add(parseCardInfo(value.asJsonObject()));
-
-            HashMap<String, Integer> availableMovers = new HashMap<>(); // Using the classname to store this
-
-            for (JsonValue value : jsonObject.getJsonArray("availableMovers"))
-                parseMoverInfo(value.asJsonObject(), availableMovers);
-
-            // ---------- JSON parsing ---------- //
-
-            // ---------- CSV parsing ---------- //
-
-            List<String> lines = csvReader.lines().toList();
-
-            if (lines.size() != levelHeight)
-                throw new IllegalStateException("CSV row count does not match grid height");
-
-            GameTile[][] grid = new GameTile[levelHeight][levelWidth];
-            HashSet<Modifier> modifiers = new HashSet<>();
-
-            for (int y = 0; y < levelHeight; y++) {
-                String[] cells = lines.get(y).split("\t");
-
-                if (cells.length != levelWidth) {
-                    throw new IllegalStateException(
-                            "CSV column count mismatch at row " + y);
-                }
-
-                for (int x = 0; x < levelWidth; x++) {
-                    String token = cells[x].trim();
-                    Modifier mod = parseModifierInfo(token);
-                    grid[y][x] = new GameTile(mod, x, y);
-                    if (mod != null) {
-                        mod.setGridPos(new GridPos(x, y));
-                        modifiers.add(mod);
-                    }
-                }
-            }
-
-            // ---------- CSV parsing ---------- //
+            LayoutData layout = parseLayout(layoutReader, config.width, config.height);
 
             return new GameLevel(
                     level,
-                    levelName,
-                    levelWidth,
-                    levelHeight,
-                    inputCards,
-                    outputCards,
-                    availableMovers,
-                    grid,
-                    modifiers
-            );
+                    config.name,
+                    config.width,
+                    config.height,
+                    config.inputCards,
+                    config.outputCards,
+                    config.availableMovers,
+                    layout.grid,
+                    layout.modifiers);
+        }
+    }
 
+    private static LevelConfig parseConfig(JsonObject json) {
+
+        String levelName = json.getString("name");
+        int levelWidth = json.getInt("width");
+        int levelHeight = json.getInt("height");
+
+        List<CardCount> inputCards = new ArrayList<>();
+        List<CardCount> outputCards = new ArrayList<>();
+
+        for (JsonValue value : json.getJsonArray("inputCards"))
+            inputCards.add(parseCardInfo(value.asJsonObject()));
+
+        for (JsonValue value : json.getJsonArray("outputCards"))
+            outputCards.add(parseCardInfo(value.asJsonObject()));
+
+        HashMap<String, Integer> availableMovers = new HashMap<>();
+
+        for (JsonValue value : json.getJsonArray("availableMovers"))
+            parseMoverInfo(value.asJsonObject(), availableMovers);
+
+        return new LevelConfig(
+                levelName,
+                levelWidth,
+                levelHeight,
+                inputCards,
+                outputCards,
+                availableMovers);
+    }
+
+    private static LayoutData parseLayout(
+            BufferedReader reader,
+            int width,
+            int height) {
+
+        List<String> lines = reader.lines().toList();
+
+        if (lines.size() != height)
+            throw new IllegalStateException("CSV row count mismatch");
+
+        GameTile[][] grid = new GameTile[height][width];
+        HashSet<Modifier> modifiers = new HashSet<>();
+
+        for (int y = 0; y < height; y++) {
+
+            String[] cells = lines.get(y).split("\t");
+
+            if (cells.length != width)
+                throw new IllegalStateException("CSV column mismatch at row " + y);
+
+            for (int x = 0; x < width; x++) {
+
+                Modifier mod = parseModifierInfo(cells[x].trim());
+
+                grid[y][x] = new GameTile(mod, x, y);
+
+                if (mod != null) {
+                    mod.setGridPos(new GridPos(x, y));
+                    modifiers.add(mod);
+                }
+            }
         }
 
+        return new LayoutData(grid, modifiers);
+    }
+
+    private record LevelConfig(
+            String name,
+            int width,
+            int height,
+            List<CardCount> inputCards,
+            List<CardCount> outputCards,
+            HashMap<String, Integer> availableMovers) {
+    }
+
+    private record LayoutData(
+            GameTile[][] grid,
+            HashSet<Modifier> modifiers) {
     }
 
 }
