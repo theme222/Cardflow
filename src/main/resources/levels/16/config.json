@@ -1,0 +1,28 @@
+{
+  "name": "Bogosort",
+  "width": 7,
+  "height": 9,
+
+  "inputCards": [
+    { "suit": "SPADE", "value": 11, "material": "PLASTIC" }
+  ],
+
+  "outputCards": [
+    { "suit": "SPADE", "value": 11 },
+    { "suit": "HEART", "value": 11 },
+    { "suit": "DIAMOND", "value": 11 },
+    { "suit": "CLUB", "value": 11 },
+    { "suit": "SPADE", "value": 12 },
+    { "suit": "HEART", "value": 12 },
+    { "suit": "DIAMOND", "value": 12 },
+    { "suit": "CLUB", "value": 12 }
+  ],
+
+  "availableMovers": [
+    { "name": "FLIPFLOP", "count": -1 },
+    { "name": "CONVEYOR", "count": -1 },
+    { "name": "DELAY", "count": -1 }
+  ]
+
+}
+

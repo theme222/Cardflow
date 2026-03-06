@@ -1,0 +1,9 @@
+ADD:1	.	.	.	.	.	EXIT
+.	.	.	SETSUT:d	.	.	.
+.	.	.	.	.	.	.
+.	.	.	.	.	.	.
+.	.	.	SETSUT:h	.	.	.
+.	.	.	.	.	.	.
+.	.	.	.	.	.	.
+.	.	.	SETSUT:c	.	.	.
+ENTER	.	.	.	.	.	DUP

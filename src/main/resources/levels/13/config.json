@@ -1,0 +1,17 @@
+{
+  "name": "Trace Back Your Steps",
+  "width": 4,
+  "height": 9,
+  "inputCards": [
+    { "suit": "DIAMOND", "value": 10, "material": "METAL" }
+  ],
+  "outputCards": [
+    { "suit": "SPADE", "value": 9 }
+  ],
+  "availableMovers": [
+    { "name": "FLIPFLOP", "count": -1 },
+    { "name": "REDBLACKFILTER", "count": -1 },
+    { "name": "PARITYFILTER", "count": -1 },
+    { "name": "CONVEYOR", "count": -1 }
+  ]
+}
