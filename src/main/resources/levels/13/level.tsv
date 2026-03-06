@@ -1,0 +1,5 @@
+ENTER	.	.	.	SETMAT:s
+.	DUP	.	.	.
+.	SETMAT:g	MERGE	SETMAT:s	.
+.	ABS	.	.	.
+SETMAT:s 	. 	. 	. 	EXIT
