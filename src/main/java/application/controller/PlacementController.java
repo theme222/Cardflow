@@ -3,25 +3,21 @@ package application.controller;
 import application.controller.PlacementPathBuilder.PlacementNode;
 import application.path.PlacementPathfinder;
 import application.view.GameView;
+import audio.AudioManager;
+import component.GameTile;
 import component.mover.Mover;
-import event.EventBus;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import logic.GameLevel;
 import logic.PlayerInventory;
 import logic.event.card.TileSelectChangeEvent;
-import ui.levelinfo.LevelInfoPane;
+import ui.game.GameGrid;
 import ui.overlay.SelectedTileOverlayRenderer;
 import util.Direction;
 import util.GridPos;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.function.BiFunction;
 
 public class PlacementController {
@@ -36,6 +32,12 @@ public class PlacementController {
     private GridPos currentMousePos;
 
     private List<PlacementNode> placementList = new ArrayList<>();
+
+    public void rotateCurrentRotation() {
+        rotation = rotation.next();
+        updatePlacementList();
+        GameView.getInstance().getLevelInfoPane().updateInventoryUI();
+    }
 
     public void handleTileSelectChange(TileSelectChangeEvent event) {
         this.selectedTileName = event.getMovements();
@@ -57,17 +59,18 @@ public class PlacementController {
     }
 
     public void handleMousePressed(MouseEvent event, GridPos gridPos) {
-        if (event.getButton() != MouseButton.PRIMARY)
-            return;
-
-        dragStartPos = gridPos;
-        currentMousePos = gridPos;
-        updatePlacementList();
-    }
-
-    public void handleRightClick() {
-        rotation = rotation.next();
-        updatePlacementList();
+        if (event.getButton() == MouseButton.SECONDARY) {
+            Mover mover = GameLevel.getInstance().getTile(gridPos).getMover();
+            if (mover != null) mover.rotate();
+            else rotateCurrentRotation();
+            GameView.getInstance().updateTileAndAdjacent(gridPos);
+            AudioManager.playSoundEffect("mover-rotate");
+        }
+        else if (event.getButton() != MouseButton.PRIMARY) {
+            dragStartPos = gridPos;
+            currentMousePos = gridPos;
+            updatePlacementList();
+        }
     }
 
     public void handleMouseDragged(MouseEvent event, GridPos gridPos) {
@@ -87,9 +90,11 @@ public class PlacementController {
             PlayerInventory.getInstance().setCurrentRotation(node.getDir());
 
             if (node.getDel()) {
-                PlayerInventory.getInstance().removeFromGrid(node.getPos());
+                if (PlayerInventory.getInstance().removeFromGrid(node.getPos())) AudioManager.playSoundEffect("mover-pickup");
+                else AudioManager.playSoundEffect("game-error");
             } else {
-                PlayerInventory.getInstance().placeToGrid(node.getPos());
+                if (PlayerInventory.getInstance().placeToGrid(node.getPos())) AudioManager.playSoundEffect("mover-place");
+                else AudioManager.playSoundEffect("game-error");
             }
 
         }
@@ -106,5 +111,8 @@ public class PlacementController {
                 rotation);
 
         SelectedTileOverlayRenderer.INSTANCE.updatePlacementList(placementList);
+    }
+    public Direction getRotation() {
+        return rotation;
     }
 }

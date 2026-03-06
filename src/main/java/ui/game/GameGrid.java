@@ -67,7 +67,7 @@ public class GameGrid extends GridPane {
                 }
             }
         }
-    }
+    } 
 
     private void registerMouseHandlers(RenderLayer layer) {
 
@@ -75,7 +75,7 @@ public class GameGrid extends GridPane {
             return;
 
         setMouseTransparent(false);
-        setPickOnBounds(true);
+        setPickOnBounds(true); 
 
         addEventHandler(MouseEvent.MOUSE_PRESSED, e -> application.controller.PlacementController.INSTANCE
                 .handleMousePressed(e, getGridPosFromMouse(e)));

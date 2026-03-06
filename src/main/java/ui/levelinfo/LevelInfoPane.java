@@ -1,5 +1,6 @@
 package ui.levelinfo;
 
+import application.controller.PlacementController;
 import application.view.GameView;
 import audio.AudioManager;
 import engine.event.PausedEvent;
@@ -184,9 +185,9 @@ public class LevelInfoPane extends VBox {
             updateInventoryUI();
         });
 
-        tooltipLayer.bind(button,
-                Tooltip.getContainerFor(PlayerInventory.getMoverObjectByName(name, PlayerInventory.getInstance().getCurrentRotation()))
-        );
+            tooltipLayer.bind(button,
+                Tooltip.getContainerFor(PlayerInventory.getMoverObjectByName(name, Direction.UP))
+            );
 
         Text countText = new Text();
         countText.getStyleClass().add("text-body");
@@ -203,7 +204,9 @@ public class LevelInfoPane extends VBox {
     }
 
     private void updateRotation() {
-        rotationLabel.setText("Rotation: " + inventory.getCurrentRotation());
+        rotationLabel.setText(
+                "Rotation: " + PlacementController.INSTANCE.getRotation()
+        );
     }
 
     private void updateMovers() {
