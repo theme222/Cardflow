@@ -17,11 +17,20 @@ public class ParityFilterRenderer extends Renderer<ParityFilter> {
 
     private ParityFilterRenderer() {}
 
+    /** 
+     * @param parityFilter
+     * @param node
+     * @param pos
+     * @param animated
+     */
     public void render(ParityFilter parityFilter, Pane node, GridPos pos, boolean animated) {
         RenderState state = ParityFilterRenderResolver.resolve(parityFilter, pos, 1);
         draw(node, state);
     }
 
+    /** 
+     * @return RenderLayer
+     */
     @Override
     public RenderLayer layer() {
         return RenderLayer.MOVER;

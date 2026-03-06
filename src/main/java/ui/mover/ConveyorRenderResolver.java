@@ -28,6 +28,12 @@ public final class ConveyorRenderResolver extends MoverRenderResolver {
 
     private ConveyorRenderResolver() {}
 
+    /** 
+     * @param conveyor
+     * @param pos
+     * @param alpha
+     * @return RenderState
+     */
     public static RenderState resolve(
             Conveyor conveyor,
             GridPos pos,

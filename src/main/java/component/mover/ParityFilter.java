@@ -15,6 +15,9 @@ public class ParityFilter extends Mover {
         super(rotation);
     }
 
+    /** 
+     * @return Direction
+     */
     @Override
     public Direction getDirectionStateless() {
         Card toMove = GameLevel.getInstance().getTile(getGridPos()).getCard();
@@ -24,16 +27,25 @@ public class ParityFilter extends Mover {
         else return getRotation().prev();
     }
 
+    /** 
+     * @return Direction
+     */
     @Override
     public Direction getDirection() {
         return getDirectionStateless();
     }
 
+    /** 
+     * @return Direction[]
+     */
     @Override
     public Direction[] getValidOutputDirections() {
         return new Direction[]{getRotation(), getRotation().prev()};
     }
 
+    /** 
+     * @return Tooltip
+     */
     @Override
     public Tooltip getTooltip() {
         return new Tooltip(

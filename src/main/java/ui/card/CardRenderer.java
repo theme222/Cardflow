@@ -39,11 +39,25 @@ public class CardRenderer extends Renderer<Card> {
         
     }
 
+    /** 
+     * @param card
+     * @param node
+     * @param pos
+     * @param animating
+     */
     @Override
     public void render(Card card, Pane node, GridPos pos, boolean animating) {
         render(card, node, pos, animating, true, true);
     }
 
+    /** 
+     * @param card
+     * @param node
+     * @param pos
+     * @param animating
+     * @param centerToTile
+     * @param showShadow
+     */
     public void render(Card card, Pane node, GridPos pos, boolean animating, boolean centerToTile, boolean showShadow) {
         // Center to Tile = false will give you the pane at the proper size.
         if(animatingCards.contains(card) && !animating) return; // skip rendering if animating to avoid conflicts
@@ -82,12 +96,20 @@ public class CardRenderer extends Renderer<Card> {
         node.getChildren().add(canvas);
     }
 
+    /** 
+     * @param card
+     * @param from
+     * @param to
+     */
     public void onAnimationComplete(Card card, GridPos from, GridPos to) {
         animatingCards.remove(card);
         GameView.getInstance().updateTileAndAdjacent(from);
         GameView.getInstance().updateTileAndAdjacent(to);
     }
 
+    /** 
+     * @param event
+     */
     public void onMovementEvent(AfterMovementEvent event) {
         for (CardMovement movement : event.getMovements()) {
             if (movement.card() != null) {
@@ -97,6 +119,9 @@ public class CardRenderer extends Renderer<Card> {
         }
     }
 
+    /** 
+     * @return RenderLayer
+     */
     @Override
     public RenderLayer layer() {
         return RenderLayer.CARD;

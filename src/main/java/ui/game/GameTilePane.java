@@ -89,6 +89,10 @@ public class GameTilePane extends Pane {
         getChildren().clear();
     }
 
+    /** 
+     * @param layer
+     * @param obj
+     */
     private void render(RenderLayer layer, Object obj) {
         Renderer<Object> renderer = RendererRegistry.INSTANCE.getRenderer(obj);
 
@@ -98,10 +102,16 @@ public class GameTilePane extends Pane {
         renderer.render(obj, this, pos);
     }
 
+    /** 
+     * @return GameTile
+     */
     public GameTile getGameTileInfo() {
         return tile;
     }
 
+    /** 
+     * @param gameTileInfo
+     */
     public void setGameTileInfo(GameTile gameTileInfo) {
         this.tile = gameTileInfo;
     }

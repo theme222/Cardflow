@@ -20,11 +20,20 @@ public class PathwayRenderer extends Renderer<Pathway> {
 
     private PathwayRenderer() {}
 
+    /** 
+     * @param pathway
+     * @param node
+     * @param pos
+     * @param animated
+     */
     public void render(Pathway pathway, Pane node, GridPos pos, boolean animated) {
         RenderState state = PathwayRenderResolver.resolve(pathway, pos, Config.MODIFIER_ALPHA);
         draw(node, state);
     }
 
+    /** 
+     * @return RenderLayer
+     */
     @Override
     public RenderLayer layer() {
         return RenderLayer.MODIFIER;

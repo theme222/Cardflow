@@ -22,6 +22,11 @@ public class CardMovementAnimation {
 
     public CardMovementAnimation() {}
 
+    /** 
+     * @param card
+     * @param from
+     * @param to
+     */
     public void animate(Card card, GridPos from, GridPos to) {
         floatingLayer = FloatingLayerRegistry.INSTANCE.getPane(layer);
 

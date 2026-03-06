@@ -8,12 +8,20 @@ import java.util.Map;
 public class EventBus {
     private static final Map<Class<? extends Event>, List<EventListener<? extends Event>>> listeners = new HashMap<>();
 
+    /** 
+     * @param clazz
+     * @param listener
+     * @return Runnable
+     */
     public static <T extends Event> Runnable register(Class<T> clazz, EventListener<T> listener) {
         // Make sure to unregister too if you put this in a constructor that can get called multiple times
         listeners.computeIfAbsent(clazz, k -> new ArrayList<>()).add(listener);
         return () -> unregister(clazz, listener);
     }
 
+    /** 
+     * @param event
+     */
     @SuppressWarnings("unchecked")
     public static <T extends Event> void emit(T event) {
         List<EventListener<? extends Event>> list = listeners.get(event.getClass());
@@ -23,6 +31,10 @@ public class EventBus {
         }
     }
 
+    /** 
+     * @param clazz
+     * @param listener
+     */
     private static <T extends Event> void unregister(Class<T> clazz, EventListener<T> listener) {
         // you better keep track of that unregistration that got returned
         // using method reference or lambda functions don't give you the same listener. (thats why I made it return the unregistrator)

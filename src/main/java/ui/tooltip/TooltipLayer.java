@@ -54,12 +54,20 @@ public class TooltipLayer extends Pane {
         unregisterMovementEnd.run();
     }
 
+    /** 
+     * @param node
+     * @param tooltipTarget
+     */
     public void bind(Node node, Tippable tooltipTarget) {
         node.addEventHandler(MouseEvent.MOUSE_ENTERED,(e) -> { showTooltip(e, tooltipTarget); });
         node.addEventHandler(MouseEvent.MOUSE_MOVED,this::setTooltipPosition);
         node.addEventHandler(MouseEvent.MOUSE_EXITED,this::hideTooltip);
     }
 
+    /** 
+     * @param e
+     * @param tooltipTarget
+     */
     // Maybe use bind instead.
     private void showTooltip(MouseEvent e, Tippable tooltipTarget) {
         FadeTransition fade = new FadeTransition(Duration.millis(200), tooltipHContainer);
@@ -73,6 +81,9 @@ public class TooltipLayer extends Pane {
         updateTooltipInfo(new Event() {});
     }
 
+    /** 
+     * @param e
+     */
     private void setTooltipPosition(MouseEvent e) {
         double screenY = getHeight();
         double mouseY = e.getSceneY();
@@ -91,6 +102,9 @@ public class TooltipLayer extends Pane {
 
     }
 
+    /** 
+     * @param e
+     */
     public void updateTooltipInfo(Event e) {
 
         List<List<Tooltip>> tooltipHInfo = new ArrayList<>();
@@ -128,6 +142,9 @@ public class TooltipLayer extends Pane {
         }
     }
 
+    /** 
+     * @param e
+     */
     private void hideTooltip(MouseEvent e) {
         FadeTransition fade = new FadeTransition(Duration.millis(200), tooltipHContainer);
         fade.setFromValue(1);

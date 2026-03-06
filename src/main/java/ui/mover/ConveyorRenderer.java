@@ -16,11 +16,20 @@ public class ConveyorRenderer extends Renderer<Conveyor> {
     private ConveyorRenderer() {}
 
 
+    /** 
+     * @param conveyor
+     * @param node
+     * @param pos
+     * @param animating
+     */
     public void render(Conveyor conveyor, Pane node, GridPos pos, boolean animating) {
         RenderState state = ConveyorRenderResolver.resolve(conveyor, pos, 1);
         draw(node, state);
     }
 
+    /** 
+     * @return RenderLayer
+     */
     @Override
     public RenderLayer layer() {
         return RenderLayer.MOVER;

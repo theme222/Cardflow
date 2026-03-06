@@ -29,6 +29,12 @@ public class CombinatorRenderResolver extends RenderResolver {
 
     private CombinatorRenderResolver() {}
 
+    /** 
+     * @param combinator
+     * @param pos
+     * @param alpha
+     * @return RenderState
+     */
     public static RenderState resolve(
             Combinator combinator,
             GridPos pos,

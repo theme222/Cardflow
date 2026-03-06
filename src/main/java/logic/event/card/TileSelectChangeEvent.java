@@ -19,14 +19,23 @@ public class TileSelectChangeEvent extends LogicEvent{
         this.factory = factory;
     }
     
+    /** 
+     * @return String
+     */
     public String getMovements() {
         return tile;
     }
 
+    /** 
+     * @return Direction
+     */
     public Direction getRotation(){
         return rotation;
     }
 
+    /** 
+     * @return BiFunction<String, Direction, Mover>
+     */
     public BiFunction<String,Direction,Mover> getFactory() {
         return factory;
     }

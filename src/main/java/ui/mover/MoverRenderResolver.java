@@ -14,6 +14,10 @@ import java.util.Map;
 
 public abstract class MoverRenderResolver extends RenderResolver {
 
+    /** 
+     * @param mover
+     * @return double
+     */
     public static double rotationFor(Mover mover) {
         return switch (mover.getRotation()) {
             case UP -> 0;

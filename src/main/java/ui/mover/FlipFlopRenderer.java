@@ -18,6 +18,12 @@ public class FlipFlopRenderer extends Renderer<FlipFlop> {
 
     private FlipFlopRenderer() {}
 
+    /** 
+     * @param flipFlop
+     * @param node
+     * @param pos
+     * @param animating
+     */
     public void render(FlipFlop flipFlop, Pane node, GridPos pos, boolean animating) {
         RenderState floorState = FlipFlopRenderResolver.resolveFloor(flipFlop, flipFlop.getGridPos(), 1);
         RenderState overlayState = FlipFlopRenderResolver.resolveOverlay(flipFlop, flipFlop.getGridPos(), 1);
@@ -31,6 +37,9 @@ public class FlipFlopRenderer extends Renderer<FlipFlop> {
         node.getChildren().setAll(canvas);
     }
 
+    /** 
+     * @return RenderLayer
+     */
     @Override
     public RenderLayer layer() {
         return RenderLayer.MOVER;

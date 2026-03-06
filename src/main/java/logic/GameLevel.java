@@ -77,16 +77,29 @@ public class GameLevel {
         this.successfullyModified = new HashSet<>();
     }
 
+    /** 
+     * @param p
+     * @return GameTile
+     */
     public GameTile getTile(GridPos p) { // I know I'm gonna accidentally switch y and x one of these days
         if (!isInBounds(p))
             throw new IllegalArgumentException("Invalid position");
         return grid[p.getY()][p.getX()];
     }
 
+    /** 
+     * @param p
+     * @return boolean
+     */
     public boolean isInBounds(GridPos p){
         return p.inRange(0, WIDTH-1, 0, HEIGHT-1);
     }
 
+    /** 
+     * @param gridIndexable
+     * @param newPoint
+     * @return GameTile[]
+     */
     public GameTile[] getAdjacentTiles(GridPos p) { // hehe more helpers for meeeeeeeee
         GameTile[] adjacent = new GameTile[4];
         int x = p.getX();
@@ -99,12 +112,23 @@ public class GameLevel {
     }
 
 
+    /** 
+     * @param gridIndexable
+     * @param newPoint
+     * @return boolean
+     */
     // Returns success / failure
     public boolean setPositionOnGrid(GridIndexable gridIndexable, GridPos newPoint) {
         // DOES NOT REMOVE OLD POSITION AND DOES NOT ADD TO SET
         return setPositionOnGrid(gridIndexable, newPoint, false);
     }
 
+    /** 
+     * @param gridIndexable
+     * @param newPoint
+     * @param force
+     * @return boolean
+     */
     public boolean setPositionOnGrid(GridIndexable gridIndexable, GridPos newPoint, boolean force) {
         if (!force && getTile(newPoint).getSameClassOnTile(gridIndexable) != null) return false;
         getTile(newPoint).setSameClassOnTile(gridIndexable);
@@ -112,6 +136,11 @@ public class GameLevel {
         return true;
     }
 
+    /** 
+     * @param mover
+     * @param newPoint
+     * @return boolean
+     */
     public boolean addMover(Mover mover, GridPos newPoint) {
         // Do nothing if position is occupied or cardSet contains the card already
         if (moverSet.contains(mover)) return false;
@@ -123,6 +152,10 @@ public class GameLevel {
         return true;
     }
 
+    /** 
+     * @param mover
+     * @return boolean
+     */
     public boolean removeMover(Mover mover) {
         // Do nothing if it can't find the old mover
         if (!moverSet.contains(mover)) return false;
@@ -133,6 +166,11 @@ public class GameLevel {
         return true;
     }
 
+    /** 
+     * @param card
+     * @param newPoint
+     * @return boolean
+     */
     public boolean addCard(Card card, GridPos newPoint) {
         // Do nothing if position is occupied or cardSet contains the card already
         if (cardSet.contains(card)) return false;
@@ -144,6 +182,10 @@ public class GameLevel {
         return true;
     }
 
+    /** 
+     * @param card
+     * @return boolean
+     */
     public boolean removeCard(Card card) {
         // Do nothing if it can't find the old card
         if (!cardSet.contains(card)) return false;
@@ -193,6 +235,9 @@ public class GameLevel {
         exitedCardsList.clear();
     }
 
+    /** 
+     * @return GameLevel
+     */
     // GETTERS & SETTERS //
 
     public static GameLevel getInstance() {
@@ -203,6 +248,9 @@ public class GameLevel {
     public GameTile[][] getGrid() { return grid; }
     public void setGrid(GameTile[][] grid) { this.grid = grid; }
 
+    /** 
+     * @return String
+     */
     // GETTERS & SETTERS //
 
     @Override

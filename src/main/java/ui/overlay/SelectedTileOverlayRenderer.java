@@ -35,6 +35,10 @@ public class SelectedTileOverlayRenderer {
     private SelectedTileOverlayRenderer() {
     }
 
+    /** 
+     * @param moverFactory
+     * @param moverName
+     */
     /*
      * ===============================
      * Methods for PlacementController
@@ -46,6 +50,9 @@ public class SelectedTileOverlayRenderer {
         this.moverName = moverName;
     }
 
+    /** 
+     * @param newList
+     */
     public void updatePlacementList(List<PlacementNode> newList) {
 
         // Save old reference
@@ -102,6 +109,10 @@ public class SelectedTileOverlayRenderer {
         }
     }
 
+    /** 
+     * @param overlayPane
+     * @param pos
+     */
     /*
      * ===============================
      * Rendering

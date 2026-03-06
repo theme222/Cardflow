@@ -24,50 +24,60 @@ import ui.shader.GlowOverlay;
 
 import java.util.Stack;
 
-
-public class ViewManager { // Switching views instead of switching scenes to allow for custom transitions.
+/**
+ * The {@code ViewManager} coordinates all navigation and visual transitions within the application.
+ * <p>
+ * Instead of traditional JavaFX scene switching, this manager swaps the contents of a 
+ * primary {@link StackPane}. This allows for complex transitions (Fade, Zoom) and 
+ * the maintenance of a global "Shader" layer (e.g., {@link GlowOverlay}) that persists 
+ * across different views.
+ */
+public class ViewManager {
     private static final String[] CSS_FILES= {"base.css", "text.css", "border.css", "button.css", "cards.css", "tiles.css", "ui.css"};
     private static ViewManager instance;
+    
     public final Stage stage;
     public final Scene scene;
     public final StackPane sceneRoot;
     public final StackPane viewRoot;
-    public final StackPane shaderRoot; // on top of view root
-    private final Stack<View> viewStack; // Used to automatically track where we have come from and also prevent regen of scenes
+    public final StackPane shaderRoot; 
+    
+    /** A history of visited views, allowing for "Back" navigation without re-instantiation. */
+    private final Stack<View> viewStack; 
     private final ViewTransition viewTransition;
     private boolean isTransitioning;
 
+    /**
+     * Inner class responsible for executing JavaFX animations during view changes.
+     */
     public class ViewTransition {
 
+        /**
+         * Orchestrates the movement from one view to another based on the requested transition type.
+         * @param oldView The view currently being displayed.
+         * @param newView The view to be displayed.
+         * @param transitionType The animation style to apply.
+         */
         public void transitionView(View oldView, View newView, TransitionType transitionType) {
             normalizeView(oldView);
             normalizeView(newView);
             switch (transitionType) {
-                case NONE:
-                    transitionNoneView(oldView, newView);
-                    break;
-                case FADE:
-                    transitionFadeView(oldView, newView);
-                    break;
-                case ZOOM:
-                    transitionZoomView(oldView, newView);
-                    break;
-                default:
-                    throw new IllegalArgumentException("Invalid transition type");
+                case NONE -> transitionNoneView(oldView, newView);
+                case FADE -> transitionFadeView(oldView, newView);
+                case ZOOM -> transitionZoomView(oldView, newView);
+                default -> throw new IllegalArgumentException("Invalid transition type");
             }
-
         }
 
-        private void normalizeView(View view) { // remove any and all effects of transitions
+        /** Resets a view's visual properties to defaults (opacity 1, scale 1). */
+        private void normalizeView(View view) {
             StackPane root = view.getRoot();
             root.setScaleX(1.0);
             root.setScaleY(1.0);
             root.setOpacity(1);
         }
 
-        private void transitionNoneView(View prevView, View newView) { // not my best naming skills :/
-            // Switches view without transitions or anything
-            // No need to set isTransitioning
+        private void transitionNoneView(View prevView, View newView) {
             viewRoot.getChildren().remove(prevView.getRoot());
             viewRoot.getChildren().add(newView.getRoot());
             resizeToCurrentView();
@@ -89,16 +99,12 @@ public class ViewManager { // Switching views instead of switching scenes to all
                 resizeToCurrentView();
                 isTransitioning = false;
             });
-
             fadeOut.play();
-            
         }
 
         private void transitionZoomView(View prevView, View newView) {
             isTransitioning = true;
             ScaleTransition scaleUp = new ScaleTransition(Duration.millis(300), prevView.getRoot());
-            scaleUp.setFromX(1);
-            scaleUp.setFromY(1);
             scaleUp.setToX(40);
             scaleUp.setToY(40);
 
@@ -106,17 +112,16 @@ public class ViewManager { // Switching views instead of switching scenes to all
             fadeOut.setToValue(0);
 
             ParallelTransition pt = new ParallelTransition(scaleUp, fadeOut);
-
             pt.play();
             pt.setOnFinished(event -> {
                 viewRoot.getChildren().remove(prevView.getRoot());
                 viewRoot.getChildren().add(newView.getRoot());
 
                 ScaleTransition scaleDown = new ScaleTransition(Duration.millis(300), newView.getRoot());
-                scaleUp.setFromX(40);
-                scaleUp.setFromY(40);
-                scaleUp.setToX(1);
-                scaleUp.setToY(1);
+                scaleDown.setFromX(40);
+                scaleDown.setFromY(40);
+                scaleDown.setToX(1);
+                scaleDown.setToY(1);
 
                 FadeTransition fadeIn = new FadeTransition(Duration.millis(300), newView.getRoot());
                 fadeIn.setFromValue(0);
@@ -129,10 +134,16 @@ public class ViewManager { // Switching views instead of switching scenes to all
         }
     }
 
+    /** @return The singleton instance of the ViewManager. */
     public static ViewManager getInstance() {
         return instance;
     }
 
+    /**
+     * Bootstraps the ViewManager with the primary stage.
+     * @param stage The JavaFX Stage.
+     * @param initialView The first view to display (usually MainMenu).
+     */
     public static void init(Stage stage, View initialView) {
         instance = new ViewManager(stage, initialView);
     }
@@ -143,25 +154,22 @@ public class ViewManager { // Switching views instead of switching scenes to all
         stage.setMaximized(true);
         stage.setTitle("Cardflow");
 
-
         this.viewRoot = new StackPane();
-
         this.shaderRoot = new StackPane();
         shaderRoot.getChildren().add(new GlowOverlay());
-        shaderRoot.setMouseTransparent(true);
+        shaderRoot.setMouseTransparent(true); // Ensures shaders don't block clicks
 
         this.sceneRoot = new StackPane();
-
         sceneRoot.getChildren().addAll(viewRoot, shaderRoot);
 
         this.scene = new Scene(sceneRoot);
-
         for (String cssFile : CSS_FILES) {
             scene.getStylesheets().add(getClass().getResource("/css/"+cssFile).toExternalForm());
         }
 
         this.viewStack = new Stack<>();
         this.viewTransition = new ViewTransition();
+        
         initialView.startup();
         viewRoot.getChildren().add(initialView.getRoot());
         viewStack.push(initialView);
@@ -171,16 +179,24 @@ public class ViewManager { // Switching views instead of switching scenes to all
         isTransitioning = false;
     }
 
+    /**
+     * Navigates to a new view and pushes it onto the history stack.
+     * @param newView The view to transition to.
+     * @param transitionType The animation style.
+     */
     public void switchView(View newView, TransitionType transitionType) {
-        if (isTransitioning) return; // debounce
+        if (isTransitioning) return;
         getCurrentView().cleanup();
         newView.startup();
         viewTransition.transitionView(getCurrentView(), newView, transitionType);
         viewStack.push(newView);
     }
 
+    /**
+     * Replaces the current view with a new one without growing the stack.
+     * Useful for linear progression (e.g., Level 1 -> Level 2).
+     */
     public void switchViewReplace(View newView, TransitionType transitionType) {
-        // Replace the top most view with this view. (Example: Next level button)
         if (isTransitioning) return;
         getCurrentView().cleanup();
         newView.startup();
@@ -189,9 +205,12 @@ public class ViewManager { // Switching views instead of switching scenes to all
         viewStack.push(newView);
     }
 
+    /**
+     * Pops the current view and returns to the previous one in the stack.
+     * @return {@code true} if navigation was possible.
+     */
     public boolean switchToPreviousView(TransitionType transitionType) {
-        if (isTransitioning) return true;
-        if (viewStack.size() <= 1) return false; // Can't really go back if theres nothing to go back to
+        if (isTransitioning || viewStack.size() <= 1) return false;
 
         View oldView = viewStack.pop();
         View newView = viewStack.peek();
@@ -202,12 +221,12 @@ public class ViewManager { // Switching views instead of switching scenes to all
         return true;
     }
 
-    // Internally it's a stack (but we don't need to let the users know that :p)
+    /** @return The view at the top of the stack. */
     public View getCurrentView() {
-        if (viewStack.isEmpty()) return null;
-        return viewStack.peek();
+        return viewStack.isEmpty() ? null : viewStack.peek();
     }
 
+    /** Checks if the current view is an instance of a specific class. */
     public boolean currentViewIs(Class<? extends View> viewClass) {
         return viewClass.isInstance(getCurrentView());
     }
@@ -215,5 +234,4 @@ public class ViewManager { // Switching views instead of switching scenes to all
     private void resizeToCurrentView() {
         Platform.runLater(stage::sizeToScene);
     }
-
 }

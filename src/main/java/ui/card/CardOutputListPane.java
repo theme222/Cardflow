@@ -53,6 +53,9 @@ public class CardOutputListPane extends VBox {
         unregisterReset.run();
     }
 
+    /** 
+     * @param e
+     */
     public void updateUI(Event e) {
         List<Card> exitedCardList = GameLevel.getInstance().exitedCardsList;
         int index;

@@ -12,11 +12,20 @@ import util.Config;
 
 public abstract class Renderer<T> {
 
+    /** 
+     * @param tile
+     * @param node
+     * @param pos
+     */
     public void render(T tile, Pane node, util.GridPos pos){
         render(tile, node, pos, false);
     }
     public abstract void render(T tile, Pane node, util.GridPos pos, boolean animating);
 
+    /** 
+     * @param node
+     * @param state
+     */
     protected void draw(Pane node, RenderState state) {
         Canvas canvas = new Canvas(state.width(), state.height());
         canvas.setMouseTransparent(true);
@@ -24,6 +33,12 @@ public abstract class Renderer<T> {
         node.getChildren().setAll(canvas);
     }
 
+    /** 
+     * @param node
+     * @param state
+     * @param canvas
+     * @param centerToTile
+     */
     protected void drawWithCanvas(Pane node, RenderState state, Canvas canvas, boolean centerToTile) {
         double w = state.width();
         double h = state.height();
@@ -69,7 +84,13 @@ public abstract class Renderer<T> {
         gc.restore();
     }
 
-    protected void textWithCanvas(Pane node, String text, RenderState renderState, Canvas canvas) { // thx chatgpt <3
+    /** 
+     * @param node
+     * @param text
+     * @param renderState
+     * @param canvas
+     */
+    protected void textWithCanvas(Pane node, String text, RenderState renderState, Canvas canvas) {
         // RenderState is only used for width, height and alpha here. No image is read.
         GraphicsContext gc = canvas.getGraphicsContext2D();
         int fontSize = (int)(96 / Math.pow(2, text.length())); // rough sizing calculations

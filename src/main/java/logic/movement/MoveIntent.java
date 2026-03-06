@@ -34,12 +34,19 @@ class MoveIntent {
         status = direction == Direction.STAY ? IntentStatus.BLOCKED : IntentStatus.UNRESOLVED;
     }
 
+    /** 
+     * @param toString(
+     * @return GridPos
+     */
     public GridPos getResultPos() { // Returns new point
         GridPos t = Mover.getTranslationFromDirection(direction);
         GridPos resultPos = new GridPos(card.getGridPos());
         return resultPos.add(t);
     }
 
+    /** 
+     * @return String
+     */
     @Override
     public String toString() {
         return "MoveIntent{" +
@@ -49,10 +56,18 @@ class MoveIntent {
                 '}';
     }
 
+    /** 
+     * @param resultPos
+     * @return GridPos
+     */
     public GridPos getCurrentPos() { // Returns new point
         return new GridPos(card.getGridPos());
     }
 
+    /** 
+     * @param resultPos
+     * @return ArrayList<GridPos>
+     */
     private static ArrayList<GridPos> getSurroundingPoints(GridPos resultPos) {
         // If somebody has a better way of doing this please fix thx
         ArrayList<GridPos> surroundPos = new ArrayList<>();
@@ -69,6 +84,10 @@ class MoveIntent {
         return surroundPos;
     }
 
+    /** 
+     * @param intentList
+     * @param surroundPos
+     */
     public static void resolveIntent(List<MoveIntent> intentList, HashSet<GridPos> seen) { // linear recursive function
                                                                                            // (we hate recursion)
                                                                                            // just use stack bro

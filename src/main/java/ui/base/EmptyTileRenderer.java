@@ -21,10 +21,19 @@ public class EmptyTileRenderer extends Renderer<GameTile> {
 
     public EmptyTileRenderer() {}
 
+    /** 
+     * @param tile
+     * @param node
+     * @param pos
+     * @param animating
+     */
     public void render(GameTile tile, Pane node, GridPos pos, boolean animating) {
         draw(node, new RenderState(EMPTY_TILE_IMAGE, Config.TILE_SIZE, Config.TILE_SIZE, 0, 0, 0, false, false, 1.0));
     }
 
+    /** 
+     * @return RenderLayer
+     */
     @Override
     public RenderLayer layer() {
         return RenderLayer.BASE;

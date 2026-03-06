@@ -33,6 +33,12 @@ public final class SetterRenderResolver extends RenderResolver {
 
     private SetterRenderResolver() {}
 
+    /** 
+     * @param setter
+     * @param pos
+     * @param alpha
+     * @return RenderState
+     */
     public static RenderState resolve(
             Setter<?> setter,
             GridPos pos,

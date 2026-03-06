@@ -15,11 +15,20 @@ public class DelayRenderer extends Renderer<Delay> {
 
     private DelayRenderer() {}
 
+    /** 
+     * @param delay
+     * @param node
+     * @param pos
+     * @param animated
+     */
     public void render(Delay delay, Pane node, GridPos pos, boolean animated) {
         RenderState state = DelayRenderResolver.resolve(delay, pos, 1);
         draw(node, state);
     }
 
+    /** 
+     * @return RenderLayer
+     */
     @Override
     public RenderLayer layer() {
         return RenderLayer.MOVER;

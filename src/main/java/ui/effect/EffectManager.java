@@ -20,6 +20,10 @@ import java.util.Set;
 
 public class EffectManager {
 
+    /** 
+     * @param c
+     * @param pos
+     */
     public static void createEffect(Color c, GridPos pos) {
         Pane target = FloatingLayerRegistry.INSTANCE.getPane(RenderLayer.EFFECTS);
         if (target == null) return;
@@ -32,6 +36,9 @@ public class EffectManager {
         transition.play();
     }
 
+    /** 
+     * @param modifiers
+     */
     public static void createEffectsWithModifierSet(Set<Modifier> modifiers) {
         for (Modifier modifier : modifiers) {
             Color selectedColor;

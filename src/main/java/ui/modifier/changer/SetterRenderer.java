@@ -18,6 +18,12 @@ public class SetterRenderer extends Renderer<Setter<?>> {
 
     private SetterRenderer() {}
 
+    /** 
+     * @param setter
+     * @param node
+     * @param pos
+     * @param animated
+     */
     public void render(Setter<?> setter, Pane node, GridPos pos, boolean animated) {
         RenderState state = SetterRenderResolver.resolve(setter, pos, Config.MODIFIER_ALPHA);
         draw(node, state);
@@ -26,6 +32,9 @@ public class SetterRenderer extends Renderer<Setter<?>> {
 
     }
 
+    /** 
+     * @return RenderLayer
+     */
     @Override
     public RenderLayer layer() {
         return RenderLayer.MODIFIER;

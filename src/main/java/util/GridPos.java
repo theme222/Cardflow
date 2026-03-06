@@ -25,22 +25,38 @@ public class GridPos {
         this.y = y;
     }
 
+    /** 
+     * @return int
+     */
     public int getX() {
         return x;
     }
 
+    /** 
+     * @param x
+     */
     public void setX(int x) {
         this.x = x;
     }
 
+    /** 
+     * @return int
+     */
     public int getY() {
         return y;
     }
 
+    /** 
+     * @param y
+     */
     public void setY(int y) {
         this.y = y;
     }
 
+    /** 
+     * @param other
+     * @return GridPos
+     */
     public GridPos add(GridPos other) {
         if (other == null)
             other = new GridPos();
@@ -49,6 +65,10 @@ public class GridPos {
                 this.y + other.y);
     }
 
+    /** 
+     * @param other
+     * @return Direction
+     */
     public Direction directionTo(GridPos other) {
         if (other == null)
             return null;
@@ -65,6 +85,11 @@ public class GridPos {
         return null; // Not adjacent
     }
 
+    /** 
+     * @param other
+     * @param dir
+     * @return boolean
+     */
     public boolean isPosInDirection(GridPos other, Direction dir) {
         if (other == null || dir == null)
             return false;
@@ -86,18 +111,38 @@ public class GridPos {
         }
     }
 
+    /** 
+     * @param x
+     * @param y
+     * @return GridPos
+     */
     public GridPos add(int x, int y) {
         return new GridPos(this.x + x, this.y + y);
     }
 
+    /** 
+     * @param direction
+     * @return GridPos
+     */
     public GridPos addDirection(Direction direction) {
         return new GridPos(this.x + direction.dx(), this.y + direction.dy());
     }
 
+    /** 
+     * @param xMin
+     * @param xMax
+     * @param yMin
+     * @param yMax
+     * @return boolean
+     */
     public boolean inRange(int xMin, int xMax, int yMin, int yMax) {
         return x >= xMin && x <= xMax && y >= yMin && y <= yMax;
     }
 
+    /** 
+     * @param o
+     * @return boolean
+     */
     // --- equality & hashing ---
 
     @Override
@@ -110,11 +155,17 @@ public class GridPos {
         return x == gridPos.x && y == gridPos.y;
     }
 
+    /** 
+     * @return int
+     */
     @Override
     public int hashCode() {
         return Objects.hash(x, y);
     }
 
+    /** 
+     * @return String
+     */
     @Override
     public String toString() {
         return "(" + x + ", " + y + ")";

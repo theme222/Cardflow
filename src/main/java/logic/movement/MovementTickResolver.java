@@ -10,6 +10,12 @@ import util.Direction;
 import util.GridPos;
 
 public class MovementTickResolver {
+    /** 
+     * @param gameLevel
+     * @param cardSet
+     * @param changedPoints
+     * @return HashSet<CardMovement>
+     */
     static public HashSet<CardMovement> doMovementTick(GameLevel gameLevel, HashSet<Card> cardSet, HashSet<GridPos> changedPoints) {
         // If you are reading this I am so sorry on what you are about to witness
         // Also theoretically O(n) but honestly I have no idea if it actually is

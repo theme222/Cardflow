@@ -27,6 +27,12 @@ public final class ArithmeticRenderResolver extends RenderResolver {
 
     private ArithmeticRenderResolver() {}
 
+    /** 
+     * @param arithmetic
+     * @param pos
+     * @param alpha
+     * @return RenderState
+     */
     public static RenderState resolve(
             Arithmetic arithmetic,
             GridPos pos,

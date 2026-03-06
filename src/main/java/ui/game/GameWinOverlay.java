@@ -28,12 +28,18 @@ public class GameWinOverlay extends VBox {
         applyBackground();
     }
 
+    /** 
+     * @return Label
+     */
     private Label createTitle() {
         Label label = new Label("You completed the level!");
         label.getStyleClass().addAll("text-title", "text-white");
         return label;
     }
 
+    /** 
+     * @return HBox
+     */
     private HBox createButtonControls() {
 
         Button backButton = createBackButton();
@@ -46,6 +52,9 @@ public class GameWinOverlay extends VBox {
         return box;
     }
 
+    /** 
+     * @return Button
+     */
     private Button createBackButton() {
         Button button = new Button("Back ≡");
 
@@ -59,6 +68,9 @@ public class GameWinOverlay extends VBox {
         return button;
     }
 
+    /** 
+     * @return Button
+     */
     private Button createNextButton() {
 
         Button button = new Button("Next ‼");
@@ -84,6 +96,9 @@ public class GameWinOverlay extends VBox {
         }
     }
 
+    /** 
+     * @return String
+     */
     private String getNextLevelId() {
         try {
             return String.valueOf(Integer.parseInt(GameLevel.getInstance().LEVELID) + 1);

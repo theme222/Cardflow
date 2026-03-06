@@ -12,6 +12,9 @@ public class AfterMovementEvent extends LogicEvent {
         this.movements = movements;
     }
     
+    /** 
+     * @return HashSet<CardMovement>
+     */
     public HashSet<CardMovement> getMovements() {
         return movements;
     }

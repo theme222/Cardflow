@@ -12,10 +12,18 @@ public final class RendererRegistry {
 
     public static final RendererRegistry INSTANCE = new RendererRegistry();
 
+    /** 
+     * @param type
+     * @param renderer
+     */
     public <T> void register(Class<T> type, Renderer<? super T> renderer) {
         renderers.put(type, renderer);
     }
 
+    /** 
+     * @param obj
+     * @return Renderer<T>
+     */
     @SuppressWarnings("unchecked")
     public <T> Renderer<T> getRenderer(T obj) {
         Class<?> objClass = obj.getClass();

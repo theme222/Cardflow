@@ -76,6 +76,9 @@ public class LevelInfoPane extends VBox {
         setAlignment(Pos.CENTER);
     }
 
+    /** 
+     * @param tooltipLayer
+     */
     private void initializeComponents(TooltipLayer tooltipLayer) {
         titleText = createTitleText();
         rotationLabel = createRotationLabel();
@@ -86,22 +89,34 @@ public class LevelInfoPane extends VBox {
         cardOutputListPane = new CardOutputListPane("Output Cards", GameLevel.getInstance().OUTPUT_CARDS, tooltipLayer);
     }
 
+    /** 
+     * @return Text
+     */
     private Text createTitleText() {
         Text text = new Text(GameLevel.getInstance().LEVELNAME);
         text.getStyleClass().add("text-heading");
         return text;
     }
 
+    /** 
+     * @return Label
+     */
     private Label createRotationLabel() {
         Label label = new Label();
         label.getStyleClass().add("text-body");
         return label;
     }
 
+    /** 
+     * @return Label
+     */
     private Label createPhaseLabel() {
         return new Label(GamePhase.PAUSED.getDisplayText());
     }
 
+    /** 
+     * @param tooltipLayer
+     */
     private void buildLayout(TooltipLayer tooltipLayer) {
         HBox statusContainer = createStatusContainer();
         getChildren().addAll(
@@ -114,6 +129,9 @@ public class LevelInfoPane extends VBox {
         );
     }
 
+    /** 
+     * @param tooltipLayer
+     */
     private void initializeContent(TooltipLayer tooltipLayer) {
         buildMoverRows(tooltipLayer);
         buildControlPanel();
@@ -121,6 +139,9 @@ public class LevelInfoPane extends VBox {
         registerEventHandlers();
     }
 
+    /** 
+     * @return HBox
+     */
     private HBox createStatusContainer() {
         HBox statusContainer = new HBox(10);
         statusContainer.setAlignment(Pos.CENTER);
@@ -134,6 +155,9 @@ public class LevelInfoPane extends VBox {
         unregisterAfterPause = EventBus.register(PausedEvent.class, e -> updatePhase(GamePhase.PAUSED));
     }
 
+    /** 
+     * @param phase
+     */
     private void updatePhase(GamePhase phase) {
         phaseLabel.setText(phase.getDisplayText());
     }
@@ -154,6 +178,12 @@ public class LevelInfoPane extends VBox {
         );
     }
 
+    /** 
+     * @param text
+     * @param styleClass
+     * @param action
+     * @return Button
+     */
     private Button createButton(String text, String styleClass, Runnable action) {
         Button button = new Button(text);
         button.getStyleClass().add(styleClass);
@@ -164,6 +194,9 @@ public class LevelInfoPane extends VBox {
         return button;
     }
 
+    /** 
+     * @param tooltipLayer
+     */
     private void buildMoverRows(TooltipLayer tooltipLayer) {
         moversList.getChildren().clear();
         moverRows.clear();
@@ -175,6 +208,11 @@ public class LevelInfoPane extends VBox {
         }
     }
 
+    /** 
+     * @param name
+     * @param tooltipLayer
+     * @return MoverRowUI
+     */
     private MoverRowUI createMoverRow(String name, TooltipLayer tooltipLayer) {
         Button button = new Button(name);
         button.setFocusTraversable(false);

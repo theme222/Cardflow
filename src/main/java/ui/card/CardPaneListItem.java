@@ -11,6 +11,13 @@ public class CardPaneListItem extends StackPane {
     private final Card cardInfo;
     private final Pane renderPane;
 
+    /** 
+     * @param styleClass)getStyleClass().removeAll("border"
+     * @param "border-info"
+     * @param "border-success"
+     * @param "border-warning"
+     * @param cardInfo
+     */
     public void setBorderColorByComparison(Card other) { // specifically used in CardOutputListPane
 
         if (cardInfo.isEquivalent(other)) setBorderColor("border-success");
@@ -18,6 +25,13 @@ public class CardPaneListItem extends StackPane {
 
     }
 
+    /** 
+     * @param styleClass)getStyleClass().removeAll("border"
+     * @param "border-info"
+     * @param "border-success"
+     * @param "border-warning"
+     * @param cardInfo
+     */
     public void setBorderColor(String styleClass) { // success warning error
         getStyleClass().removeAll("border", "border-info", "border-success", "border-warning", "border-error");
         getStyleClass().add(styleClass);

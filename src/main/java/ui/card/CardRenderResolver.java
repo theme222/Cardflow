@@ -53,6 +53,10 @@ public final class CardRenderResolver extends RenderResolver {
 
     private CardRenderResolver() {}
 
+    /** 
+     * @param card
+     * @return RenderState
+     */
     public static RenderState resolveMaterial(Card card) {
 
         Image toRender = MaterialImage.images.getOrDefault(
@@ -63,6 +67,10 @@ public final class CardRenderResolver extends RenderResolver {
         return new RenderState(toRender, CARD_WIDTH, CARD_HEIGHT, 0, 0, 0, false, false, card.getMaterial() == Material.GLASS ? 0.5: 1.0);
     }
 
+    /** 
+     * @param card
+     * @return RenderState
+     */
     public static RenderState resolveSuit(Card card) {
 
         Image toRender = SuitImage.images.getOrDefault(
@@ -73,6 +81,10 @@ public final class CardRenderResolver extends RenderResolver {
         return new RenderState(toRender, CARD_WIDTH, CARD_HEIGHT, 0, 0, 0, false, false, 1.0);
     }
 
+    /** 
+     * @param card
+     * @return RenderState
+     */
     public static RenderState resolveValue(Card card) {
 
         Image toRender = ValueImage.images.getOrDefault(

@@ -12,6 +12,9 @@ import util.CardCount;
 public class GameEndCondition {
     public static final GameEndCondition INSTANCE = new GameEndCondition();
 
+    /** 
+     * @param event
+     */
     public void checkWinCondition(CardExitEvent event) {
         // Check if the card that exited is the target card and if it exited through the correct exit
         int totalExpectedCards = GameLevel.getInstance().OUTPUT_CARDS.stream().mapToInt((cc)->cc.getCount()).sum();

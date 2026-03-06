@@ -25,6 +25,12 @@ public final class DelayRenderResolver extends MoverRenderResolver {
 
     private DelayRenderResolver() {}
 
+    /** 
+     * @param delay
+     * @param pos
+     * @param alpha
+     * @return RenderState
+     */
     public static RenderState resolve(
             Delay delay,
             GridPos pos,

@@ -14,6 +14,9 @@ public class Tooltip {
     private Color textColor;
     private Object[] description; // some values can and probably will be null
 
+    /** 
+     * @return String
+     */
     // This contains the description it will display.
     // If this tooltip is referenced inside another tooltip then it will create its own tooltip on the side via getRefs()
     // Unless it doesn't have a description, in which it will simply just be part of that and not incur its own ref
@@ -23,10 +26,16 @@ public class Tooltip {
         return title;
     }
 
+    /** 
+     * @return Color
+     */
     public Color getTitleColor() {
         return textColor;
     }
 
+    /** 
+     * @return TextFlow
+     */
     public TextFlow getDescription() {
         TextFlow flow = new TextFlow();
         for (Object o: description) {
@@ -49,6 +58,9 @@ public class Tooltip {
         return flow;
     }
 
+    /** 
+     * @return List<Tooltip>
+     */
     public List<Tooltip> getRefs() {
         Set<Tooltip> refs = new HashSet<>();
 
@@ -65,6 +77,10 @@ public class Tooltip {
         this.description = description;
     }
 
+    /** 
+     * @param o
+     * @return Tooltip
+     */
     public static Tooltip ref(Object o) {
         if (o == null) return null;
         else if (o instanceof Tooltip tt) return tt;
@@ -72,6 +88,10 @@ public class Tooltip {
         else return new Tooltip(o.toString(), Color.BLUE);
     }
 
+    /** 
+     * @param ...tipTargets
+     * @return Tippable
+     */
     public static Tippable getContainerFor(Tippable ...tipTargets) {
         // Since when displaying tooltips it affectively only cares about the refs of the first tip without caring about the title
         // So this can be used to create "Containers" for tooltips to display
@@ -85,6 +105,10 @@ public class Tooltip {
         };
     }
 
+    /** 
+     * @param o
+     * @return boolean
+     */
     @Override
     public boolean equals(Object o) {
         // 1. Check if they are the exact same instance in memory
@@ -103,6 +127,9 @@ public class Tooltip {
         // Not checking description for performance and object reference reasons
     }
 
+    /** 
+     * @return int
+     */
     @Override
     public int hashCode() {
         // Hash the standard fields first

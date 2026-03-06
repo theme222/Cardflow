@@ -8,6 +8,12 @@ import java.util.Map;
 
 public abstract class RenderResolver {
 
+    /** 
+     * @param prefix
+     * @param filenames
+     * @param imageMap
+     * @param suffix
+     */
     protected static void loadImageFiles(String prefix, String[] filenames, Map<String, Image> imageMap, String suffix) {
         // If you have time probably move imageMap to the first or last position :skull:
         // prefix = directory (usually) suffix = filetype (usually)

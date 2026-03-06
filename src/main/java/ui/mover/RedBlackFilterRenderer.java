@@ -18,11 +18,20 @@ public class RedBlackFilterRenderer extends Renderer<RedBlackFilter> {
 
     private RedBlackFilterRenderer() {}
 
+    /** 
+     * @param redBlackFilter
+     * @param node
+     * @param pos
+     * @param animated
+     */
     public void render(RedBlackFilter redBlackFilter, Pane node, GridPos pos, boolean animated) {
         RenderState state = RedBlackFilterRenderResolver.resolve(redBlackFilter, pos, 1);
         draw(node, state);
     }
 
+    /** 
+     * @return RenderLayer
+     */
     @Override
     public RenderLayer layer() {
         return RenderLayer.MOVER;

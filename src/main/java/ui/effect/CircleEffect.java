@@ -26,6 +26,9 @@ public class CircleEffect extends Circle {
         this.setTranslateY(centerY);
     }
 
+    /** 
+     * @return Transition
+     */
     public Transition getTransition() {
         // Scale animation
         ScaleTransition scale = new ScaleTransition(Duration.millis(250), this);

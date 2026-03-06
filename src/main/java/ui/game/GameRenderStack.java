@@ -25,6 +25,9 @@ public class GameRenderStack extends StackPane {
 
     private final EnumMap<RenderLayer, Pane> layers = new EnumMap<>(RenderLayer.class);
 
+    /** 
+     * @param pos
+     */
     public void updateIfValid(GridPos pos) {
         for (Pane pane : layers.values()) {
             if (pane instanceof GameGrid) {

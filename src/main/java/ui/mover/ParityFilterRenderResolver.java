@@ -24,6 +24,12 @@ public final class ParityFilterRenderResolver extends MoverRenderResolver {
 
     private ParityFilterRenderResolver() {}
 
+    /** 
+     * @param parityFilter
+     * @param pos
+     * @param alpha
+     * @return RenderState
+     */
     public static RenderState resolve(
             ParityFilter parityFilter,
             GridPos pos,

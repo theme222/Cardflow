@@ -24,6 +24,12 @@ public final class RedBlackFilterRenderResolver extends MoverRenderResolver {
 
     private RedBlackFilterRenderResolver() {}
 
+    /** 
+     * @param redBlackFilter
+     * @param pos
+     * @param alpha
+     * @return RenderState
+     */
     public static RenderState resolve(
             RedBlackFilter redBlackFilter,
             GridPos pos,

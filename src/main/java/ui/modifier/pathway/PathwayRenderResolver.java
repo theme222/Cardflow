@@ -28,6 +28,12 @@ public class PathwayRenderResolver extends RenderResolver {
 
     private PathwayRenderResolver() {}
 
+    /** 
+     * @param pathway
+     * @param pos
+     * @param alpha
+     * @return RenderState
+     */
     public static RenderState resolve(
             Pathway pathway,
             GridPos pos,

@@ -20,6 +20,12 @@ public class ArithmeticRenderer extends Renderer<Arithmetic> {
 
     private ArithmeticRenderer() {}
 
+    /** 
+     * @param arithmetic
+     * @param node
+     * @param pos
+     * @param animated
+     */
     public void render(Arithmetic arithmetic, Pane node, GridPos pos, boolean animated) {
         RenderState state = ArithmeticRenderResolver.resolve(arithmetic, pos, Config.MODIFIER_ALPHA);
 
@@ -27,6 +33,9 @@ public class ArithmeticRenderer extends Renderer<Arithmetic> {
         textWithCanvas(node, arithmetic.getChange().toString(), state, (Canvas)node.getChildren().getFirst());
     }
 
+    /** 
+     * @return RenderLayer
+     */
     @Override
     public RenderLayer layer() {
         return RenderLayer.MODIFIER;

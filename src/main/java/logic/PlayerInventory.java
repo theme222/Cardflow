@@ -27,6 +27,11 @@ public class PlayerInventory {
     public Direction getCurrentRotation() { return currentRotation; }
     public void setCurrentRotation(Direction currentRotation) { this.currentRotation = currentRotation; }
     
+    /** 
+     * @param name
+     * @param rotation
+     * @return Mover
+     */
     public static Mover getMoverObjectByName(String name, Direction rotation) {
         return switch (name) {
             case "CONVEYOR" -> new Conveyor(rotation);
@@ -38,6 +43,10 @@ public class PlayerInventory {
         };
     }
 
+    /** 
+     * @param name
+     * @param change
+     */
     public void modifyAvailableMovers(String name, int change) {
         if (!currentAvailableMovers.containsKey(name)) throw new IllegalStateException("Unknown name: " + name);
         int resultValue = currentAvailableMovers.get(name);
@@ -47,6 +56,9 @@ public class PlayerInventory {
         currentAvailableMovers.put(name, resultValue);
     }
 
+    /** 
+     * @param name
+     */
     public void setCurrentSelection(String name) {
         if (name != null) {
             name = name.toUpperCase();
@@ -64,6 +76,12 @@ public class PlayerInventory {
         EventBus.emit(new TileSelectChangeEvent(this.currentSelection,this.currentRotation,PlayerInventory::getMoverObjectByName));
     }
 
+    /** 
+     * @param (gameLevel.addMover(getMoverObjectByName(currentSelection
+     * @param currentRotation)
+     * @param position)
+     * @return boolean
+     */
     public boolean placeToGrid(GridPos position) { // returns success
         if (TickEngine.getGameState() == GameState.SIMULATING) return false;
         if (position == null) return false;
@@ -78,6 +96,10 @@ public class PlayerInventory {
         return false;
     }
 
+    /** 
+     * @param position
+     * @return boolean
+     */
     public boolean removeFromGrid(GridPos position) {
         if (TickEngine.getGameState() == GameState.SIMULATING) return false;
         if (position == null) return false;
@@ -92,6 +114,9 @@ public class PlayerInventory {
     }
 
     public String getCurrentSelection() { return currentSelection; }
+    /** 
+     * @return PlayerInventory
+     */
     public static PlayerInventory getInstance() {
         if (instance == null) throw new IllegalStateException("PlayerInventory has not been initialized");
         return instance;

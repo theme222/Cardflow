@@ -25,6 +25,9 @@ import util.GridPos;
 public class GameGrid extends GridPane {
     public final GameTilePane[][] gameGridTilePanes;
 
+    /** 
+     * @param pos
+     */
     public void updateIfValid(GridPos pos) {
         if (pos.getY() < 0 || pos.getY() >= gameGridTilePanes.length)
             return;
@@ -44,11 +47,19 @@ public class GameGrid extends GridPane {
         buildConstraints(level);
     }
 
+    /** 
+     * @param layer
+     */
     private void configureLayer(RenderLayer layer) {
         setMouseTransparent(layer != RenderLayer.MOUSE_EVENTS);
         setPickOnBounds(layer == RenderLayer.MOUSE_EVENTS);
     }
 
+    /** 
+     * @param level
+     * @param layer
+     * @param tooltipLayer
+     */
     private void buildGrid(GameLevel level, RenderLayer layer, TooltipLayer tooltipLayer) {
 
         for (int i = 0; i < level.HEIGHT; i++) {
@@ -69,6 +80,9 @@ public class GameGrid extends GridPane {
         }
     } 
 
+    /** 
+     * @param layer
+     */
     private void registerMouseHandlers(RenderLayer layer) {
 
         if (layer != RenderLayer.MOUSE_EVENTS)
@@ -93,6 +107,9 @@ public class GameGrid extends GridPane {
                 .handleOnMouseExit(getGridPosFromMouse(e)));
     }
 
+    /** 
+     * @param level
+     */
     private void buildConstraints(GameLevel level) {
 
         for (int c = 0; c < level.WIDTH; c++) {
@@ -114,6 +131,10 @@ public class GameGrid extends GridPane {
         }
     }
 
+    /** 
+     * @param e
+     * @return GridPos
+     */
     private GridPos getGridPosFromMouse(MouseEvent e) {
 
         double x = e.getX();

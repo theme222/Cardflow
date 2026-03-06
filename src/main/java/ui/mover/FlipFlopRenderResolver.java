@@ -30,6 +30,12 @@ public final class FlipFlopRenderResolver extends MoverRenderResolver {
 
     private FlipFlopRenderResolver() {}
 
+    /** 
+     * @param flipFlop
+     * @param pos
+     * @param alpha
+     * @return RenderState
+     */
     public static RenderState resolveFloor(
             FlipFlop flipFlop,
             GridPos pos,
@@ -54,6 +60,12 @@ public final class FlipFlopRenderResolver extends MoverRenderResolver {
         );
     }
 
+    /** 
+     * @param flipFlop
+     * @param pos
+     * @param alpha
+     * @return RenderState
+     */
     public static RenderState resolveOverlay(
             FlipFlop flipFlop,
             GridPos pos,

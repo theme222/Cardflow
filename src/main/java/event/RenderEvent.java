@@ -10,6 +10,9 @@ public class RenderEvent implements Event {
         this.changedPoints = changedPoints;
     }
 
+    /** 
+     * @return Set<GridPos>
+     */
     public Set<GridPos> getChangedPoints() {
         return changedPoints;
     }

@@ -14,6 +14,9 @@ public class DeleteOverlay {
     private static final double BORDER_OPACITY = 0.6;
     private static final double FILL_OPACITY = 0.18;
 
+    /** 
+     * @param overlayPane
+     */
     public void render(Pane overlayPane) {
 
         double tileSize = Config.TILE_SIZE;

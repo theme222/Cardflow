@@ -20,11 +20,20 @@ public class CombinatorRenderer extends Renderer<Combinator> {
 
     private CombinatorRenderer() {}
 
+    /** 
+     * @param combinator
+     * @param node
+     * @param pos
+     * @param animated
+     */
     public void render(Combinator combinator, Pane node, GridPos pos, boolean animated) {
         RenderState state = CombinatorRenderResolver.resolve(combinator, pos, Config.MODIFIER_ALPHA);
         draw(node, state);
     }
 
+    /** 
+     * @return RenderLayer
+     */
     @Override
     public RenderLayer layer() {
         return RenderLayer.MODIFIER;

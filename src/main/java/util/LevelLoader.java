@@ -26,6 +26,10 @@ public class LevelLoader {
 
     public static final int TOTAL_LEVELS = 16;
 
+    /** 
+     * @param suitString
+     * @return Suit
+     */
     private static Suit parseSuit(String suitString) {
         return switch (suitString.toUpperCase()) {
             case "HEART", "H" -> Suit.HEART;
@@ -36,6 +40,10 @@ public class LevelLoader {
         };
     }
 
+    /** 
+     * @param materialString
+     * @return Material
+     */
     private static Material parseMaterial(String materialString) {
         return switch (materialString.toUpperCase()) {
             case "PLASTIC", "P" -> Material.PLASTIC;
@@ -49,6 +57,10 @@ public class LevelLoader {
 
     }
 
+    /** 
+     * @param cardJson
+     * @return CardCount
+     */
     private static CardCount parseCardInfo(JsonObject cardJson) {
         Suit suit = parseSuit(cardJson.getString("suit"));
         int value = cardJson.getInt("value");
@@ -59,6 +71,10 @@ public class LevelLoader {
         return new CardCount(new Card(suit, value, material), count);
     }
 
+    /** 
+     * @param modifier
+     * @return Modifier
+     */
     private static Modifier parseModifierInfo(String modifier) {
         String[] modArray = modifier.split(":");
         String modName = modArray[0];
@@ -90,6 +106,10 @@ public class LevelLoader {
         };
     }
 
+    /** 
+     * @param moverJson
+     * @param outMap
+     */
     private static void parseMoverInfo(JsonObject moverJson, HashMap<String, Integer> outMap) {
         String moverClassName = moverJson.getString("name").toUpperCase();
         int moverCount = moverJson.getInt("count");
@@ -108,6 +128,11 @@ public class LevelLoader {
         outMap.put(moverClassName, moverCount);
     }
 
+    /** 
+     * @param level
+     * @return GameLevel
+     * @throws IOException
+     */
     public static GameLevel loadLevel(String level) throws IOException {
 
         String basePath = "levels/" + level;
@@ -142,6 +167,10 @@ public class LevelLoader {
         }
     }
 
+    /** 
+     * @param json
+     * @return LevelConfig
+     */
     private static LevelConfig parseConfig(JsonObject json) {
 
         String levelName = json.getString("name");
@@ -171,6 +200,12 @@ public class LevelLoader {
                 availableMovers);
     }
 
+    /** 
+     * @param reader
+     * @param width
+     * @param height
+     * @return LayoutData
+     */
     private static LayoutData parseLayout(
             BufferedReader reader,
             int width,
