@@ -6,6 +6,8 @@ import application.view.GameView;
 import audio.AudioManager;
 import component.GameTile;
 import component.mover.Mover;
+import engine.GameState;
+import engine.TickEngine;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import logic.GameLevel;
@@ -61,7 +63,7 @@ public class PlacementController {
     public void handleMousePressed(MouseEvent event, GridPos gridPos) {
         if (event.getButton() == MouseButton.SECONDARY) {
             Mover mover = GameLevel.getInstance().getTile(gridPos).getMover();
-            if (mover != null) mover.rotate();
+            if (mover != null && TickEngine.getGameState() == GameState.PLACING) mover.rotate();
             else rotateCurrentRotation();
             GameView.getInstance().updateTileAndAdjacent(gridPos);
             AudioManager.playSoundEffect("mover-rotate");
