@@ -18,11 +18,7 @@ The game focuses on planning, simulation, and emergent behavior through logical 
 
 ### [Link Report](https://docs.google.com/document/d/1gC24tA5RU6ZqhgHYP4bdYx1R-tJYspbVh3TwXkdrjw4/edit?usp=sharing)
 
-<div align="center">
-  <a href="https://www.youtube.com/watch?v=YgXQ6aTmz8A">
-    <img src="https://img.youtube.com/vi/YgXQ6aTmz8A/3.jpg" alt="Video Title" style="width:100%;">
-  </a>
-</div>
+[![watch video](https://img.youtube.com/vi/YgXQ6aTmz8A/maxresdefault.jpg)](https://www.youtube.com/watch?v=YgXQ6aTmz8A)
 
 ---
 
@@ -82,7 +78,7 @@ Javadocs source is put at /javadoc you can view it there or host it as static pa
 
 ## 👥 Team Members
 
-Developed by **CEDT** First-Year Students:
+Developed by **Team john f X Æ A-12** (CEDT03 First-Year Students):
 
 | Name                         | Student ID |
 |------------------------------| --- |
